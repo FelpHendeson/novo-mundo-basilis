@@ -27,7 +27,9 @@ export class ExplorationScene extends Phaser.Scene {
   }
   init(data: { campaign: Campaign }) {
     this.campaign = data.campaign;
-    this.message = this.campaign.expeditionComplete
+    this.message = this.campaign.base.prepared
+      ? campaignObjective(this.campaign)
+      : this.campaign.expeditionComplete
       ? "A expedição está concluída. O abrigo recebe o grupo."
       : this.campaign.passageCleared
         ? "A passagem está segura. Volte ao acampamento."
@@ -218,7 +220,9 @@ export class ExplorationScene extends Phaser.Scene {
       "Descansar no abrigo",
       () => {
         restAtCamp(c);
-        this.message = c.passageCleared
+        this.message = c.base.prepared
+          ? "O grupo descansa no abrigo. Organize a equipe e treine pelo painel Base e equipe."
+          : c.passageCleared
           ? "Expedição concluída. A passagem está livre e o grupo tem um lugar para descansar. Prepare a base e convide Lyra pelo painel Base e equipe."
           : "Um abrigo simples oferece descanso. Lyra aguarda perto da trilha.";
         this.persist();
