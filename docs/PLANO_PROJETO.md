@@ -5,8 +5,8 @@
 **Stack:** Phaser 3, TypeScript, Vite, Vitest  
 **Repositório:** https://github.com/FelpHendeson/novo-mundo-basilis  
 **Publicação:** https://novo-mundo-basilis.vercel.app  
-**Documento:** v2.0 — 20/10/2026  
-**Estado de referência:** 0.9.0 publicada — introdução, Sistema e diário, código `8ef54fa`, produção READY.
+**Documento:** v2.1 — 20/10/2026  
+**Estado de referência:** 0.10.0 publicada — kit de adaptação, consumíveis e exercício de mana, código `feed9f6c`, produção READY.
 **Fonte de referência:** este plano versionado no GitHub; a cópia nos arquivos do Projeto deve acompanhar cada revisão documental.
 
 > Este documento é um plano vivo. Conteúdo narrativo e sistemas ainda não aprovados devem ser tratados como propostas, não como cânone.
@@ -233,8 +233,7 @@ Uma funcionalidade só é considerada entregue quando:
 
 ## 13. Próximo passo operacional
 
-Especificar o pacote P09-01B de adaptação: kit funcional, efeitos/limites dos consumíveis e tutorial de mana acessível, preservando a 0.9.0. O roteiro da bíblia é repartido em pacotes; kit/mana funcional, castelo e população não entram silenciosamente nessa primeira release. Detalhes em `docs/biblia/11_PLANO_EXECUCAO.md`.
-
+P09-01B1 entregue como 0.10.0. Seguir com P09-01B2: primeiro encontro de criatura em SCN_003, com observar/evitar/enfrentar, consequências persistentes e saídas seguras. Fechar espécie provisória, mapa e tabela de consequências antes de implementar. Sem obrigar combate, repetir recompensa ou introduzir respostas aos mistérios. Só depois avançar ao castelo P09-02. A próxima versão funcional será MINOR ao fechar o escopo; correções da 0.10.0 recebem PATCH e inciso próprio.
 
 ## 14. Política de versões e manutenção do plano
 
@@ -388,6 +387,20 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 - **Limites da validação:** base já preparada/reserva migrada coberta nas fixtures; não foi repetida partida manual até vitória nesta release. Antes da confirmação da criação, não há checkpoint de personagem. Relatório `docs/RELEASE_0.9.md`.
 - **Numeração:** P09-01–07 são IDs de pacotes, não PATCH; mudanças funcionais recebem MINOR, correções PATCH. `+fix` não identifica correção incremental na política do projeto.
 
+### 15.11 — 0.10.0 — Kit e exercício de mana — 20/10/2026
+
+- **Estado:** entregue; P09-01B1, primeira fatia da adaptação.
+- **Implementação:** aceitar/adiar kit sem duplicação; bolsa e arma compatível (+1 ataque Guerreiro/Ladino ou +1 magia Mago); três poções (+12 HP), duas rações (+4 EN), uso limitado ao máximo do recurso e à ação do aliado selecionado. Treino usa estoque isolado. Ficha, comparação de acessórios e diário atualizados.
+- **Tutorial:** perceber/conduzir/estabilizar em três escolhas sem cronômetro, erro sem penalidade e assistência opcional. Adiar conserva etapa. Sem XP/proficiência/bônus permanente ou exclusividade do protagonista.
+- **Compatibilidade:** schema 6, migração de schemas 1–5; banco IndexedDB versão 1. Estoque e tutorial parciais persistem. Reabrir consulta ou repetir batalha não repõe itens.
+- **Commits:** `c1a51f92c130959be8cf9c4df9d5ec79cbb187d4` (funcionalidades/testes), `feed9f6c9a6e44ad27f9e976fc7d71ade01700ac` (comparação de acessórios); branch `release/0.10.0`. Tag Git pendente.
+- **Validação:** 122 testes/10 arquivos, TypeScript e Vite passaram na prévia final e no deployment de produção, com `npm test && npm run build`. Execução remota porque o ambiente local estava indisponível.
+- **Navegador:** nova jornada Mago, adiar/reabrir/aceitar, erro orientado, etapa parcial após recarga, assistência e conclusão; +1 magia no combate; poção 11→21 HP e ação gasta; ração em Lyra 12→15 EN e ação gasta; recarga conserva 2 poções/1 ração, tutorial 3/3 e kit sem reposição. Prévia final Guerreiro: ficha e comparação mostram ataque 9, troca prevista 9→11. Console sem erros observados.
+- **Mobile:** Sistema em 320×568/390×844 e batalha 844×390 sem overflow horizontal; botões 48 px em 320. Painel com rolagem; legendas em canvas permanecem pequenas. Sem aparelho físico/Safari/desempenho medido.
+- **Publicação:** production READY `dpl_BZoAMTyKhXDfx6XpZAm1BPmp4xGA`, commit `feed9f6c`, https://novo-mundo-basilis.vercel.app; bundle `index-BctaIsyS.js`. Checkpoint anterior retomou Viajante/Humano/Guerreiro, posição 6,3, sem prêmio automático do kit.
+- **Limites:** primeira criatura observar/evitar/enfrentar fica em P09-01B2. Bolsa sem limite de peso; exercício guiado, não minigame de ritmo. Recarga não retoma turno/HP, mas conserva itens gastos. Base/reserva e migrações cobertas por testes; partida manual completa até vitória não repetida nesta release. Sem nova curva de XP, castelo ou moradores.
+- **Documentação:** relatório `docs/RELEASE_0.10.md`. Plano canônico no GitHub atualizado; cópia anexa do Projeto não sincronizada nesta sessão por indisponibilidade do ambiente de arquivos.
+
 ### Modelo de inciso para próximas versões
 
 - **Versão, título, data e estado.**
@@ -414,6 +427,7 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 | v1.8 | 20/10/2026 | Primeiro ciclo de base/recrutamento 0.8.0, formação e treino sem recompensa, migração schema 4. |
 | v1.9 | 20/10/2026 | Avaliação dos 11 documentos novos da bíblia, escopo 0.9.0, dependências por pacotes, compatibilidade do legado e correção da numeração funcional/PATCH. |
 | v2.0 | 20/10/2026 | Introdução/Sistema/diário 0.9.0 e migração schema 5; revisão documental independente da versão do jogo. |
+| v2.1 | 20/10/2026 | Kit/consumíveis/mana 0.10.0, schema 6, evidências remotas e divisão P09-01B1/B2. |
 
 
 ## 17. Escopo executável — 0.4.0

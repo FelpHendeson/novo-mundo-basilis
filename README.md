@@ -2,7 +2,7 @@
 
 RPG tático original com exploração, recrutamento, classes e construção de comunidade planejados.
 
-**Versão 0.9.0:** última manhã, criação, chegada à clareira, consulta opcional ao Sistema e diário persistente.
+**Versão 0.10.0:** kit de adaptação opcional, arma compatível, poções/rações utilizáveis em batalha e exercício de mana com assistência. Save schema 6, compatível com schemas 1–5. [Relatório e limitações](docs/RELEASE_0.10.md).
 
 ## Desenvolvimento
 

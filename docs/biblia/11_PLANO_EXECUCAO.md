@@ -2,7 +2,7 @@
 
 20/10/2026. Fonte avaliada: `d18f741` e os 11 arquivos de `docs/biblia`. Referência implementada: jogo 0.8.0, código `2ec2139`. Este documento planeja entregas; não anuncia novas funcionalidades ou publicação do jogo.
 
-**Registro de execução:** P09-01A entregue como 0.9.0 (`8ef54fa`); ver `../RELEASE_0.9.md` e inciso 15.10 do plano. Próxima especificação: P09-01B. A avaliação abaixo preserva a referência histórica em 0.8.0.
+**Registro de execução:** P09-01A entregue como 0.9.0 (`8ef54fa`); ver `../RELEASE_0.9.md` e inciso 15.10 do plano. P09-01B1 entregue como 0.10.0 (`feed9f6c`), kit/consumíveis e exercício guiado de mana. Próximo: P09-01B2, criatura observar/evitar/enfrentar; só depois P09-02. Ver `../RELEASE_0.10.md` e inciso 15.11. A avaliação abaixo preserva a referência histórica em 0.8.0.
 
 ## Avaliação
 
@@ -53,7 +53,7 @@ Pacotes são unidades de planejamento, não versões PATCH. Só a próxima relea
 | 8 | P09-07 — fechamento do arco | Domínio nomeado, estrutura reparada, população efetiva, treino, comércio e missão, incluindo caminhos alternativos | SCN_015; QA de ponta a ponta e persistência; provar rota de recusa dos fugitivos sem bloqueio |
 | 9 | Polimento e preparação 1.0 | Sprites/áudio/conteúdo final, performance, acessibilidade, proteção do save e campanha delimitada | Só anunciar 1.0 após fechar duração, elenco, mapas, encerramento e critérios de estabilidade |
 
-## Próxima release: escopo executável 0.9.0
+## Referência histórica: escopo executável 0.9.0
 
 **Objetivo:** uma nova jornada apresentar a chegada e o Sistema sem perder o protótipo existente. Entrega pequena e jogável, não uma reescrita de todos os sistemas.
 
@@ -91,3 +91,7 @@ Pacotes são unidades de planejamento, não versões PATCH. Só a próxima relea
 A direção nova já estabelece Sistema universal, mana acessível a combatentes físicos, castelo reivindicável/nomeável e domínio com habitantes autônomos. Não é necessário reconfirmar esses fundamentos. Antes de canonizar conteúdo proposto, delimitar: nomes e motivações do elenco/facções; posição do encontro de Lyra na rota do castelo; desfechos não letais e consequências; regras da reconstrução corporal e personalização visual; efeitos/valores do kit e progressão profissional.
 
 Nenhuma dessas decisões impede começar a infraestrutura e a consulta do Sistema da 0.9.0. As respostas aos mistérios permanecem deliberadamente indefinidas.
+
+## Execução 0.10.0 e recorte seguinte
+
+P09-01B foi dividido em B1 (entregue: kit funcional, consumíveis, exercício acessível e persistência schema 6) e B2 (próximo: primeiro encontro com criatura, observar/evitar/enfrentar e consequências sem bloqueio). A 0.10.0 não conclui toda SCN_003. Valores provisórios e evidências em `../RELEASE_0.10.md`; próximos MINOR definidos ao fechar escopo, PATCH reservado a correções. Não antecipar castelo ou novas recompensas de XP.
