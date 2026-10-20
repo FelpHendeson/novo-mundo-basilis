@@ -5,8 +5,9 @@
 **Stack:** Phaser 3, TypeScript, Vite, Vitest  
 **Repositório:** https://github.com/FelpHendeson/novo-mundo-basilis  
 **Publicação:** https://novo-mundo-basilis.vercel.app  
-**Documento:** v1.0 — 20/10/2026  
-**Estado de referência:** protótipo 0.2.0 no repositório (confirmado em README; commit observado `b213e7a`)
+**Documento:** v1.1 — 20/10/2026  
+**Estado de referência:** jogo 0.2.0 publicado e validado em desktop; código da entrega em `b213e7a`. Próximo marco funcional: 0.3.0.
+**Fonte de referência:** este plano versionado no GitHub; a cópia nos arquivos do Projeto deve acompanhar cada revisão documental.
 
 > Este documento é um plano vivo. Conteúdo narrativo e sistemas ainda não aprovados devem ser tratados como propostas, não como cânone.
 
@@ -63,14 +64,18 @@ Construir um RPG tático com combate em tabuleiro inspirado no ritmo estratégic
 - Técnicas com alcance, potência, custo, tipo, efeitos e condições de uso.
 - Prévia antes de confirmar: alvo, custo, dano esperado, chance de acerto quando aplicável, riscos e contra-ataques possíveis.
 - Resolução do combate na camada de regras, com **resultado imutável entregue à animação**. Não calcular dano duas vezes.
-- Opção de velocidade de animação e, futuramente, opção para pulá-la.
+- Opções de aceleração e pulo da apresentação já na 0.3.0, sem alterar o resultado.
 - Condições de vitória alternativas: eliminar inimigos, sobreviver, escapar, resgatar, ocupar objetivos.
 
 ### 5.2 Batalha cinematográfica — requisito essencial
 **Sequência mínima:** seleção da técnica e do alvo → prévia → confirmação → transição de câmera/tela → combatentes em lados opostos → animação do ataque/impacto → atualização visual de PV e efeitos → eventual reação/contra-ataque → retorno ao mapa.
 
 **Requisitos técnicos:**
-- `BattleResolver` determina o evento de combate e seus resultados uma única vez.
+- `BattleResolver` determina o evento de combate e seus resultados uma única vez, usando as mesmas regras da prévia.
+- Cada ação confirmada recebe um identificador; o estado é atualizado exatamente uma vez antes da apresentação, que recebe retratos imutáveis do antes/depois. A apresentação nunca altera o domínio.
+- Enquanto houver apresentação pendente, entrada tática e avanço de turno ficam bloqueados. Ao concluí-la, o controlador verifica resultado final e só então libera a próxima ação/fase.
+- Ataques aliados e inimigos usam o mesmo fluxo. A IA apresenta uma ação por vez e aguarda a conclusão antes de continuar.
+- Contra-ataques permanecem fora da 0.3.0 enquanto suas regras não forem aprovadas; apenas preparar o contrato para uma futura sequência de reações.
 - `CombatPresentation` consome uma sequência de eventos: ação, animação, dano, estado final.
 - A cena deve concluir corretamente mesmo com sprites temporários, animações aceleradas ou puladas.
 - Morte, experiência e custo de recursos não podem ser aplicados duplicadamente.
@@ -91,7 +96,8 @@ Construir um RPG tático com combate em tabuleiro inspirado no ritmo estratégic
 - Recursos/economia inicialmente simples, expandindo conforme a campanha.
 
 ### 5.5 Persistência e acessibilidade
-- Salvamento local versionado (preferencialmente IndexedDB) e migração de schema.
+- Salvamento local mínimo versionado na 0.4.0, junto do primeiro progresso persistente: perfil, cenário/checkpoint e eventos concluídos. Restauração após recarregar é critério de aceite. Não exige salvar no meio da animação ou combate.
+- Armazenamento preferencialmente IndexedDB, com validação do conteúdo e tratamento de save inválido; migrações acompanham a primeira alteração de schema. Fortalecimento e exportação/importação podem vir depois.
 - Recomeçar cena e continuar campanha sem perder progresso.
 - Entradas de mouse e teclado; suporte touch responsivo quando priorizado.
 - Contraste, texto legível, menus navegáveis e indicação clara de ação válida/inválida.
@@ -114,7 +120,7 @@ src/
 assets/            # pixel art, mapas, animações e áudio
 scripts/           # validação de conteúdo, ferramentas de build
 tests/             # testes unitários, integração e regressão
- docs/             # design, ADRs, releases e planejamento
+docs/              # design, ADRs, releases e planejamento
 ```
 
 **Observação:** é uma arquitetura-alvo, não afirmação sobre as pastas já existentes. Preferir TypeScript estrito, módulos coesos, dados tipados/validados, regras independentes de Phaser e interfaces testáveis. Evitar abstração excessiva antes da necessidade.
@@ -124,14 +130,16 @@ tests/             # testes unitários, integração e regressão
 | Marco | Objetivo | Entregável verificável | Status |
 |---|---|---|---|
 | 0.1 | Fundação da aplicação | Projeto Phaser/Vite e protótipo inicial | Histórico |
-| 0.2 | Estabilização tática | Um encontro jogável, melhorias de seleção/turnos, testes e publicação | Protótipo no repositório; validar release |
+| 0.2 | Estabilização tática | Um encontro jogável, melhorias de seleção/turnos, testes e publicação | Entregue como 0.2.0; desktop validado |
 | **0.3** | **Batalha cinematográfica** | **Tela lateral de confronto funcional, sincronizada com o motor, com animação e retorno ao mapa** | **Próxima prioridade** |
-| 0.4 | Exploração | Cenário navegável, interação com NPC, diálogo e entrada em combate | Planejado |
-| 0.5 | Classes, raças e evolução | Dados tipados, progresso básico, equipamentos e diferenciação real | Planejado |
+| 0.4 | Exploração e persistência mínima | Cenário, NPC, diálogo, encontro, consequência e restauração de checkpoint | Planejado |
+| 0.5 | Classes, raças e evolução | Entregas menores: dados e diferenciação → experiência → equipamentos; cada pacote com aceite próprio | Planejado |
 | 0.6 | Base e recrutamento | Base explorável simples, recrutar e montar equipe | Planejado |
 | 0.7 | Campanha vertical | Prólogo e primeiro capítulo jogáveis ponta a ponta | Planejado |
 | 0.8 | Polimento e conteúdo | UX, áudio, sprites, balanceamento, salvamento robusto | Planejado |
 | 1.0 | Primeira versão pública estável | Campanha inicial fechada, QA e documentação de release | Futuro |
+
+Os números da tabela são marcos resumidos: 0.2 corresponde a 0.2.0, por exemplo. O marco 1.0.0 só será planejado para execução após definir duração pretendida, cenários/encontros, elenco mínimo e encerramento da campanha inicial; esses limites ainda não estão aprovados.
 
 A ordem pode mudar se testes de usabilidade ou dependências técnicas justificarem. Não existem prazos contratados ou funcionalidades implícitas fora dos critérios de aceite.
 
@@ -146,18 +154,22 @@ Fazer cada ataque confirmado resultar em uma apresentação audiovisual clara e 
 3. Construir cena `CombatScene` com cenário, combatentes, HUD de PV e entrada/saída.
 4. Implementar animações temporárias de ataque físico e mágico, impacto, dano e derrota.
 5. Conectar escolha de técnica → prévia → resolver → apresentar → atualizar tabuleiro.
-6. Tratar cancelamento antes da confirmação, duplo clique, troca de cena e ação indisponível.
+6. Tratar cancelamento antes da confirmação, duplo clique, troca de cena e ação indisponível. Serializar também os ataques da IA, sem perder a continuidade do turno.
 7. Implementar opção de aceleração/pulo de apresentação sem pular aplicação de estado.
 8. Testar regressões; publicar e validar na URL de produção.
 
 ### Critérios de aceite 0.3
-- [ ] Atacar com qualquer classe implementada abre a cena lateral.
+- [ ] Atacar com qualquer classe implementada, como aliado ou inimigo, abre a cena lateral.
 - [ ] Atacante e alvo aparecem frente a frente com identificação e PV.
 - [ ] Técnica escolhida determina o efeito/animação apresentado.
-- [ ] Dano é aplicado **exatamente uma vez**, inclusive em ataque letal.
+- [ ] Dano e energia são aplicados **exatamente uma vez**, inclusive em ataque letal, cliques repetidos e pulo repetido.
+- [ ] Prévia e resultado usam as mesmas regras; o resultado recebido pela apresentação é imutável.
+- [ ] Último golpe apresenta seu resultado antes da tela de vitória/derrota; não inicia ação inimiga residual.
 - [ ] Cena retorna ao tabuleiro e conserva posições, turnos e estados corretos.
 - [ ] Ação inválida, fora do alcance ou sem energia não inicia batalha.
 - [ ] Acelerar/pular animação não altera o resultado.
+- [ ] Reiniciar/sair não deixa callbacks ou entradas antigas afetarem uma nova batalha.
+- [ ] Retorno ao mapa restaura foco de teclado e seleção apropriados; comandos permanecem acessíveis.
 - [ ] Build de produção, testes de regras e verificação em navegador passam.
 - [ ] Deploy do Vercel fica `READY` e interface é testável por link público.
 
@@ -169,7 +181,9 @@ Uma funcionalidade só é considerada entregue quando:
 - fluxos relevantes foram testados no navegador, incluindo ações e navegação, quando as ferramentas permitem;
 - não há erro bloqueador conhecido no caminho principal;
 - comportamento, limitações e riscos foram relatados sem confundir implementação com validação;
-- versão/deploy podem ser identificados por commit e URL.
+- versão/deploy podem ser identificados por commit e URL;
+- o inciso da versão na linha do tempo foi atualizado, com evidências e limitações;
+- testes ou validações impedidos permanecem explicitamente pendentes; não equivalem a aprovação. Código pronto sem evidência suficiente fica como implementado ou em validação.
 
 ## 10. Papéis e fluxo de trabalho
 
@@ -208,3 +222,80 @@ Uma funcionalidade só é considerada entregue quando:
 ## 13. Próximo passo operacional
 
 Implementar a **versão 0.3 — batalha cinematográfica** sobre o estado mais recente da `main`, começando por revisão do sistema de combate atual e teste de regressão. Priorizar um fluxo completo com placeholders antes de produzir um grande catálogo de animações.
+
+
+## 14. Política de versões e manutenção do plano
+
+### 14.1 Versão do jogo
+
+Usar três componentes: `MAJOR.MINOR.PATCH`. Antes da 1.0, `0.MINOR.0` identifica um marco funcional e `0.MINOR.PATCH` identifica correções/estabilizações desse marco. A compatibilidade de saves sempre é declarada, mesmo durante o desenvolvimento inicial.
+
+- Exemplo hipotético: `0.2.0 → 0.2.1 → 0.2.2 → 0.3.0`. Cada correção publicada entre os marcos recebe sua própria versão e inciso na seção 15.
+- Esses exemplos não representam entregas existentes. No momento desta revisão, não há 0.2.1 entregue.
+- Commits de trabalho podem ser agrupados em uma versão. Nem todo commit vira release; toda versão entregue identifica seus commits.
+- Correção publicada exige atualizar `package.json` e lockfile, registro de release e inciso correspondente. Uma mesma versão não pode identificar dois códigos de jogo diferentes publicados; usar o próximo PATCH para correção posterior.
+- Uma revisão exclusivamente documental aumenta a versão deste plano, sem aumentar artificialmente a versão do jogo. O commit documental registra a alteração.
+- Ao concluir uma release, criar referência Git `vX.Y.Z` para o commit entregue, depois de verificar que não existe. Tags de release não devem ser movidas ou sobrescritas. Tags ainda não verificadas não serão anunciadas como existentes.
+
+### 14.2 Versão do documento
+
+Este plano possui versão independente: v1.0 original, v1.1 nesta revisão. Incrementar a revisão ao alterar escopo, política, estado de entrega ou linha do tempo. Preservar o histórico no Git e na seção 16; não apagar entregas anteriores para acomodar mudanças de prioridade.
+
+### 14.3 Rotina por entrega
+
+1. Consultar a `main` e o plano atuais; registrar a versão-alvo e o problema/objetivo.
+2. Abrir inciso cronológico com estado Planejado ou Em desenvolvimento. Reservar o número não significa publicar.
+3. Implementar e registrar testes, build e validação funcional realmente executados.
+4. Versionar e publicar; conferir commit, ambiente e URL. Marcar Entregue apenas conforme a definição de pronto, mantendo limitações explícitas.
+5. Atualizar o inciso e a revisão do plano. Sincronizar a cópia dos arquivos do Projeto, preservando a identidade e histórico do mesmo arquivo.
+6. Se surgir uma correção entre marcos, acrescentar um inciso PATCH no lugar cronológico correspondente e ajustar a prioridade sem apagar o marco seguinte.
+
+**Estados:** Planejado → Em desenvolvimento → Em validação → Entregue. Bloqueado registra motivo e condição de desbloqueio. Cancelado/Substituído preserva o registro e aponta o motivo/sucessor. Regressões descobertas em release entregue geram novo inciso vinculado à versão afetada.
+
+## 15. Linha do tempo do jogo e incisos por versão
+
+Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente entre os marcos quando necessário. Histórico registra fatos; roadmap registra intenção.
+
+### 15.1 — 0.1.0 — Fundação — 20/10/2026
+
+- **Estado:** histórico, substituída pela 0.2.0.
+- **Entrega:** criação simplificada, grade, movimento, técnicas e fases básicas.
+- **Referência:** `cd369bb` é a base observada antes da implementação 0.2.
+- **Evidência:** quatro testes de modelo passaram e compilação foi confirmada na auditoria; não há validação funcional completa em navegador documentada para essa release.
+- **Limitações:** interface e regras preliminares, falhas de cancelamento/fim de batalha posteriormente corrigidas na 0.2.0.
+
+### 15.2 — 0.2.0 — Estabilização tática — 20/10/2026
+
+- **Estado:** entregue; validação desktop concluída.
+- **Commits:** `313e2fd` (regras/interface) e `b213e7a` (posição estável do tabuleiro e relatório). Código final desta entrega: `b213e7a`. Os dois commits fazem parte da mesma entrega 0.2.0; não constituem uma 0.2.1 retroativa.
+- **Correções:** cancelamento desfaz movimento; fim de batalha antecede próximo turno; IA respeita alcance/energia; limpeza de entrada e temporizadores.
+- **Funcionalidades:** painel HTML, HP/energia, prévia de dano, alvos válidos, histórico e comandos acessíveis nos menus.
+- **Validação:** 14 testes passaram, TypeScript/build passaram; na prévia foi concluída vitória no turno 4 e reinício restaurou turno/HP/energia. Em produção foram conferidos criação, entrada, comandos e CSS final, com console sem erros observados.
+- **Publicação:** Vercel production READY, deployment `dpl_3tRhmP5RtfHYXAJs3mhW6nPakBKV`, associado a `b213e7a`; URL https://novo-mundo-basilis.vercel.app (endereço mutável conforme novas versões).
+- **Limitações:** encontro único, sem save/base/exploração/recrutamento; arte temporária. Mobile não validado e execução do workflow GitHub não confirmada. Mobile é expansão futura, não bloqueio deste marco PC.
+- **Detalhamento:** `docs/RELEASE_0.2.md`. Tag `v0.2.0` não verificada nesta revisão.
+
+### 15.3 — 0.3.0 — Batalha cinematográfica — data de entrega em aberto
+
+- **Estado:** planejado; próxima prioridade funcional.
+- **Dependência:** estado mais recente da 0.2 e eventuais correções PATCH publicadas antes deste marco.
+- **Objetivo e aceite:** seção 8. Ainda não implementado nem validado.
+- **Commits, testes, publicação e limitações finais:** preencher com evidências durante a execução.
+- **Inserção de correções:** caso uma 0.2.1 seja necessária, inserir seu inciso antes deste e renumerar os incisos posteriores; os identificadores de versão permanecem estáveis.
+
+### Modelo de inciso para próximas versões
+
+- **Versão, título, data e estado.**
+- **Motivo:** problema, versão afetada e objetivo.
+- **Escopo entregue:** correções/funcionalidades reais, separado do que foi adiado.
+- **Referências:** commits, tag verificada e relatório/issue quando existir.
+- **Validação:** testes/build, fluxos exercitados e resultados.
+- **Publicação:** ambiente, deployment/commit e URL; se não publicado, declarar.
+- **Compatibilidade e limitações:** saves, regressões abertas e pendências.
+
+## 16. Histórico de revisões do plano
+
+| Revisão | Data | Alteração |
+|---|---|---|
+| v1.0 | 20/10/2026 | Plano original, direção criativa, roadmap e prioridade da batalha lateral. |
+| v1.1 | 20/10/2026 | Linha do tempo e incisos por versão; política PATCH e revisão documental independente; evidências da 0.2.0; aceite da 0.3 ampliado para IA/ciclo de vida; save mínimo antecipado e limites de marcos explicitados. |
