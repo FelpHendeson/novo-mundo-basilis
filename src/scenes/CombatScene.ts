@@ -111,7 +111,7 @@ export class CombatScene extends Phaser.Scene {
     root.append(skip);
     const help = document.createElement("p");
     help.textContent =
-      "O resultado já foi determinado. Acelerar ou pular mantém dano e energia.";
+      "Acompanhe o confronto em 1× ou 3×, ou pule para voltar ao tabuleiro.";
     root.append(help);
     document.querySelector("#app")!.append(root);
     this.controls = root;

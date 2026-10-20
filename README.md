@@ -2,7 +2,7 @@
 
 RPG tático original com exploração, recrutamento, classes e construção de comunidade planejados.
 
-**Versão 0.2.0:** protótipo de criação simplificada e encontro tático nas Ruínas da Fronteira.
+**Versão 0.3.0:** protótipo de criação simplificada, encontro tático e confrontos laterais nas Ruínas da Fronteira.
 
 ## Desenvolvimento
 
@@ -32,8 +32,12 @@ Escolha nome, raça narrativa e classe; inicie a expedição com Lyra. Selecione
 - `src/ui`: comandos HTML, dados de combate e acessibilidade dos menus.
 - `tests`: regressões e simulações completas nas três classes.
 
+## Confrontos laterais
+
+Ataques aliados e inimigos apresentam os combatentes frente a frente, técnica, HP, energia, impacto e derrota. Use Acelerar para alternar 1×/3× ou Pular animação para retornar ao tabuleiro. Dano e custo são confirmados uma única vez; o próximo turno aguarda o retorno. Arte geométrica temporária, sem áudio nesta entrega.
+
 ## Limites
 
 Encontro único com duas unidades aliadas. Sem campanha persistente, inventário, base, exploração, recrutamento, vantagens raciais ou personalização visual nesta entrega. Recarregar reinicia a sessão. A formação de até aproximadamente sete membros permanece como direção de design, não como funcionalidade implementada.
 
-O motor é original e não utiliza ROMs comerciais. Veja `docs/GAME_DESIGN.md` e `docs/RELEASE_0.2.md`.
+O motor é original e não utiliza ROMs comerciais. Veja `docs/GAME_DESIGN.md` e `docs/RELEASE_0.3.md`.

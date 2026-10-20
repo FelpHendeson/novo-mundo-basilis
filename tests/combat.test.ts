@@ -11,6 +11,21 @@ function attack(b: Battle) {
   b.chooseSkill(1);
   b.confirm(1, 3);
 }
+for (const cls of ["Guerreiro", "Mago", "Ladino"] as const)
+  it(`apresenta ataque de ${cls} e não inicia com alvo inválido`, () => {
+    const b = new Battle({ name: "Teste", cls, race: "Humano" }, true);
+    b.confirm(1, 4);
+    b.confirm(1, 4);
+    b.openSkills();
+    b.chooseSkill(0);
+    b.confirm(9, 2);
+    expect(b.pending).toBeNull();
+    Object.assign(b.units[2], { x: 1, y: 3 });
+    b.confirm(1, 3);
+    expect(b.pending?.attacker.cls).toBe(cls);
+    b.completePresentation(b.pending!.id);
+    expect(b.phase).toBe("idle");
+  });
 describe("apresentação transacional", () => {
   it("resultado imutável usa o dano da prévia e não modifica unidades", () => {
     const [a, , d] = makeUnits();
