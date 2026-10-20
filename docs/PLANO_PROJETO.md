@@ -5,8 +5,8 @@
 **Stack:** Phaser 3, TypeScript, Vite, Vitest  
 **Repositório:** https://github.com/FelpHendeson/novo-mundo-basilis  
 **Publicação:** https://novo-mundo-basilis.vercel.app  
-**Documento:** v1.3 — 20/10/2026  
-**Estado de referência:** 0.4.0 implementada, código final `4cb5e78`; produção READY e checkpoint conferido no domínio público. Próximo marco funcional: 0.5, sujeito ao feedback da exploração.
+**Documento:** v1.4 — 20/10/2026  
+**Estado de referência:** 0.4.1 publicada com adaptação mobile, código `3921270`, produção READY. Próximo marco funcional: 0.5, sujeito ao feedback da exploração.
 **Fonte de referência:** este plano versionado no GitHub; a cópia nos arquivos do Projeto deve acompanhar cada revisão documental.
 
 > Este documento é um plano vivo. Conteúdo narrativo e sistemas ainda não aprovados devem ser tratados como propostas, não como cânone.
@@ -221,7 +221,7 @@ Uma funcionalidade só é considerada entregue quando:
 
 ## 13. Próximo passo operacional
 
-Colher feedback da 0.4.0 e e preparar o primeiro pacote da 0.5 (diferenciação de classes/raças por dados). Falhas publicadas da 0.4 entram antes como 0.4.1 e seguintes, sem ampliar o escopo silenciosamente.
+Colher feedback da 0.4.1 e preparar o primeiro pacote da 0.5 (diferenciação de classes/raças por dados). Falhas publicadas da 0.4 entram antes como 0.4.1 e seguintes, sem ampliar o escopo silenciosamente.
 
 
 ## 14. Política de versões e manutenção do plano
@@ -298,6 +298,17 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 - **Limitações:** um cenário/encontro, narrativa e arte provisórias; áudio/mobile e partida manual completa de derrota não validados. Tag Git pendente.
 - **Relatório:** `docs/RELEASE_0.4.md`.
 
+### 15.5 — 0.4.1 — Adaptação mobile — 20/10/2026
+
+- **Estado:** entregue; produção READY, continuação de checkpoint e retrato conferidos no domínio público.
+- **Problema na 0.4.0:** canvas e comandos exigiam alternância de rolagem; em paisagem o mapa excedia a altura; casas pequenas dificultavam seleção.
+- **Escopo:** mapa e painel em áreas independentes, paisagem lado a lado, comandos compactos, botões de cursor/confirmar posição no combate, objetivo/terreno/histórico expansíveis e foco sem deslocar a página.
+- **Commit de código:** `3921270`. Release PATCH de interface, sem alteração das regras ou do schema 1 de checkpoint.
+- **Validação:** 31 testes e build passaram. Prévia simulada em 390×844, 844×390 e 320×568, sem overflow da página; botões móveis com mínimo 48 px. Percurso da exploração até combate, cursor, confirmação e cancelamento exercitados. Em 320×568 o painel rola mantendo o mapa visível.
+- **Limitações:** simulação de viewport, sem comprovar toque físico, teclado virtual, Safari/iOS ou desempenho em aparelho. Rótulos dentro do canvas ainda escalam; dados e ações principais estão no painel HTML.
+- **Publicação:** Vercel READY no deployment `dpl_BXyMBAVThDRteZygHg9dBmzzfUmG`, código `3921270`; URL https://novo-mundo-basilis.vercel.app.
+- **Relatório:** `docs/RELEASE_0.4.1.md`. Tag Git pendente.
+
 ### Modelo de inciso para próximas versões
 
 - **Versão, título, data e estado.**
@@ -317,6 +328,7 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 
 | v1.2 | 20/10/2026 | Implementação 0.3.0, evidências automatizadas/manuais, limitações e próximo marco 0.4.0. |
 | v1.3 | 20/10/2026 | Escopo e inciso 0.4.0, exploração/checkpoints, testes e limitações de persistência. |
+| v1.4 | 20/10/2026 | Inciso PATCH 0.4.1 e evidências de simulação mobile em retrato/paisagem. |
 
 
 ## 17. Escopo executável — 0.4.0

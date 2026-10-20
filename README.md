@@ -2,7 +2,7 @@
 
 RPG tático original com exploração, recrutamento, classes e construção de comunidade planejados.
 
-**Versão 0.4.0:** primeiro ciclo de exploração, diálogo, encontro tático, retorno e checkpoint.
+**Versão 0.4.1:** primeiro ciclo de exploração, diálogo, encontro tático, retorno e checkpoint.
 
 ## Desenvolvimento
 
@@ -45,3 +45,7 @@ O motor é original e não utiliza ROMs comerciais. Veja `docs/GAME_DESIGN.md` e
 ## Checkpoint e exploração
 
 Use setas/WASD com foco no mapa, clique na casa vizinha ou use botões de direção. Interações ficam disponíveis por proximidade. Vitória libera a passagem e concede três suprimentos uma única vez. Retorne ao abrigo e descanse para concluir. O menu oferece Continuar; uma nova jornada exige marcar a substituição do checkpoint existente. Falha de armazenamento é exibida e permite continuar na sessão.
+
+## Interface mobile 0.4.1
+
+Retrato mantém o mapa acima do painel com rolagem própria. Paisagem usa mapa e comandos lado a lado. No combate, selecione um aliado e use os botões de cursor/Confirmar posição para mover sem tocar nas casas pequenas. Objetivo, terreno e histórico ficam em uma seção expansível. Layout verificado em simulação de 390×844, 844×390 e 320×568; toque físico/desempenho em aparelho ainda não validados.
