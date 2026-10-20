@@ -6,7 +6,7 @@
 **Repositório:** https://github.com/FelpHendeson/novo-mundo-basilis  
 **Publicação:** https://novo-mundo-basilis.vercel.app  
 **Documento:** v1.7 — 20/10/2026  
-**Estado de referência:** 0.7.0 em validação — inventário e acessórios; 0.6.0 permanece como última publicação confirmada.
+**Estado de referência:** 0.7.0 publicada — inventário e acessórios, código `475a256`, produção READY.
 **Fonte de referência:** este plano versionado no GitHub; a cópia nos arquivos do Projeto deve acompanhar cada revisão documental.
 
 > Este documento é um plano vivo. Conteúdo narrativo e sistemas ainda não aprovados devem ser tratados como propostas, não como cânone.
@@ -135,7 +135,7 @@ docs/              # design, ADRs, releases e planejamento
 | 0.4 | Exploração e persistência mínima | Cenário, NPC, diálogo, encontro, consequência e restauração de checkpoint | Entregue; ver inciso 15.4 |
 | 0.5.0 | Catálogo e ficha do viajante | Dados únicos de classe, prévia de atributos/técnicas, ficha na exploração e preservação dos checkpoints | Entregue |
 | 0.6.0 | Experiência e nível | Primeira vitória concede 100 XP, nível 2 do viajante, ganhos fixos por classe e migração de checkpoint | Entregue |
-| 0.7.0 | Inventário e acessórios | Três itens iniciais, um espaço, troca/remoção e comparação na exploração, efeitos no combate e migração de saves | Em validação |
+| 0.7.0 | Inventário e acessórios | Três itens iniciais, um espaço, troca/remoção e comparação na exploração, efeitos no combate e migração de saves | Entregue |
 | A definir | Efeitos raciais | Dependem de definição criativa e balanceamento próprios | Planejado |
 | 0.8 | Base e recrutamento | Base explorável simples, recrutar e montar equipe | Planejado |
 | 0.9 | Campanha vertical | Prólogo e primeiro capítulo jogáveis ponta a ponta | Planejado |
@@ -224,7 +224,7 @@ Uma funcionalidade só é considerada entregue quando:
 
 ## 13. Próximo passo operacional
 
-Validar e publicar a 0.7.0. Em seguida, colher feedback de equipamentos e especificar a primeira entrega de base/recrutamento antes de implementá-la. Correções da 0.7.0 usarão 0.7.1 e seguintes. Os antigos marcos planejados 0.6/0.7/0.8 foram remanejados para 0.8/0.9/0.10, pois progressão e equipamentos ganharam entregas próprias; entregas históricas foram preservadas.
+Colher feedback de equipamentos e especificar a primeira entrega de base/recrutamento antes de implementá-la. Correções da 0.7.0 usarão 0.7.1 e seguintes. Os antigos marcos planejados 0.6/0.7/0.8 foram remanejados para 0.8/0.9/0.10, pois progressão e equipamentos ganharam entregas próprias; entregas históricas foram preservadas.
 
 
 ## 14. Política de versões e manutenção do plano
@@ -339,11 +339,16 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 
 ### 15.8 — 0.7.0 — Inventário e acessórios — 20/10/2026
 
-- **Estado:** em validação.
+- **Estado:** entregue; prévia e domínio público validados.
 - **Escopo:** inventário inicial com Braçadeira de treino (ataque +2), Foco simples (magia +2) e Broche reforçado (defesa +2). Um espaço de acessório, válido para qualquer classe. Trocar/remover somente na exploração; comparação de ataque/magia/defesa e ficha usam os mesmos atributos da batalha.
 - **Balanceamento provisório:** nomes genéricos, sem lore nova. Itens iniciais disponíveis sem loja/saque; nenhum começa equipado, preservando os atributos anteriores até a escolha do jogador. Apenas viajante recebe bônus.
 - **Compatibilidade:** schema 3; schemas 1/2 recebem inventário inicial e acessório vazio, preservando XP e demais eventos. Valida posse, IDs e duplicatas. Banco IndexedDB mantém versão 1/stores.
-- **Validação:** 87 testes e build passaram. Navegador/publicação pendentes de registro.
+- **Código:** `475a25626ca337220b0aa268cafeaae192612f81`, branch `release/0.7.0`. Tag Git pendente.
+- **Validação:** 87 testes e build passaram. Prévia: equipar os três itens, trocar/remover sem acumular, recarga/continuação com braçadeira e batalha com ataque 10; Lyra e outros atributos inalterados. Console sem erros observados.
+- **Mobile:** 390×844, 320×568 e 844×390 sem overflow horizontal; botões de itens 60 px e remoção 48 px na medida de 390×844. Troca também exercitada em paisagem.
+- **Produção:** checkpoint anterior continuou preservando perfil/posição/eventos e recebeu inventário vazio de equipamento; broche equipado elevou defesa 6→8 e persistiu após recarga. Bundle `index-Bl5BwAFz.js`, console sem erros observados.
+- **Publicação:** production READY `dpl_AwXB19xvKXKC86BhAyVuactgN8yK`, código `475a256`, https://novo-mundo-basilis.vercel.app. Relatório `docs/RELEASE_0.7.md`.
+- **Limites da validação:** sem aparelho físico/Safari, medição de desempenho ou nova partida manual completa até vitória. Efeitos no dano, nível 2 e migração após vitória cobertos automaticamente; bundle Phaser ainda gera aviso de tamanho.
 - **Limitações:** sem armas/armaduras em múltiplos espaços, equipamento de aliados, durabilidade, consumo, loot ou loja. Nível máximo continua 2.
 
 ### Modelo de inciso para próximas versões

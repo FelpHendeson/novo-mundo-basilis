@@ -2,7 +2,7 @@
 
 RPG tático original com exploração, recrutamento, classes e construção de comunidade planejados.
 
-**Versão 0.6.0:** primeira evolução do viajante, experiência por vitória, ficha com nível e migração dos checkpoints anteriores.
+**Versão 0.7.0:** inventário inicial e acessórios do viajante com comparação de atributos, troca/remoção e checkpoint compatível.
 
 ## Desenvolvimento
 
@@ -28,6 +28,7 @@ Escolha nome, raça narrativa e classe. Na clareira, vá para leste e converse c
 
 - `src/game/archetypes.ts`: catálogo de classes, raças narrativas, atributos e técnicas.
 - `src/game/model.ts`: mapa, criação das unidades, alcance de movimento e dano.
+- `src/game/equipment.ts`: catálogo de acessórios e composição de atributos sem acumulação.
 - `src/game/progression.ts`: XP, nível e ganhos iniciais de atributos por classe.
 - `src/game/battle.ts`: regras, validações, fases e IA sem dependência de Phaser.
 - `src/scenes`: apresentação e entrada do tabuleiro; ciclo de vida dos eventos e temporizador.
@@ -40,9 +41,9 @@ Ataques aliados e inimigos apresentam os combatentes frente a frente, técnica, 
 
 ## Limites
 
-Encontro único com duas unidades aliadas. Sem inventário, base gerenciável, recrutamento, vantagens raciais ou personalização visual nesta entrega. O checkpoint local IndexedDB preserva perfil, posição e eventos; recarregar durante a luta retorna à exploração anterior. Limpar dados do navegador remove o progresso; não há sincronização entre dispositivos. A formação de até aproximadamente sete membros permanece como direção de design, não como funcionalidade implementada.
+Encontro único com duas unidades aliadas. Sem lojas, saque, base gerenciável, recrutamento, vantagens raciais ou personalização visual nesta entrega. O checkpoint local IndexedDB preserva perfil, posição e eventos; recarregar durante a luta retorna à exploração anterior. Limpar dados do navegador remove o progresso; não há sincronização entre dispositivos. A formação de até aproximadamente sete membros permanece como direção de design, não como funcionalidade implementada.
 
-O motor é original e não utiliza ROMs comerciais. Veja `docs/GAME_DESIGN.md` e `docs/RELEASE_0.6.md`.
+O motor é original e não utiliza ROMs comerciais. Veja `docs/GAME_DESIGN.md` e `docs/RELEASE_0.7.md`.
 
 ## Checkpoint e exploração
 
@@ -60,4 +61,10 @@ Trocar classe na criação atualiza os seis atributos e as duas técnicas, inclu
 
 A primeira vitória nas ruínas concede 100 XP ao viajante e leva ao nível 2, limite atual do protótipo. Guerreiro: +3 HP/+1 energia/+1 ataque/+1 defesa; Mago: +2 HP/+3 energia/+1 magia/+1 defesa; Ladino: +2 HP/+1 energia/+1 ataque/+1 defesa. Técnicas e movimento não mudam. Ganhos valem ao iniciar a próxima batalha; Lyra e inimigos não evoluem neste pacote. Derrota e repetição não dão recompensa.
 
-Campanhas usam schema 2. Checkpoints schema 1 migram automaticamente ao carregar, preservando posição e eventos. Se a passagem já estava liberada, a evolução é reconhecida retroativamente, sem repetir suprimentos. Equipamentos e níveis adicionais ainda não foram implementados.
+Campanhas usam schema 2. Checkpoints schema 1 migram automaticamente ao carregar, preservando posição e eventos. Se a passagem já estava liberada, a evolução é reconhecida retroativamente, sem repetir suprimentos. Níveis adicionais ainda não foram implementados.
+
+## Equipamentos 0.7.0
+
+Na exploração, abra **Inventário e acessórios**. O viajante começa com três itens e um espaço vazio: Braçadeira de treino (ataque +2), Foco simples (magia +2), Broche reforçado (defesa +2). Todos servem para qualquer classe. Compare atributos antes de equipar; trocar substitui o bônus anterior, remover restaura os valores da classe/nível. A ficha e a próxima batalha usam os mesmos números. Não é possível trocar durante a luta.
+
+Schema 3 preserva inventário e item equipado. Schemas 1/2 migram automaticamente com os três itens e nenhum equipado, conservando progresso. Sem lojas, loot, consumíveis, durabilidade, múltiplos espaços ou equipamentos dos aliados nesta entrega. Nomes e bônus são provisórios de protótipo.
