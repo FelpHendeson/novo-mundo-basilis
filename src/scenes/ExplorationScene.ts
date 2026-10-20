@@ -1,3 +1,4 @@
+import { progressLabel } from "../game/progression";
 import { characterSheet } from "../ui/characterSheet";
 import Phaser from "phaser";
 import {
@@ -162,7 +163,7 @@ export class ExplorationScene extends Phaser.Scene {
     p(this.message, "status");
     p(this.saveMessage).className = "save-status";
     p(
-      `Suprimentos: ${c.supplies} · Posição ${c.position.x + 1}, ${c.position.y + 1}`,
+      `${progressLabel(c.character.experience)} · Suprimentos: ${c.supplies} · Posição ${c.position.x + 1}, ${c.position.y + 1}`,
     );
     const actions = document.createElement("div");
     actions.className = "actions";
@@ -233,7 +234,7 @@ export class ExplorationScene extends Phaser.Scene {
     const summary = document.createElement("summary");
     summary.textContent = "Ficha do viajante";
     summary.dataset.action = "sheet";
-    sheet.append(summary, characterSheet(c.character.cls, c.character.race));
+    sheet.append(summary, characterSheet(c.character.cls, c.character.race, c.character.experience));
     this.panel.append(sheet);
     if (focused)
       this.panel

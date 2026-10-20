@@ -1,9 +1,10 @@
+import { ENCOUNTER_XP, validExperience } from "./progression";
 import type { Character } from "./battle";
 import { RACES, CLASSES } from "./archetypes";
 export { RACES } from "./archetypes";
 export type Campaign = {
-  schemaVersion: 1;
-  character: Character;
+  schemaVersion: 2;
+  character: Character & { experience: number };
   position: { x: number; y: number };
   metLyra: boolean;
   passageCleared: boolean;
@@ -11,8 +12,8 @@ export type Campaign = {
   expeditionComplete: boolean;
 };
 export const newCampaign = (character: Character): Campaign => ({
-  schemaVersion: 1,
-  character: { ...character },
+  schemaVersion: 2,
+  character: { name: character.name, cls: character.cls, race: character.race, experience: 0 },
   position: { x: 1, y: 4 },
   metLyra: false,
   passageCleared: false,
@@ -41,6 +42,7 @@ export function finishEncounter(c: Campaign, won: boolean) {
   if (won && !c.passageCleared) {
     c.passageCleared = true;
     c.supplies += 3;
+    c.character.experience = ENCOUNTER_XP;
     return true;
   }
   return false;
@@ -48,9 +50,9 @@ export function finishEncounter(c: Campaign, won: boolean) {
 /** Reject unsupported or malformed saves without silently erasing them. */
 export function parseCampaign(value: unknown): Campaign | null {
   if (!value || typeof value !== "object") return null;
-  const c = value as Campaign;
+  const c = value as Omit<Campaign, "schemaVersion"> & { schemaVersion: number };
   if (
-    c.schemaVersion !== 1 ||
+    (c.schemaVersion !== 1 && c.schemaVersion !== 2) ||
     !c.character ||
     typeof c.character.name !== "string" ||
     !c.character.name.trim() ||
@@ -72,10 +74,18 @@ export function parseCampaign(value: unknown): Campaign | null {
   )
     return null;
   if (c.expeditionComplete && !c.passageCleared) return null;
-  return structuredClone({
-    ...c,
+  // Schema 1 predates XP: award completed encounters once during migration.
+  const experience = c.schemaVersion === 1 ? (c.passageCleared ? ENCOUNTER_XP : 0) : c.character.experience;
+  if (!validExperience(experience) || experience !== (c.passageCleared ? ENCOUNTER_XP : 0)) return null;
+  return {
+    schemaVersion: 2,
+    character: { name: c.character.name, cls: c.character.cls, race: c.character.race, experience },
+    position: { ...c.position },
+    metLyra: c.metLyra,
+    passageCleared: c.passageCleared,
+    supplies: c.supplies,
     expeditionComplete: c.expeditionComplete ?? false,
-  });
+  };
 }
 
 export function restAtCamp(c: Campaign) {

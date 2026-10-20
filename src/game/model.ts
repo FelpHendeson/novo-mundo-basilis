@@ -1,3 +1,4 @@
+import { travelerAttributes } from "./progression";
 export type Team = "ally" | "enemy";
 import { classAttributes } from "./archetypes";
 import type { UnitClass, Technique } from "./archetypes";
@@ -83,6 +84,7 @@ export function damage(a: Unit, b: Unit, skill: Technique): number {
 export function makeUnits(
   name = "Viajante",
   cls: UnitClass = "Guerreiro",
+  experience = 0,
 ): Unit[] {
   function create(
     id: string,
@@ -92,7 +94,7 @@ export function makeUnits(
     x: number,
     y: number,
   ): Unit {
-    const { hp, ep, attack, magic, defense, move } = classAttributes(c);
+    const { hp, ep, attack, magic, defense, move } = id === "hero" ? travelerAttributes(c, experience) : classAttributes(c);
     return {
       id,
       name: n,

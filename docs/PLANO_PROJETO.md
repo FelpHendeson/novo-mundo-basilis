@@ -5,8 +5,8 @@
 **Stack:** Phaser 3, TypeScript, Vite, Vitest  
 **Repositório:** https://github.com/FelpHendeson/novo-mundo-basilis  
 **Publicação:** https://novo-mundo-basilis.vercel.app  
-**Documento:** v1.5 — 20/10/2026  
-**Estado de referência:** 0.5.0 publicada — catálogo de classes e ficha do viajante, código `f41bdff`, produção READY.
+**Documento:** v1.6 — 20/10/2026  
+**Estado de referência:** 0.6.0 em validação — experiência e nível; 0.5.0 permanece como última entrega confirmada até validar a publicação.
 **Fonte de referência:** este plano versionado no GitHub; a cópia nos arquivos do Projeto deve acompanhar cada revisão documental.
 
 > Este documento é um plano vivo. Conteúdo narrativo e sistemas ainda não aprovados devem ser tratados como propostas, não como cânone.
@@ -134,7 +134,8 @@ docs/              # design, ADRs, releases e planejamento
 | **0.3** | **Batalha cinematográfica** | **Tela lateral de confronto funcional, sincronizada com o motor, com animação e retorno ao mapa** | **Entregue; ver inciso 15.3** |
 | 0.4 | Exploração e persistência mínima | Cenário, NPC, diálogo, encontro, consequência e restauração de checkpoint | Entregue; ver inciso 15.4 |
 | 0.5.0 | Catálogo e ficha do viajante | Dados únicos de classe, prévia de atributos/técnicas, ficha na exploração e preservação dos checkpoints | Entregue |
-| A definir | Evolução e equipamentos | Experiência, equipamentos e efeitos raciais dependem de especificação e aceite próprios | Planejado |
+| 0.6.0 | Experiência e nível | Primeira vitória concede 100 XP, nível 2 do viajante, ganhos fixos por classe e migração de checkpoint | Em validação |
+| A definir | Equipamentos e efeitos raciais | Dependem de especificação e aceite próprios | Planejado |
 | 0.6 | Base e recrutamento | Base explorável simples, recrutar e montar equipe | Planejado |
 | 0.7 | Campanha vertical | Prólogo e primeiro capítulo jogáveis ponta a ponta | Planejado |
 | 0.8 | Polimento e conteúdo | UX, áudio, sprites, balanceamento, salvamento robusto | Planejado |
@@ -222,7 +223,7 @@ Uma funcionalidade só é considerada entregue quando:
 
 ## 13. Próximo passo operacional
 
-Colher feedback da ficha e especificar o pacote de experiência/progressão com critérios de aceite próprios. Bônus de raça dependem de definição criativa: as seis escolhas permanecem narrativas, sem modificadores inventados. Correções da 0.5.0 receberão 0.5.1 e seguintes; novas funcionalidades recebem novo marco MINOR.
+Validar a 0.6.0 em navegador, publicar e colher feedback sobre a primeira evolução. O próximo pacote funcional será equipamentos, com escopo e aceite próprios antes da implementação. Correções publicadas desta entrega usarão 0.6.1 e seguintes.
 
 
 ## 14. Política de versões e manutenção do plano
@@ -322,6 +323,15 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 - **Publicação:** production READY `dpl_C1diFS5NgEP7dRB6RxreYrE71ocu`, código `f41bdff`, https://novo-mundo-basilis.vercel.app. No domínio principal, checkpoint anterior Humano/Guerreiro continuou e a ficha foi conferida; bundle `index--cdtLclw.js` confirmado.
 - **Limitações:** sem aparelho físico/Safari ou medição de desempenho; bundle Phaser permanece acima do aviso de 500 kB. Relatório `docs/RELEASE_0.5.md`.
 
+### 15.7 — 0.6.0 — Experiência e nível — 20/10/2026
+
+- **Estado:** em validação.
+- **Escopo:** primeira vitória concede 100 XP e nível 2 ao viajante; ganhos fixos por classe visíveis na ficha; repetição e derrota não dão XP. Movimento, técnicas, raças e NPCs não evoluem neste pacote.
+- **Balanceamento inicial do protótipo:** Guerreiro +3 HP/+1 energia/+1 ataque/+1 defesa; Mago +2 HP/+3 energia/+1 magia/+1 defesa; Ladino +2 HP/+1 energia/+1 ataque/+1 defesa. Limite temporário nível 2/100 XP.
+- **Compatibilidade:** formato de campanha schema 2; schema 1 migra em memória ao carregar e é regravado ao salvar. Passagem antiga já liberada concede 100 XP retroativamente, sem duplicar suprimentos. Banco IndexedDB mantém versão 1, pois não altera seus stores.
+- **Validação:** 61 testes e build passaram. Evidências manuais e publicação serão acrescentadas após verificação.
+- **Limitações:** apenas viajante, um encontro e dois níveis; sem equipamento, novas técnicas, bônus raciais ou progressão de Lyra. Números provisórios de balanceamento, sem estabelecer lore nova.
+
 ### Modelo de inciso para próximas versões
 
 - **Versão, título, data e estado.**
@@ -343,6 +353,7 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 | v1.3 | 20/10/2026 | Escopo e inciso 0.4.0, exploração/checkpoints, testes e limitações de persistência. |
 | v1.4 | 20/10/2026 | Inciso PATCH 0.4.1 e evidências de simulação mobile em retrato/paisagem. |
 | v1.5 | 20/10/2026 | Escopo 0.5.0 delimitado ao catálogo e ficha; XP/equipamentos separados e efeitos raciais mantidos pendentes. |
+| v1.6 | 20/10/2026 | Escopo 0.6.0, progressão inicial de dois níveis, recompensa única e migração para schema 2. |
 
 
 ## 17. Escopo executável — 0.4.0
@@ -355,3 +366,6 @@ Aceite: criação entra na exploração; conversa desbloqueia encontro apenas pe
 
 Tornar legíveis as diferenças de classes já existentes, sem redefinir o balanceamento. Um catálogo tipado alimenta validação de perfil, criação de unidades, prévia e ficha. Aceite: trocar classe atualiza HP/energia/ataque/magia/defesa/movimento e duas técnicas; trocar raça informa seu caráter narrativo; ficha permanece acessível em mobile; valores da prévia coincidem com a batalha; checkpoint schema 1 continua legível. XP e equipamentos são pacotes posteriores, com numeração e aceite ainda a definir.
 
+## 19. Escopo executável — 0.6.0
+
+Aceite: iniciar com nível 1/0 XP; primeira vitória na passagem concede 100 XP, nível 2 e ganhos declarados de classe; derrota e repetição não acrescentam XP ou suprimentos; salvar/recarregar conserva progresso; saves schema 1 migram preservando perfil/posição/eventos. Ficha mostra XP, nível, ganhos e limite atual. Atributos evoluídos são reconstruídos na próxima batalha, sem aplicar aumentos em duplicidade nem alterar o encontro em andamento. Apenas protagonista evolui; próximo conteúdo exigirá revisar limite e curva antes de expandi-los.

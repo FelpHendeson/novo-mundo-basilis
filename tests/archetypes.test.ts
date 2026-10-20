@@ -15,7 +15,7 @@ describe("catálogo de personagens e compatibilidade", () => {
   for (const cls of CLASSES) for (const race of RACES) {
     it(`${race}/${cls}: checkpoint conserva perfil e batalha usa atributos da prévia`, () => {
       const c = parseCampaign(JSON.parse(JSON.stringify(newCampaign({ name: "Teste", cls, race }))));
-      expect(c?.character).toEqual({ name: "Teste", cls, race });
+      expect(c?.character).toEqual({ name: "Teste", cls, race, experience: 0 });
       const battle = new Battle(c!.character);
       const hero = battle.units[0];
       const a = classAttributes(cls);

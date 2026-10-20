@@ -42,12 +42,13 @@ export function saveCampaign(campaign: Campaign): Promise<boolean> {
   writes = writes
     .catch(() => false)
     .then(async () => {
-      if (!parseCampaign(snapshot)) return false;
+      const normalized = parseCampaign(snapshot);
+      if (!normalized) return false;
       try {
         const db = await open();
         await new Promise<void>((resolve, reject) => {
           const tx = db.transaction(STORE, "readwrite");
-          tx.objectStore(STORE).put(snapshot, "main");
+          tx.objectStore(STORE).put(normalized, "main");
           tx.oncomplete = () => resolve();
           tx.onerror = () => reject(tx.error);
           tx.onabort = () => reject(tx.error);

@@ -1,3 +1,4 @@
+import { progressLabel } from "../game/progression";
 import { finishEncounter, type Campaign } from "../game/campaign";
 import { saveCampaign } from "../game/persistence/save";
 import Phaser from "phaser";
@@ -21,10 +22,10 @@ export class BattleScene extends Phaser.Scene {
     super("Battle");
   }
   init(data: Character & { campaign?: Campaign }) {
-    this.character = data;
+    this.character = { ...data, ...(data.campaign?.character ?? {}) };
     this.savedResult = false;
     this.campaignSaveNote = "";
-    this.battle = new Battle(data, true);
+    this.battle = new Battle(this.character, true);
     this.cursor = { x: 1, y: 4 };
     this.timer = null;
     this.presenting = null;
@@ -89,12 +90,12 @@ export class BattleScene extends Phaser.Scene {
       this.savedResult = true;
       const c = this.character.campaign;
       if (finishEncounter(c, this.battle.enemies.length === 0)) {
-        this.campaignSaveNote = "Vitória: +3 suprimentos. Salvando checkpoint…";
+        this.campaignSaveNote = "Vitória: +3 suprimentos · +100 XP · Nível 2. Salvando checkpoint…";
         void saveCampaign(c).then((ok) => {
           if (!this.scene.isActive()) return;
           this.campaignSaveNote = ok
-            ? "Vitória registrada no checkpoint."
-            : "Vitória nesta sessão; não foi possível salvar.";
+            ? "Vitória: +3 suprimentos · +100 XP · Nível 2. Checkpoint salvo."
+            : "Vitória: +3 suprimentos · +100 XP · Nível 2 nesta sessão; não foi possível salvar.";
           this.redraw();
         });
       }
@@ -235,6 +236,9 @@ export class BattleScene extends Phaser.Scene {
             })
         : undefined,
     );
+    const progress = document.createElement("p");
+    progress.textContent = `${progressLabel(this.character.experience)} · Atributos desta batalha`;
+    document.querySelector("#battle-ui")?.append(progress);
     if (this.campaignSaveNote) {
       const p = document.createElement("p");
       p.textContent = this.campaignSaveNote;

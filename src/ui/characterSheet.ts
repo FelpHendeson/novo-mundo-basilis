@@ -1,11 +1,13 @@
-import { CLASS_DATA, TECHNIQUES, RACE_NOTICE, classAttributes, type UnitClass } from "../game/archetypes";
+import { travelerAttributes, progressLabel, LEVEL_GROWTH } from "../game/progression";
+import { CLASS_DATA, TECHNIQUES, RACE_NOTICE, type UnitClass } from "../game/archetypes";
 /** Preview and exploration use the same catalog as battle unit creation. */
-export function characterSheet(cls: UnitClass, race: string): HTMLElement {
+export function characterSheet(cls: UnitClass, race: string, experience = 0): HTMLElement {
   const root = document.createElement("div");
   root.className = "character-sheet";
   const p = (text: string) => { const el = document.createElement("p"); el.textContent = text; root.append(el); };
   p(`${race} · ${cls} — ${CLASS_DATA[cls].description}`);
-  const a = classAttributes(cls);
+  p(progressLabel(experience));
+  const a = travelerAttributes(cls, experience);
   p(`HP ${a.hp} · Energia ${a.ep} · Ataque ${a.attack} · Magia ${a.magic} · Defesa ${a.defense} · Movimento ${a.move}`);
   const list = document.createElement("ul");
   list.setAttribute("aria-label", "Técnicas iniciais");
@@ -16,6 +18,9 @@ export function characterSheet(cls: UnitClass, race: string): HTMLElement {
   }
   root.append(list);
   p("Potência soma-se ao ataque ou à magia; defesa e terreno reduzem o dano. A prévia de dano aparece ao selecionar um alvo na batalha.");
+  const g = LEVEL_GROWTH[cls];
+  p(`Ganhos no nível 2: HP +${g.hp}, energia +${g.ep}, ${g.magic ? "magia +" + g.magic : "ataque +" + g.attack}, defesa +${g.defense}. Movimento e técnicas não mudam.`);
+  p("A primeira vitória nas ruínas concede 100 XP ao viajante. Repetir a batalha não concede recompensa adicional.");
   p(RACE_NOTICE);
   return root;
 }
