@@ -18,9 +18,10 @@ export class BattleScene extends Phaser.Scene {
   }
   init(data: Character) {
     this.character = data;
-    this.battle = new Battle(data);
+    this.battle = new Battle(data, true);
     this.cursor = { x: 1, y: 4 };
     this.timer = null;
+    this.presenting = null;
   }
   create() {
     this.cameras.main.setBackgroundColor("#152229");
@@ -67,11 +68,33 @@ export class BattleScene extends Phaser.Scene {
       this.input.keyboard?.off("keydown");
       this.input.off("pointerdown");
       this.timer?.remove();
+      if (this.scene.isActive("Combat")) this.scene.stop("Combat");
       document.querySelector("#battle-ui")?.remove();
     });
     this.redraw();
   }
+  private presenting: number | null = null;
   private redraw() {
+    if (this.battle.pending) {
+      const event = this.battle.pending;
+      if (this.presenting !== event.id) {
+        this.presenting = event.id;
+        document.querySelector("#battle-ui")?.setAttribute("hidden", "");
+        this.scene.pause();
+        this.scene.launch("Combat", {
+          event,
+          onComplete: () => {
+            this.presenting = null;
+            this.battle.completePresentation(event.id);
+            this.scene.resume();
+            this.redraw();
+            this.game.canvas.focus();
+          },
+        });
+      }
+      return;
+    }
+    document.querySelector("#battle-ui")?.removeAttribute("hidden");
     this.graphics.clear();
     this.overlay.forEach((item) => item.destroy());
     this.overlay = [];

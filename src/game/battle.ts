@@ -1,3 +1,4 @@
+import { resolveCombat, type CombatEvent } from "./combat";
 import {
   damage,
   dist,
@@ -16,7 +17,8 @@ export type Phase =
   | "skills"
   | "target"
   | "enemy"
-  | "ended";
+  | "ended"
+  | "presentation";
 export type Character = { name: string; cls: UnitClass; race: string };
 /** Rules and turn transitions are independent of Phaser and rendering. */
 export class Battle {
@@ -27,9 +29,16 @@ export class Battle {
   turn = 1;
   note = "Selecione um aliado azul disponível.";
   log: string[] = [];
+  pending: CombatEvent | null = null;
+  private sequence = 0;
+  private resume: "ally" | "enemy" = "ally";
+  private enemyQueue: string[] | null = null;
   private origin: { x: number; y: number } | null = null;
 
-  constructor(character: Character) {
+  constructor(
+    character: Character,
+    private cinematic = false,
+  ) {
     this.units = makeUnits(character.name, character.cls);
   }
   say(message: string) {
@@ -43,6 +52,7 @@ export class Battle {
     return this.units.filter((u) => u.team === "enemy" && u.hp > 0);
   }
   checkEnd() {
+    if (this.pending) return false;
     if (!this.enemies.length || !this.allies.length) {
       this.phase = "ended";
       this.selected = null;
@@ -76,7 +86,7 @@ export class Battle {
       if (!target || !this.canAttack(this.selected, target, this.skill))
         return this.say("Alvo inválido ou fora do alcance.");
       this.attack(this.selected, target, this.skill);
-      this.finish();
+      if (!this.pending) this.finish();
     }
   }
   canAttack(unit: Unit, target: Unit, skill: Technique) {
@@ -138,17 +148,35 @@ export class Battle {
     this.say("Os inimigos estão agindo...");
   }
   private attack(unit: Unit, target: Unit, skill: Technique) {
-    const dealt = damage(unit, target, skill);
-    target.hp = Math.max(0, target.hp - dealt);
-    unit.ep -= skill.cost;
+    const result = resolveCombat(++this.sequence, unit, target, skill);
+    target.hp = result.hpAfter;
+    unit.ep = result.epAfter;
     this.say(
-      `${unit.name} usou ${skill.name}: ${dealt} de dano em ${target.name}${target.hp === 0 ? " (derrotado)" : ""}.`,
+      `${unit.name} usou ${skill.name}: ${result.damage} de dano em ${target.name}${target.hp === 0 ? " (derrotado)" : ""}.`,
     );
+    if (this.cinematic) {
+      this.resume = this.phase === "enemy" ? "enemy" : "ally";
+      this.pending = result;
+      this.phase = "presentation";
+    }
+  }
+  completePresentation(id: number) {
+    if (!this.pending || this.pending.id !== id) return;
+    this.pending = null;
+    if (this.resume === "ally") this.finish();
+    else {
+      this.phase = "enemy";
+      if (!this.checkEnd()) this.enemyTurn();
+    }
   }
   enemyTurn() {
     // A stale callback cannot advance an ended battle.
     if (this.phase !== "enemy" || this.checkEnd()) return;
-    for (const enemy of this.enemies) {
+    this.enemyQueue ??= this.enemies.map((u) => u.id);
+    while (this.enemyQueue.length) {
+      const id = this.enemyQueue.shift();
+      const enemy = this.enemies.find((u) => u.id === id);
+      if (!enemy) continue;
       const target = [...this.allies].sort(
         (a, b) => dist(a, enemy) - dist(b, enemy),
       )[0];
@@ -176,8 +204,10 @@ export class Battle {
       if (next) Object.assign(enemy, next);
       const skill = skills.find((t) => this.canAttack(enemy, target, t));
       if (skill) this.attack(enemy, target, skill);
+      if (this.pending) return;
       if (this.checkEnd()) return;
     }
+    this.enemyQueue = null;
     for (const unit of this.units.filter((u) => u.hp > 0)) {
       unit.acted = false;
       unit.ep = Math.min(unit.maxEp, unit.ep + 2);

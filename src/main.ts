@@ -1,5 +1,6 @@
 import "./style.css";
 import Phaser from "phaser";
+import { CombatScene } from "./scenes/CombatScene";
 import { BootScene } from "./scenes/BootScene";
 import { BattleScene } from "./scenes/BattleScene";
 new Phaser.Game({
@@ -10,6 +11,6 @@ new Phaser.Game({
   backgroundColor: "#121e22",
   pixelArt: true,
   roundPixels: true,
-  scene: [BootScene, BattleScene],
+  scene: [BootScene, BattleScene, CombatScene],
   scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
 });
