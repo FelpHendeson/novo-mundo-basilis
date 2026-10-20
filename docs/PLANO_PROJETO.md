@@ -5,11 +5,13 @@
 **Stack:** Phaser 3, TypeScript, Vite, Vitest  
 **Repositório:** https://github.com/FelpHendeson/novo-mundo-basilis  
 **Publicação:** https://novo-mundo-basilis.vercel.app  
-**Documento:** v1.8 — 20/10/2026  
+**Documento:** v1.9 — 20/10/2026  
 **Estado de referência:** 0.8.0 publicada — primeira base e recrutamento, código final `2ec2139`, produção READY.
 **Fonte de referência:** este plano versionado no GitHub; a cópia nos arquivos do Projeto deve acompanhar cada revisão documental.
 
 > Este documento é um plano vivo. Conteúdo narrativo e sistemas ainda não aprovados devem ser tratados como propostas, não como cânone.
+
+**Atualização de direção:** bíblia de produção incorporada na revisão documental v1.9, baseada nos arquivos de `docs/biblia` em `d18f741`. A direção atual distingue cânone, propostas e mistérios. Novas especificações não alteram o estado entregue 0.8.0. [Avaliação e plano de execução](biblia/11_PLANO_EXECUCAO.md).
 
 ## 1. Visão do produto
 
@@ -34,6 +36,10 @@ Construir um RPG tático com combate em tabuleiro inspirado no ritmo estratégic
 - Diretriz inicial: **até 7 aliados ativos em batalha**, número revisável por testes de balanceamento. Elenco total recrutável maior.
 - Plataforma inicial: **navegador/PC**, com estética retrô; não há obrigação de gerar ROM GBA. Mobile e desktop empacotado são expansões futuras, não requisitos atuais.
 
+### Complementos da direção — bíblia de produção
+
+Sistema universal aplicável aos seres do mundo, não privilégio do protagonista; mana também acessível a combatentes físicos. Castelo reivindicável/nomeável e domínio administrável com habitantes autônomos. Distinguir raça, classe, profissão, função administrativa e título. Origem do Sistema/transporte/reset permanece mistério. A bíblia propõe um arco detalhado e até 12 candidatos a moradores; nomes, falas, facções e balanceamento marcados como proposta não se tornam cânone automaticamente. Preservar clareira/abrigo/Lyra e progresso já entregue.
+
 ## 3. Ciclo principal de jogo
 
 1. Preparação na base: grupo ativo, equipamentos, habilidades e objetivos.
@@ -44,6 +50,8 @@ Construir um RPG tático com combate em tabuleiro inspirado no ritmo estratégic
 6. Retorno/expansão da base: serviços, edificações, aliados e acesso a novos cenários.
 
 ## 4. Narrativa inicial — proposta sujeita a aprovação
+
+Referência histórica da primeira proposta. Para novas entregas narrativas, consultar `docs/biblia/03_ROTEIRO_PRIMEIRO_ARCO.md` e seus status de proposta, sem apagar este registro.
 
 **Prólogo: O Céu Desconhecido.** O jogador sofre uma ruptura inexplicável na Terra e desperta em uma região selvagem de Basilis. Precisa sobreviver e entender seu corpo e habilidades.
 
@@ -138,8 +146,9 @@ docs/              # design, ADRs, releases e planejamento
 | 0.7.0 | Inventário e acessórios | Três itens iniciais, um espaço, troca/remoção e comparação na exploração, efeitos no combate e migração de saves | Entregue |
 | A definir | Efeitos raciais | Dependem de definição criativa e balanceamento próprios | Planejado |
 | 0.8.0 | Primeira base e recrutamento | Preparar abrigo por 3 suprimentos, convidar Lyra por proximidade, alternar equipe/reserva e treinar sem recompensas | Entregue |
-| 0.9 | Campanha vertical | Prólogo e primeiro capítulo jogáveis ponta a ponta | Planejado |
-| 0.10 | Polimento e conteúdo | UX, áudio, sprites, balanceamento, salvamento robusto | Planejado |
+| 0.9.0 | Introdução e Sistema universal | SCN_001/parte de SCN_002, consulta opcional, eventos persistentes e preservação dos saves | Planejado; ver inciso 15.10 |
+| MINOR posteriores a definir | Arco vertical por pacotes | Adaptação → castelo → contato → assentamento → treinos → mercado → fechamento; ver P09-01B–07 | Planejado |
+| Após integração do arco | Polimento e conteúdo | UX, áudio, sprites, balanceamento, salvamento robusto; melhorias essenciais entram antes quando necessárias | Planejado |
 | 1.0 | Primeira versão pública estável | Campanha inicial fechada, QA e documentação de release | Futuro |
 
 Os números da tabela são marcos resumidos: 0.2 corresponde a 0.2.0, por exemplo. O marco 1.0.0 só será planejado para execução após definir duração pretendida, cenários/encontros, elenco mínimo e encerramento da campanha inicial; esses limites ainda não estão aprovados.
@@ -224,7 +233,7 @@ Uma funcionalidade só é considerada entregue quando:
 
 ## 13. Próximo passo operacional
 
-Colher feedback de base/formação da 0.8.0. Em seguida, especificar um primeiro pacote da campanha vertical 0.9, sem pressupor um capítulo inteiro implementável em uma entrega. Correções da 0.8 usarão 0.8.1 e seguintes.
+Executar o escopo planejado da 0.9.0: infraestrutura mínima de eventos/diálogos, introdução e consulta opcional do Sistema, preservando a 0.8.0. O roteiro da bíblia é repartido em pacotes; kit/mana funcional, castelo e população não entram silenciosamente nessa primeira release. Detalhes em `docs/biblia/11_PLANO_EXECUCAO.md`.
 
 
 ## 14. Política de versões e manutenção do plano
@@ -364,6 +373,15 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 - **Relatório:** `docs/RELEASE_0.8.md`. Também corrigida rejeição de inventário esparso corrompido; falhas transitórias da automação de clique foram recuperadas com inspeção visual, não contabilizadas como aprovação de etapas não executadas.
 - **Limitações:** uma aliada, dois membros ativos no máximo, treino no tabuleiro existente, sem slots de 7 membros, novas missões, edifícios adicionais ou equipamento/progressão de Lyra.
 
+### 15.10 — 0.9.0 — Introdução e Sistema — Planejado em 20/10/2026
+
+- **Estado:** planejado; não implementado ou publicado nesta revisão.
+- **Objetivo:** chegada/Sistema em contexto e eventos persistentes, mantendo criação, clareira, Lyra, base, treino e saves existentes.
+- **Escopo/aceite:** documento `docs/biblia/11_PLANO_EXECUCAO.md`, seção Próxima release; SCN_001 e parte de SCN_002. Adiar tutorial não bloqueia jogo; consulta posterior e reentrada seguras; legado não reinicia/teletransporta personagens.
+- **Fora do pacote:** kit funcional, minigame completo, castelo, moradores, comércio e nova curva de XP. Demais pacotes ainda sem número de release reservado.
+- **Evidência desta revisão:** 98 testes e build da base 0.8.0 passaram; isso não é teste de funcionalidades futuras. Nenhum novo teste de navegador ou deploy realizado para esta revisão documental.
+- **Numeração:** P09-01–07 são IDs de pacotes, não PATCH; mudanças funcionais recebem MINOR, correções PATCH. `+fix` não identifica correção incremental na política do projeto.
+
 ### Modelo de inciso para próximas versões
 
 - **Versão, título, data e estado.**
@@ -388,6 +406,7 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 | v1.6 | 20/10/2026 | Escopo 0.6.0, progressão inicial de dois níveis, recompensa única e migração para schema 2. |
 | v1.7 | 20/10/2026 | Inventário/acessórios 0.7.0 e schema 3; marcos futuros renumerados para evitar colisão com entregas de progressão/equipamentos. |
 | v1.8 | 20/10/2026 | Primeiro ciclo de base/recrutamento 0.8.0, formação e treino sem recompensa, migração schema 4. |
+| v1.9 | 20/10/2026 | Avaliação dos 11 documentos novos da bíblia, escopo 0.9.0, dependências por pacotes, compatibilidade do legado e correção da numeração funcional/PATCH. |
 
 
 ## 17. Escopo executável — 0.4.0

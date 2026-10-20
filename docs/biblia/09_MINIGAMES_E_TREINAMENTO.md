@@ -64,7 +64,7 @@
 - Nomeação de campeão depende de aptidão prática, confiança, vaga e preparo, não só uma barra de XP.
 - Treino delegado consome tempo de jogo e recursos e pode produzir eventos: lesão leve, descoberta de talento, desavença, amizade, nova técnica.
 
-## Primeiro slice implementável (0.9.5)
+## Primeiro slice implementável (pacote P09-05)
 **Apenas dois minigames completos:** circulação de mana e guarda com espada, com modo assistido e treino delegado. O reparo entra em versão simplificada. Os demais ficam no backlog para evitar sobrecarga de produção.
 
 ## Antiexploit e persistência

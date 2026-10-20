@@ -1,5 +1,5 @@
 # Bíblia de Produção — Novo Mundo: Basilis
-**Revisão documental:** 1.1 · 20/10/2026 · **Status:** especificação, não implementação.
+**Revisão documental:** 1.2 · 20/10/2026 · **Status:** especificação, não implementação.
 
 ## Leitura
 - [Direção geral](01_PLANO_DE_PROJETO.md)
@@ -13,9 +13,13 @@
 - [Minigames, treinos e atividades](09_MINIGAMES_E_TREINAMENTO.md)
 - [Encadeamento, ritmo e desdobramentos](10_EVENTOS_E_CONSEQUENCIAS.md)
 
+- [Avaliação, dependências e próximos pacotes](11_PLANO_EXECUCAO.md)
+
 ## Convenções
 **CÂNONE:** origem terrestre, Sistema universal, criador de personagem, castelo reivindicável e nomeável, domínio administrável, técnicas pré-ataque, confrontos laterais, até 7 combatentes ativos e expansão via habitantes.
 **PROPOSTA:** nomes de NPCs, facções, cenários e valores de balanceamento; requer aprovação da direção criativa.
 **MISTÉRIO:** origem do Sistema, significado do transporte, natureza do mundo/reset e abandono do castelo; não revelar prematuramente.
 
 A versão de referência do código é a **0.8** observada no GitHub: não interpretar estes documentos como funcionalidades já lançadas. Preservar Lyra, a clareira, o abrigo, o combate nas ruínas e o checkpoint existentes, integrando-os à nova narrativa.
+
+Revisão 1.2: pacotes de produção usam IDs P09-01–07, separados da versão semver; plano de execução define a 0.9.0 e dependências. O histórico de entregas continua em `../PLANO_PROJETO.md`.

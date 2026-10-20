@@ -1,22 +1,22 @@
-# Plano de produção narrativa e jogabilidade — 1.1
+# Plano de produção narrativa e jogabilidade — 1.2
 ## Objetivo
 Transformar o protótipo de RPG tático em uma campanha vertical completa: chegada a Basilis, tutorial do Sistema universal/mana, conquista do castelo, primeiro encontro humano, recrutamento, treino, reconstrução, comércio e primeira expedição.
 
 ## Pipeline de versões incrementais
 | Marco | Conteúdo | Aceite |
 |---|---|---|
-| 0.8.x | Preservação e integração | Sem perda de saves/fluxos existentes |
-| 0.9.1 | Introdução/Sistema universal | Prólogo e tutorial jogáveis, sem bloqueio obrigatório |
-| 0.9.2 | Castelo | Exploração, trono, reivindicação, nome persistido |
-| 0.9.3 | Primeiro contato | Confronto não necessariamente letal + diálogo pós-combate |
-| 0.9.4 | Habitação/base | 12 sobreviventes possíveis, tarefas, recursos reais, reparo |
-| 0.9.5 | Formação e treinos | Minigames e treinos delegados, perfis, primeira nomeação |
-| 0.9.6 | Mercado e contratos | Venda de espólios, missões de guilda, primeira caravana |
-| 0.9.7 | Integração | Arco completo, persistência, progressão e QA |
-| 0.10 | Polimento | Sprites, áudio, interfaces, acessibilidade, responsividade |
+| 0.8.x (correções) | Preservação | Sem perda de saves/fluxos existentes; funcionalidades novas entram em MINOR |
+| P09-01 | Introdução/Sistema universal | Prólogo e tutorial jogáveis, sem bloqueio obrigatório |
+| P09-02 | Castelo | Exploração, trono, reivindicação, nome persistido |
+| P09-03 | Primeiro contato | Confronto não necessariamente letal + diálogo pós-combate |
+| P09-04 | Habitação/base | 12 sobreviventes possíveis, tarefas, recursos reais, reparo |
+| P09-05 | Formação e treinos | Minigames e treinos delegados, perfis, primeira nomeação |
+| P09-06 | Mercado e contratos | Venda de espólios, missões de guilda, primeira caravana |
+| P09-07 | Integração | Arco completo, persistência, progressão e QA |
+| Após integração (MINOR a definir) | Polimento | Sprites, áudio, interfaces, acessibilidade, responsividade |
 | 1.0 | Lançamento inicial | Arco delimitado estável e documentação |
 
-Correções intermediárias usam patch semver (ex. 0.9.2 → 0.9.2+fix ou 0.9.3 conforme convenção formal do repo); registrar causa, migração, teste e commit.
+Os códigos P09-01–07 identificam pacotes, não versões do jogo. A antiga numeração 0.9.1–0.9.7 foi normalizada nesta revisão para não usar PATCH em funcionalidades. A próxima entrega funcional será 0.9.0, inicialmente P09-01A; demais marcos funcionais usarão novos MINOR conforme escopo fechado. Correções publicadas usam PATCH (ex.: 0.9.1), não `+fix`. Registrar causa, migração, teste e commit. Referência operacional: [plano de execução](11_PLANO_EXECUCAO.md).
 
 ## Dependências
 Regras de domínio antes de população; pessoas/aptidões antes de formação de campeão; inventário/espólio antes de comércio; resolução de combate antes da cinematografia; eventos e flags antes de diálogos ramificados.
