@@ -20,6 +20,7 @@ function open(): Promise<IDBDatabase> {
 }
 export async function loadCampaign(): Promise<LoadResult> {
   try {
+    await writes;
     const db = await open();
     const raw = await new Promise<unknown>((resolve, reject) => {
       const tx = db.transaction(STORE, "readonly");

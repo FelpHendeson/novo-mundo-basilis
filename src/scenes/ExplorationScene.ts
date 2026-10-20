@@ -14,9 +14,11 @@ export class ExplorationScene extends Phaser.Scene {
   }
   init(data: { campaign: Campaign }) {
     this.campaign = data.campaign;
-    this.message = this.campaign.passageCleared
-      ? "A passagem está segura. Volte ao acampamento."
-      : "O ar é desconhecido. Uma viajante acena perto da trilha.";
+    this.message = this.campaign.expeditionComplete
+      ? "A expedição está concluída. O abrigo recebe o grupo."
+      : this.campaign.passageCleared
+        ? "A passagem está segura. Volte ao acampamento."
+        : "O ar é desconhecido. Uma viajante acena perto da trilha.";
     this.saveMessage = "Salvando checkpoint…";
   }
   create() {
@@ -137,11 +139,13 @@ export class ExplorationScene extends Phaser.Scene {
     p("Uma trilha entre árvores desconhecidas.");
     p(`${c.character.name} · ${c.character.race} · ${c.character.cls}`);
     p(
-      c.passageCleared
-        ? "Objetivo: retorne ao abrigo para concluir a expedição."
-        : c.metLyra
-          ? "Objetivo: alcance as ruínas e proteja a passagem."
-          : "Objetivo: aproxime-se de Lyra e converse.",
+      c.expeditionComplete
+        ? "Expedição concluída. A passagem está livre e o grupo tem um abrigo."
+        : c.passageCleared
+          ? "Objetivo: retorne ao abrigo para concluir a expedição."
+          : c.metLyra
+            ? "Objetivo: alcance as ruínas e proteja a passagem."
+            : "Objetivo: aproxime-se de Lyra e converse.",
     );
     p(this.message, "status");
     p(this.saveMessage);
@@ -176,6 +180,7 @@ export class ExplorationScene extends Phaser.Scene {
       "Conversar com Lyra",
       () => {
         c.metLyra = true;
+
         this.message = c.passageCleared
           ? "Lyra: A trilha está livre. Estes suprimentos vão nos ajudar no abrigo."
           : "Lyra: Há saqueadores nas ruínas além da abertura entre as árvores. Posso lutar ao seu lado. Quando estiver pronto, encontre a passagem.";
@@ -196,6 +201,7 @@ export class ExplorationScene extends Phaser.Scene {
       "camp",
       "Descansar no abrigo",
       () => {
+        restAtCamp(c);
         this.message = c.passageCleared
           ? "Expedição concluída. A passagem está livre e o grupo tem um lugar para descansar. A jornada continua em versões futuras."
           : "Um abrigo simples oferece descanso. Lyra aguarda perto da trilha.";

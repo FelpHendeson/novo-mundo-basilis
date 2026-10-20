@@ -2,7 +2,7 @@
 
 RPG tático original com exploração, recrutamento, classes e construção de comunidade planejados.
 
-**Versão 0.3.0:** protótipo de criação simplificada, encontro tático e confrontos laterais nas Ruínas da Fronteira.
+**Versão 0.4.0:** primeiro ciclo de exploração, diálogo, encontro tático, retorno e checkpoint.
 
 ## Desenvolvimento
 
@@ -17,7 +17,7 @@ npm run build
 
 ## Jogar
 
-Escolha nome, raça narrativa e classe; inicie a expedição com Lyra. Selecione um aliado, uma casa alcançável e uma técnica ou Esperar. Cancelar devolve a unidade à posição original. Derrote os dois saqueadores.
+Escolha nome, raça narrativa e classe. Na clareira, vá para leste e converse com Lyra. Atravesse a abertura entre árvores para chegar às ruínas. Selecione um aliado, uma casa alcançável e uma técnica ou Esperar. Cancelar devolve a unidade à posição original. Derrote os dois saqueadores.
 
 - Mouse/toque: tabuleiro e comandos do painel.
 - Teclado: Tab/Enter nos formulários e comandos; clique no tabuleiro para Setas/WASD e Enter/Espaço; Escape cancela e E encerra o turno.
@@ -38,6 +38,10 @@ Ataques aliados e inimigos apresentam os combatentes frente a frente, técnica, 
 
 ## Limites
 
-Encontro único com duas unidades aliadas. Sem campanha persistente, inventário, base, exploração, recrutamento, vantagens raciais ou personalização visual nesta entrega. Recarregar reinicia a sessão. A formação de até aproximadamente sete membros permanece como direção de design, não como funcionalidade implementada.
+Encontro único com duas unidades aliadas. Sem inventário, base gerenciável, recrutamento, vantagens raciais ou personalização visual nesta entrega. O checkpoint local IndexedDB preserva perfil, posição e eventos; recarregar durante a luta retorna à exploração anterior. Limpar dados do navegador remove o progresso; não há sincronização entre dispositivos. A formação de até aproximadamente sete membros permanece como direção de design, não como funcionalidade implementada.
 
-O motor é original e não utiliza ROMs comerciais. Veja `docs/GAME_DESIGN.md` e `docs/RELEASE_0.3.md`.
+O motor é original e não utiliza ROMs comerciais. Veja `docs/GAME_DESIGN.md` e `docs/RELEASE_0.4.md`.
+
+## Checkpoint e exploração
+
+Use setas/WASD com foco no mapa, clique na casa vizinha ou use botões de direção. Interações ficam disponíveis por proximidade. Vitória libera a passagem e concede três suprimentos uma única vez. Retorne ao abrigo e descanse para concluir. O menu oferece Continuar; uma nova jornada exige marcar a substituição do checkpoint existente. Falha de armazenamento é exibida e permite continuar na sessão.

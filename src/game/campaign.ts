@@ -14,6 +14,7 @@ export type Campaign = {
   metLyra: boolean;
   passageCleared: boolean;
   supplies: number;
+  expeditionComplete: boolean;
 };
 export const newCampaign = (character: Character): Campaign => ({
   schemaVersion: 1,
@@ -22,6 +23,7 @@ export const newCampaign = (character: Character): Campaign => ({
   metLyra: false,
   passageCleared: false,
   supplies: 0,
+  expeditionComplete: false,
 });
 export const passable = (x: number, y: number) =>
   Number.isInteger(x) &&
@@ -70,5 +72,20 @@ export function parseCampaign(value: unknown): Campaign | null {
     c.supplies < 0
   )
     return null;
-  return structuredClone(c);
+  if (
+    c.expeditionComplete !== undefined &&
+    typeof c.expeditionComplete !== "boolean"
+  )
+    return null;
+  if (c.expeditionComplete && !c.passageCleared) return null;
+  return structuredClone({
+    ...c,
+    expeditionComplete: c.expeditionComplete ?? false,
+  });
+}
+
+export function restAtCamp(c: Campaign) {
+  if (!near(c, 1, 5) || !c.passageCleared) return false;
+  c.expeditionComplete = true;
+  return true;
 }

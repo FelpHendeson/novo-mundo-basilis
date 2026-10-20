@@ -1,6 +1,7 @@
 import "fake-indexeddb/auto";
 import { describe, it, expect, vi } from "vitest";
 import {
+  restAtCamp,
   newCampaign,
   moveExplorer,
   parseCampaign,
@@ -81,6 +82,18 @@ describe("exploração e checkpoint", () => {
       false,
     );
     expect((await loadCampaign()).status).toBe("loaded");
+  });
+  it("conclusão só ocorre perto do abrigo após vitória e é persistida", async () => {
+    const c = create();
+    expect(restAtCamp(c)).toBe(false);
+    finishEncounter(c, true);
+    c.position = { x: 6, y: 2 };
+    expect(restAtCamp(c)).toBe(false);
+    c.position = { x: 1, y: 4 };
+    expect(restAtCamp(c)).toBe(true);
+    await saveCampaign(c);
+    const r = await loadCampaign();
+    expect(r.status === "loaded" && r.campaign.expeditionComplete).toBe(true);
   });
   it("falha de armazenamento é relatada sem lançar erro na sessão", async () => {
     vi.stubGlobal("indexedDB", {
