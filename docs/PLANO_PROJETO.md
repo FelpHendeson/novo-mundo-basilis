@@ -5,8 +5,8 @@
 **Stack:** Phaser 3, TypeScript, Vite, Vitest  
 **Repositório:** https://github.com/FelpHendeson/novo-mundo-basilis  
 **Publicação:** https://novo-mundo-basilis.vercel.app  
-**Documento:** v1.2 — 20/10/2026  
-**Estado de referência:** jogo 0.3.0 implementado, com código em `14064d7`; publicação e evidências registradas no inciso 15.3. Próximo marco funcional: 0.4.0.
+**Documento:** v1.3 — 20/10/2026  
+**Estado de referência:** 0.4.0 implementada, código final `4cb5e78`; produção READY e checkpoint conferido no domínio público. Próximo marco funcional: 0.5, sujeito ao feedback da exploração.
 **Fonte de referência:** este plano versionado no GitHub; a cópia nos arquivos do Projeto deve acompanhar cada revisão documental.
 
 > Este documento é um plano vivo. Conteúdo narrativo e sistemas ainda não aprovados devem ser tratados como propostas, não como cânone.
@@ -132,7 +132,7 @@ docs/              # design, ADRs, releases e planejamento
 | 0.1 | Fundação da aplicação | Projeto Phaser/Vite e protótipo inicial | Histórico |
 | 0.2 | Estabilização tática | Um encontro jogável, melhorias de seleção/turnos, testes e publicação | Entregue como 0.2.0; desktop validado |
 | **0.3** | **Batalha cinematográfica** | **Tela lateral de confronto funcional, sincronizada com o motor, com animação e retorno ao mapa** | **Entregue; ver inciso 15.3** |
-| 0.4 | Exploração e persistência mínima | Cenário, NPC, diálogo, encontro, consequência e restauração de checkpoint | Planejado |
+| 0.4 | Exploração e persistência mínima | Cenário, NPC, diálogo, encontro, consequência e restauração de checkpoint | Entregue; ver inciso 15.4 |
 | 0.5 | Classes, raças e evolução | Entregas menores: dados e diferenciação → experiência → equipamentos; cada pacote com aceite próprio | Planejado |
 | 0.6 | Base e recrutamento | Base explorável simples, recrutar e montar equipe | Planejado |
 | 0.7 | Campanha vertical | Prólogo e primeiro capítulo jogáveis ponta a ponta | Planejado |
@@ -221,7 +221,7 @@ Uma funcionalidade só é considerada entregue quando:
 
 ## 13. Próximo passo operacional
 
-Iniciar especificação executável da **0.4.0 — exploração e persistência mínima**: cenário, NPC/diálogo, encontro, consequência e checkpoint restaurável. Correções publicadas da 0.3 entram antes como 0.3.1 e seguintes.
+Colher feedback da 0.4.0 e e preparar o primeiro pacote da 0.5 (diferenciação de classes/raças por dados). Falhas publicadas da 0.4 entram antes como 0.4.1 e seguintes, sem ampliar o escopo silenciosamente.
 
 
 ## 14. Política de versões e manutenção do plano
@@ -286,6 +286,18 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 - **Limitações:** arte temporária, sem áudio; mobile e interrupção abrupta de cena não validados manualmente. Sem save nem mudanças de regras de contra-ataque/progressão.
 - **Relatório:** `docs/RELEASE_0.3.md`.
 
+### 15.4 — 0.4.0 — Exploração e checkpoint — 20/10/2026
+
+- **Estado:** entregue; produção READY e checkpoint validado no domínio público.
+- **Motivo:** conectar combate ao primeiro ciclo de exploração persistente.
+- **Escopo:** clareira, movimento/obstáculos, diálogo por proximidade, entrada nas ruínas, retorno, recompensa única, abrigo e IndexedDB schema 1.
+- **Commits:** `48e5d6d`, `ceb15ff`, `4cb5e78` (final). A falha de build em `ceb15ff` foi corrigida antes da entrega pública; esses commits compõem a mesma 0.4.0, sem PATCH retroativo.
+- **Validação:** 31 testes e build finais passaram. Prévia: percurso até vitória, recarga antes/depois do combate e continuidade de posição/eventos/suprimentos. Conclusão persistente no abrigo testada no domínio/IndexedDB.
+- **Publicação:** production `dpl_5MR8FxFb357smuB9niNhK4oRcEBq`, código `4cb5e78`; READY confirmado; criação, conversa, recarga e continuação conferidas no domínio público.
+- **Compatibilidade:** primeiro save público, schema 1. Recarregar durante combate volta ao checkpoint de exploração. Progresso local por origem/navegador; sem coordenação multiaba ou sincronização.
+- **Limitações:** um cenário/encontro, narrativa e arte provisórias; áudio/mobile e partida manual completa de derrota não validados. Tag Git pendente.
+- **Relatório:** `docs/RELEASE_0.4.md`.
+
 ### Modelo de inciso para próximas versões
 
 - **Versão, título, data e estado.**
@@ -304,6 +316,7 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 | v1.1 | 20/10/2026 | Linha do tempo e incisos por versão; política PATCH e revisão documental independente; evidências da 0.2.0; aceite da 0.3 ampliado para IA/ciclo de vida; save mínimo antecipado e limites de marcos explicitados. |
 
 | v1.2 | 20/10/2026 | Implementação 0.3.0, evidências automatizadas/manuais, limitações e próximo marco 0.4.0. |
+| v1.3 | 20/10/2026 | Escopo e inciso 0.4.0, exploração/checkpoints, testes e limitações de persistência. |
 
 
 ## 17. Escopo executável — 0.4.0
