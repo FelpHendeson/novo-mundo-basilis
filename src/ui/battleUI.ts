@@ -9,6 +9,7 @@ export function renderBattleUI(
   creation: () => void,
   returnToMap?: () => void,
   practice = false,
+  itemUsed?: () => void,
 ) {
   let root = document.querySelector<HTMLElement>("#battle-ui");
   if (!root) {
@@ -101,6 +102,12 @@ export function renderBattleUI(
   if (battle.phase === "action") {
     button("skills", "Técnicas", () => battle.openSkills());
     button("wait", "Esperar", () => battle.wait());
+    if (battle.adaptation?.claimed) {
+      for (const item of ["potions", "rations"] as const)
+        button(item, `${item === "potions" ? "Poção +12 HP" : "Ração +4 EN"} · ${battle.adaptation[item]} · usa ação${practice ? " · treino" : ""}`, () => {
+          if (battle.useItem(item)) itemUsed?.();
+        }, !battle.canUseItem(item));
+    }
   }
   if (battle.phase === "skills" && battle.selected) {
     TECHNIQUES[battle.selected.cls].forEach((skill, i) =>

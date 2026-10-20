@@ -87,6 +87,7 @@ export function makeUnits(
   experience = 0,
   equipment: EquipmentId | null = null,
   includeLyra = true,
+  starter = false,
 ): Unit[] {
   function create(
     id: string,
@@ -96,7 +97,7 @@ export function makeUnits(
     x: number,
     y: number,
   ): Unit {
-    const { hp, ep, attack, magic, defense, move } = id === "hero" ? equippedAttributes(c, experience, equipment) : classAttributes(c);
+    const { hp, ep, attack, magic, defense, move } = id === "hero" ? equippedAttributes(c, experience, equipment, starter) : classAttributes(c);
     return {
       id,
       name: n,

@@ -1,3 +1,4 @@
+import { CONSUMABLES, type Adaptation, type Consumable } from "./adaptation";
 import type { EquipmentId } from "./equipment";
 import { resolveCombat, type CombatEvent } from "./combat";
 import {
@@ -39,8 +40,9 @@ export class Battle {
   constructor(
     character: Character,
     private cinematic = false,
+    readonly adaptation?: Adaptation,
   ) {
-    this.units = makeUnits(character.name, character.cls, character.experience, character.equipment, character.includeLyra);
+    this.units = makeUnits(character.name, character.cls, character.experience, character.equipment, character.includeLyra, adaptation?.claimed);
   }
   say(message: string) {
     this.note = message;
@@ -133,6 +135,22 @@ export class Battle {
       this.say(`${this.selected?.name} aguardou.`);
       this.finish();
     }
+  }
+  canUseItem(item: Consumable): boolean {
+    const u = this.selected;
+    return this.phase === "action" && !!u && u.hp > 0 && !!this.adaptation?.claimed &&
+      this.adaptation[item] > 0 && (item === "potions" ? u.hp < u.maxHp : u.ep < u.maxEp);
+  }
+  /** A successful use spends one shared item and the selected ally's action. */
+  useItem(item: Consumable): boolean {
+    if (!this.canUseItem(item)) return false;
+    const u = this.selected!;
+    this.adaptation![item]--;
+    if (item === "potions") u.hp = Math.min(u.maxHp, u.hp + CONSUMABLES.potions.restore);
+    else u.ep = Math.min(u.maxEp, u.ep + CONSUMABLES.rations.restore);
+    this.say(`${u.name} usou ${item === "potions" ? "poção (+12 HP)" : "ração (+4 EN)"}.`);
+    this.finish();
+    return true;
   }
   private finish() {
     if (this.selected) this.selected.acted = true;

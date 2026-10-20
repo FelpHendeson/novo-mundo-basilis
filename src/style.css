@@ -244,3 +244,6 @@ summary {
 }
 #boot-ui > button { display: block; width: 100%; margin: 12px 0; }
 #system-ui .actions { grid-template-columns: 1fr; }
+
+#system-ui .actions button { min-width: 0; overflow-wrap: anywhere; }
+.mana-tutorial { margin-block: 12px; }

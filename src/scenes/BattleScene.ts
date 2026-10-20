@@ -26,7 +26,7 @@ export class BattleScene extends Phaser.Scene {
     this.character = { ...data, ...(data.campaign?.character ?? {}) };
     this.savedResult = false;
     this.campaignSaveNote = "";
-    this.battle = new Battle(this.character, true);
+    this.battle = new Battle(this.character, true, this.character.campaign ? (this.character.practice ? structuredClone(this.character.campaign.adaptation) : this.character.campaign.adaptation) : undefined);
     this.cursor = { x: 1, y: 4 };
     this.timer = null;
     this.presenting = null;
@@ -238,6 +238,14 @@ export class BattleScene extends Phaser.Scene {
             })
         : undefined,
       this.character.practice ?? false,
+      () => {
+        if (!this.character.campaign || this.character.practice) return;
+        this.campaignSaveNote = "Salvando consumo de item…";
+        void saveCampaign(this.character.campaign).then(ok => {
+          this.campaignSaveNote = ok ? "Consumo de item salvo." : "Consumo mantido nesta sessão; falha ao salvar.";
+          if (this.scene.isActive()) this.redraw();
+        });
+      },
     );
     const progress = document.createElement("p");
     progress.textContent = `${this.character.practice ? "TREINO · sem XP ou recompensa · " : ""}${progressLabel(this.character.experience)} · Atributos desta batalha · ${equipmentLabel(this.character.equipment)}`;

@@ -1,3 +1,4 @@
+import { adaptationUI } from "../ui/adaptationUI";
 import Phaser from "phaser";
 import type { Campaign } from "../game/campaign";
 import { chooseDialogue, recordNarrativeEvent, systemDialogue, type DialogueChoice } from "../game/narrative";
@@ -55,6 +56,7 @@ export class ArrivalScene extends Phaser.Scene {
   private render() {
     const scrollTop = this.panel.scrollTop;
     const focused = document.activeElement?.getAttribute("data-choice");
+    const manaOpen = this.panel.querySelector<HTMLDetailsElement>(".mana-tutorial")?.open ?? false;
     this.panel.replaceChildren();
     const title = document.createElement("h2"); title.textContent = "Interface do Sistema"; this.panel.append(title);
     const name = document.createElement("p"); name.textContent = this.campaign.character.name; this.panel.append(name);
@@ -66,6 +68,9 @@ export class ArrivalScene extends Phaser.Scene {
       b.onclick = () => this.choose(id); actions.append(b);
     }
     this.panel.append(actions);
+    this.panel.append(adaptationUI(this.campaign, () => { this.render(); this.persist(); }));
+    const tutorial = this.panel.querySelector<HTMLDetailsElement>(".mana-tutorial");
+    if (tutorial) tutorial.open = manaOpen;
     const hint = document.createElement("p"); hint.textContent = "Você pode seguir sem consultar tudo. As instruções e o diário continuam disponíveis na exploração."; this.panel.append(hint);
     const saved = document.createElement("p"); saved.textContent = this.saveMessage; saved.className = "save-status"; this.panel.append(saved);
     if (focused) this.panel.querySelector<HTMLElement>(`[data-choice="${focused}"]`)?.focus({ preventScroll: true });

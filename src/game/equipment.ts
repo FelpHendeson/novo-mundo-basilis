@@ -16,11 +16,12 @@ export function equipmentLabel(equipment: EquipmentId | null = null): string {
   return equipment ? `${EQUIPMENT[equipment].name} · ${EQUIPMENT[equipment].effect}` : "Nenhum acessório";
 }
 /** Recompute from class and level, never add on top of a previous equipment bonus. */
-export function equippedAttributes(cls: UnitClass, experience = 0, equipment: EquipmentId | null = null): Attributes {
+export function equippedAttributes(cls: UnitClass, experience = 0, equipment: EquipmentId | null = null, starter = false): Attributes {
   const a = travelerAttributes(cls, experience);
   if (equipment) {
     const item = EQUIPMENT[equipment];
     a[item.stat] += item.bonus;
   }
+  if (starter) a[cls === "Mago" ? "magic" : "attack"] += 1;
   return a;
 }

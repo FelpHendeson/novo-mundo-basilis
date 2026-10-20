@@ -77,7 +77,7 @@ describe("inventário e acessório do viajante", () => {
     const { inventory: __, ...old } = c;
     const source = { ...old, schemaVersion: version, character };
     const migrated = parseCampaign(source)!;
-    expect(migrated.schemaVersion).toBe(5);
+    expect(migrated.schemaVersion).toBe(6);
     expect(migrated.character.experience).toBe(100);
     expect(migrated.character.equipment).toBeNull();
     expect(migrated.inventory).toEqual(EQUIPMENT_IDS);

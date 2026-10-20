@@ -277,7 +277,7 @@ export class ExplorationScene extends Phaser.Scene {
     const summary = document.createElement("summary");
     summary.textContent = "Ficha do viajante";
     summary.dataset.action = "sheet";
-    sheet.append(summary, characterSheet(c.character.cls, c.character.race, c.character.experience, c.character.equipment));
+    sheet.append(summary, characterSheet(c.character.cls, c.character.race, c.character.experience, c.character.equipment, c.adaptation.claimed));
     this.panel.append(sheet);
     if (focused)
       this.panel

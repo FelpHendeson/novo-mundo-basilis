@@ -1,15 +1,17 @@
+import { starterWeapon } from "../game/adaptation";
 import { equippedAttributes, equipmentLabel, type EquipmentId } from "../game/equipment";
 import { progressLabel, LEVEL_GROWTH } from "../game/progression";
 import { CLASS_DATA, TECHNIQUES, RACE_NOTICE, type UnitClass } from "../game/archetypes";
 /** Preview and exploration use the same catalog as battle unit creation. */
-export function characterSheet(cls: UnitClass, race: string, experience = 0, equipment: EquipmentId | null = null): HTMLElement {
+export function characterSheet(cls: UnitClass, race: string, experience = 0, equipment: EquipmentId | null = null, starter = false): HTMLElement {
   const root = document.createElement("div");
   root.className = "character-sheet";
   const p = (text: string) => { const el = document.createElement("p"); el.textContent = text; root.append(el); };
   p(`${race} · ${cls} — ${CLASS_DATA[cls].description}`);
   p(progressLabel(experience));
-  const a = equippedAttributes(cls, experience, equipment);
+  const a = equippedAttributes(cls, experience, equipment, starter);
   p(`HP ${a.hp} · Energia ${a.ep} · Ataque ${a.attack} · Magia ${a.magic} · Defesa ${a.defense} · Movimento ${a.move}`);
+  if (starter) p(`Arma: ${starterWeapon(cls)}`);
   p(`Acessório: ${equipmentLabel(equipment)}`);
   const list = document.createElement("ul");
   list.setAttribute("aria-label", "Técnicas iniciais");
