@@ -6,7 +6,7 @@
 **Repositório:** https://github.com/FelpHendeson/novo-mundo-basilis  
 **Publicação:** https://novo-mundo-basilis.vercel.app  
 **Documento:** v1.6 — 20/10/2026  
-**Estado de referência:** 0.6.0 em validação — experiência e nível; 0.5.0 permanece como última entrega confirmada até validar a publicação.
+**Estado de referência:** 0.6.0 publicada — experiência e nível, código `5f1511d`, produção READY.
 **Fonte de referência:** este plano versionado no GitHub; a cópia nos arquivos do Projeto deve acompanhar cada revisão documental.
 
 > Este documento é um plano vivo. Conteúdo narrativo e sistemas ainda não aprovados devem ser tratados como propostas, não como cânone.
@@ -134,7 +134,7 @@ docs/              # design, ADRs, releases e planejamento
 | **0.3** | **Batalha cinematográfica** | **Tela lateral de confronto funcional, sincronizada com o motor, com animação e retorno ao mapa** | **Entregue; ver inciso 15.3** |
 | 0.4 | Exploração e persistência mínima | Cenário, NPC, diálogo, encontro, consequência e restauração de checkpoint | Entregue; ver inciso 15.4 |
 | 0.5.0 | Catálogo e ficha do viajante | Dados únicos de classe, prévia de atributos/técnicas, ficha na exploração e preservação dos checkpoints | Entregue |
-| 0.6.0 | Experiência e nível | Primeira vitória concede 100 XP, nível 2 do viajante, ganhos fixos por classe e migração de checkpoint | Em validação |
+| 0.6.0 | Experiência e nível | Primeira vitória concede 100 XP, nível 2 do viajante, ganhos fixos por classe e migração de checkpoint | Entregue |
 | A definir | Equipamentos e efeitos raciais | Dependem de especificação e aceite próprios | Planejado |
 | 0.6 | Base e recrutamento | Base explorável simples, recrutar e montar equipe | Planejado |
 | 0.7 | Campanha vertical | Prólogo e primeiro capítulo jogáveis ponta a ponta | Planejado |
@@ -223,7 +223,7 @@ Uma funcionalidade só é considerada entregue quando:
 
 ## 13. Próximo passo operacional
 
-Validar a 0.6.0 em navegador, publicar e colher feedback sobre a primeira evolução. O próximo pacote funcional será equipamentos, com escopo e aceite próprios antes da implementação. Correções publicadas desta entrega usarão 0.6.1 e seguintes.
+Colher feedback da 0.6.0 sobre a primeira evolução. O próximo pacote funcional será equipamentos, com escopo e aceite próprios antes da implementação. Correções publicadas desta entrega usarão 0.6.1 e seguintes.
 
 
 ## 14. Política de versões e manutenção do plano
@@ -325,11 +325,15 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 
 ### 15.7 — 0.6.0 — Experiência e nível — 20/10/2026
 
-- **Estado:** em validação.
+- **Estado:** entregue; vitória na prévia e continuação do checkpoint antigo em produção conferidas.
 - **Escopo:** primeira vitória concede 100 XP e nível 2 ao viajante; ganhos fixos por classe visíveis na ficha; repetição e derrota não dão XP. Movimento, técnicas, raças e NPCs não evoluem neste pacote.
 - **Balanceamento inicial do protótipo:** Guerreiro +3 HP/+1 energia/+1 ataque/+1 defesa; Mago +2 HP/+3 energia/+1 magia/+1 defesa; Ladino +2 HP/+1 energia/+1 ataque/+1 defesa. Limite temporário nível 2/100 XP.
 - **Compatibilidade:** formato de campanha schema 2; schema 1 migra em memória ao carregar e é regravado ao salvar. Passagem antiga já liberada concede 100 XP retroativamente, sem duplicar suprimentos. Banco IndexedDB mantém versão 1, pois não altera seus stores.
-- **Validação:** 61 testes e build passaram. Evidências manuais e publicação serão acrescentadas após verificação.
+- **Código:** `5f1511d404cb510f09557c3db70f23395d427693`, branch `release/0.6.0`. Tag Git pendente.
+- **Validação:** 61 testes e build passaram. Prévia: vitória do Guerreiro no turno 3, recompensa e salvamento; repetir iniciou nível 2 com 31 HP/9 energia/9 ataque/7 defesa; recarga conservou 100 XP e três suprimentos. Lyra permaneceu com atributos originais. Console sem erros observados.
+- **Mobile:** percurso de batalha em 844×390; ficha também conferida em 320×568 e 390×844, sem overflow horizontal. Não valida toque físico/Safari/desempenho.
+- **Publicação:** production READY `dpl_531VDcA7Y5j2ASqDDYmyMcKjbT3z`, código `5f1511d`, https://novo-mundo-basilis.vercel.app. No domínio, checkpoint anterior Humano/Guerreiro antes da vitória continuou com perfil/posição/eventos preservados e XP 0. Bundle `index-DV0RuhLU.js` confirmado, console sem erros observados.
+- **Relatório:** `docs/RELEASE_0.6.md`. Migração de checkpoint antigo já vitorioso coberta em IndexedDB nos testes, sem uma segunda partida manual específica em produção.
 - **Limitações:** apenas viajante, um encontro e dois níveis; sem equipamento, novas técnicas, bônus raciais ou progressão de Lyra. Números provisórios de balanceamento, sem estabelecer lore nova.
 
 ### Modelo de inciso para próximas versões

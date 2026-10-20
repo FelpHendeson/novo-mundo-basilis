@@ -2,7 +2,7 @@
 
 RPG tático original com exploração, recrutamento, classes e construção de comunidade planejados.
 
-**Versão 0.5.0:** catálogo único de classes, prévia de atributos/técnicas e ficha do viajante na exploração, preservando o ciclo de exploração e checkpoint.
+**Versão 0.6.0:** primeira evolução do viajante, experiência por vitória, ficha com nível e migração dos checkpoints anteriores.
 
 ## Desenvolvimento
 
@@ -28,6 +28,7 @@ Escolha nome, raça narrativa e classe. Na clareira, vá para leste e converse c
 
 - `src/game/archetypes.ts`: catálogo de classes, raças narrativas, atributos e técnicas.
 - `src/game/model.ts`: mapa, criação das unidades, alcance de movimento e dano.
+- `src/game/progression.ts`: XP, nível e ganhos iniciais de atributos por classe.
 - `src/game/battle.ts`: regras, validações, fases e IA sem dependência de Phaser.
 - `src/scenes`: apresentação e entrada do tabuleiro; ciclo de vida dos eventos e temporizador.
 - `src/ui`: comandos HTML, dados de combate e acessibilidade dos menus.
@@ -41,7 +42,7 @@ Ataques aliados e inimigos apresentam os combatentes frente a frente, técnica, 
 
 Encontro único com duas unidades aliadas. Sem inventário, base gerenciável, recrutamento, vantagens raciais ou personalização visual nesta entrega. O checkpoint local IndexedDB preserva perfil, posição e eventos; recarregar durante a luta retorna à exploração anterior. Limpar dados do navegador remove o progresso; não há sincronização entre dispositivos. A formação de até aproximadamente sete membros permanece como direção de design, não como funcionalidade implementada.
 
-O motor é original e não utiliza ROMs comerciais. Veja `docs/GAME_DESIGN.md` e `docs/RELEASE_0.5.md`.
+O motor é original e não utiliza ROMs comerciais. Veja `docs/GAME_DESIGN.md` e `docs/RELEASE_0.6.md`.
 
 ## Checkpoint e exploração
 
@@ -53,4 +54,10 @@ Retrato mantém o mapa acima do painel com rolagem própria. Paisagem usa mapa e
 
 ## Ficha do viajante 0.5.0
 
-Trocar classe na criação atualiza os seis atributos e as duas técnicas, incluindo potência, alcance e custo. Na exploração, abra **Ficha do viajante**; o painel de combate mostra ataque, magia e defesa junto dos recursos atuais. Raça permanece narrativa, sem vantagens ocultas. Os números das três classes foram preservados; XP e equipamentos continuam planejados.
+Trocar classe na criação atualiza os seis atributos e as duas técnicas, incluindo potência, alcance e custo. Na exploração, abra **Ficha do viajante**; o painel de combate mostra ataque, magia e defesa junto dos recursos atuais. Raça permanece narrativa, sem vantagens ocultas. Os atributos iniciais das três classes foram preservados.
+
+## Progressão 0.6.0
+
+A primeira vitória nas ruínas concede 100 XP ao viajante e leva ao nível 2, limite atual do protótipo. Guerreiro: +3 HP/+1 energia/+1 ataque/+1 defesa; Mago: +2 HP/+3 energia/+1 magia/+1 defesa; Ladino: +2 HP/+1 energia/+1 ataque/+1 defesa. Técnicas e movimento não mudam. Ganhos valem ao iniciar a próxima batalha; Lyra e inimigos não evoluem neste pacote. Derrota e repetição não dão recompensa.
+
+Campanhas usam schema 2. Checkpoints schema 1 migram automaticamente ao carregar, preservando posição e eventos. Se a passagem já estava liberada, a evolução é reconhecida retroativamente, sem repetir suprimentos. Equipamentos e níveis adicionais ainda não foram implementados.
