@@ -47,7 +47,7 @@ describe("exploração e checkpoint", () => {
   });
   it("rejeita schema futuro, coordenadas inválidas e perfil inválido", () => {
     const c = create();
-    expect(parseCampaign({ ...c, schemaVersion: 5 })).toBeNull();
+    expect(parseCampaign({ ...c, schemaVersion: 6 })).toBeNull();
     expect(parseCampaign({ ...c, position: { x: 4, y: 0 } })).toBeNull();
     expect(
       parseCampaign({ ...c, character: { ...c.character, cls: "Deus" } }),
@@ -78,7 +78,7 @@ describe("exploração e checkpoint", () => {
     });
   });
   it("não sobrescreve checkpoint com objeto inválido", async () => {
-    expect(await saveCampaign({ ...create(), schemaVersion: 5 } as never)).toBe(
+    expect(await saveCampaign({ ...create(), schemaVersion: 6 } as never)).toBe(
       false,
     );
     expect((await loadCampaign()).status).toBe("loaded");

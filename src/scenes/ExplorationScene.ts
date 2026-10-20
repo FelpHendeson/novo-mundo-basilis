@@ -1,3 +1,5 @@
+import { journalPanel } from "../ui/journalUI";
+import { openSystem } from "../game/narrative";
 import { basePanel } from "../ui/baseUI";
 import { prepareBase, recruitLyra, setLyraDeployed, trainingCharacter, campaignObjective } from "../game/campaign";
 import { equipmentPanel } from "../ui/equipmentUI";
@@ -45,7 +47,7 @@ export class ExplorationScene extends Phaser.Scene {
     document.querySelector("#app")!.append(this.panel);
     this.game.canvas.tabIndex = 0;
     this.input.keyboard?.on("keydown", (e: KeyboardEvent) => {
-      if ((e.target as HTMLElement)?.closest("button,input,select")) return;
+      if ((e.target as HTMLElement)?.closest("button,input,select,summary,textarea,a")) return;
       const steps: Record<string, [number, number]> = {
         ArrowUp: [0, -1],
         w: [0, -1],
@@ -144,6 +146,7 @@ export class ExplorationScene extends Phaser.Scene {
       "Clique na casa vizinha · Setas/WASD · Converse perto de Lyra",
       15,
     );
+    const journalOpen = this.panel.querySelector<HTMLDetailsElement>(".journal-panel")?.open ?? false;
     const baseOpen = this.panel.querySelector<HTMLDetailsElement>(".base-panel")?.open ?? false;
     const inventoryOpen = this.panel.querySelector<HTMLDetailsElement>(".equipment-panel")?.open ?? false;
     const sheetOpen = this.panel.querySelector<HTMLDetailsElement>(".traveler-sheet")?.open ?? false;
@@ -234,7 +237,15 @@ export class ExplorationScene extends Phaser.Scene {
       this.persist();
       this.draw();
     });
+    button("system", "Consultar o Sistema", () => {
+      openSystem(c.narrative);
+      this.persist();
+      this.scene.start("Arrival", { campaign: c });
+    });
     button("menu", "Voltar ao menu", () => this.scene.start("Boot"));
+    const journal = journalPanel(c);
+    journal.open = journalOpen;
+    this.panel.append(journal);
     const updateBase = (change: () => boolean, message: string) => {
       if (!change()) return;
       this.message = message;

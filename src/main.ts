@@ -1,3 +1,4 @@
+import { ArrivalScene } from "./scenes/ArrivalScene";
 import { ExplorationScene } from "./scenes/ExplorationScene";
 import "./style.css";
 import Phaser from "phaser";
@@ -12,6 +13,6 @@ new Phaser.Game({
   backgroundColor: "#121e22",
   pixelArt: true,
   roundPixels: true,
-  scene: [BootScene, ExplorationScene, BattleScene, CombatScene],
+  scene: [BootScene, ArrivalScene, ExplorationScene, BattleScene, CombatScene],
   scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
 });

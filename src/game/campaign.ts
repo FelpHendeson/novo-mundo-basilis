@@ -1,11 +1,13 @@
+import { newNarrative, legacyNarrative, parseNarrative, type NarrativeState } from "./narrative";
 import { EQUIPMENT_IDS, isEquipmentId, type EquipmentId } from "./equipment";
 import { ENCOUNTER_XP, validExperience } from "./progression";
 import type { Character } from "./battle";
 import { RACES, CLASSES } from "./archetypes";
 export { RACES } from "./archetypes";
 export type Campaign = {
-  schemaVersion: 4;
+  schemaVersion: 5;
   character: Character & { experience: number; equipment: EquipmentId | null };
+  narrative: NarrativeState;
   inventory: EquipmentId[];
   base: { prepared: boolean; lyraRecruited: boolean; lyraDeployed: boolean };
   position: { x: number; y: number };
@@ -15,8 +17,9 @@ export type Campaign = {
   expeditionComplete: boolean;
 };
 export const newCampaign = (character: Character): Campaign => ({
-  schemaVersion: 4,
+  schemaVersion: 5,
   character: { name: character.name, cls: character.cls, race: character.race, experience: 0, equipment: null },
+  narrative: newNarrative(),
   inventory: [...EQUIPMENT_IDS],
   base: { prepared: false, lyraRecruited: false, lyraDeployed: false },
   position: { x: 1, y: 4 },
@@ -57,7 +60,7 @@ export function parseCampaign(value: unknown): Campaign | null {
   if (!value || typeof value !== "object") return null;
   const c = value as Omit<Campaign, "schemaVersion"> & { schemaVersion: number };
   if (
-    ![1, 2, 3, 4].includes(c.schemaVersion) ||
+    ![1, 2, 3, 4, 5].includes(c.schemaVersion) ||
     !c.character ||
     typeof c.character.name !== "string" ||
     !c.character.name.trim() ||
@@ -91,8 +94,11 @@ export function parseCampaign(value: unknown): Campaign | null {
   if (!base || typeof base.prepared !== "boolean" || typeof base.lyraRecruited !== "boolean" ||
       typeof base.lyraDeployed !== "boolean" || (base.prepared && !c.passageCleared) ||
       (base.lyraRecruited && (!base.prepared || !c.metLyra)) || (base.lyraDeployed && !base.lyraRecruited)) return null;
+  const narrative = c.schemaVersion < 5 ? legacyNarrative() : parseNarrative(c.narrative);
+  if (!narrative) return null;
   return {
-    schemaVersion: 4,
+    schemaVersion: 5,
+    narrative,
     character: { name: c.character.name, cls: c.character.cls, race: c.character.race, experience, equipment },
     inventory: [...inventory],
     base: { prepared: base.prepared, lyraRecruited: base.lyraRecruited, lyraDeployed: base.lyraDeployed },
