@@ -6,7 +6,7 @@
 **Repositório:** https://github.com/FelpHendeson/novo-mundo-basilis  
 **Publicação:** https://novo-mundo-basilis.vercel.app  
 **Documento:** v1.5 — 20/10/2026  
-**Estado de referência:** 0.5.0 em validação — catálogo de classes e ficha do viajante. 0.4.1 permanece como referência pública até validar a nova publicação.
+**Estado de referência:** 0.5.0 publicada — catálogo de classes e ficha do viajante, código `f41bdff`, produção READY.
 **Fonte de referência:** este plano versionado no GitHub; a cópia nos arquivos do Projeto deve acompanhar cada revisão documental.
 
 > Este documento é um plano vivo. Conteúdo narrativo e sistemas ainda não aprovados devem ser tratados como propostas, não como cânone.
@@ -133,7 +133,7 @@ docs/              # design, ADRs, releases e planejamento
 | 0.2 | Estabilização tática | Um encontro jogável, melhorias de seleção/turnos, testes e publicação | Entregue como 0.2.0; desktop validado |
 | **0.3** | **Batalha cinematográfica** | **Tela lateral de confronto funcional, sincronizada com o motor, com animação e retorno ao mapa** | **Entregue; ver inciso 15.3** |
 | 0.4 | Exploração e persistência mínima | Cenário, NPC, diálogo, encontro, consequência e restauração de checkpoint | Entregue; ver inciso 15.4 |
-| 0.5.0 | Catálogo e ficha do viajante | Dados únicos de classe, prévia de atributos/técnicas, ficha na exploração e preservação dos checkpoints | Em validação |
+| 0.5.0 | Catálogo e ficha do viajante | Dados únicos de classe, prévia de atributos/técnicas, ficha na exploração e preservação dos checkpoints | Entregue |
 | A definir | Evolução e equipamentos | Experiência, equipamentos e efeitos raciais dependem de especificação e aceite próprios | Planejado |
 | 0.6 | Base e recrutamento | Base explorável simples, recrutar e montar equipe | Planejado |
 | 0.7 | Campanha vertical | Prólogo e primeiro capítulo jogáveis ponta a ponta | Planejado |
@@ -222,7 +222,7 @@ Uma funcionalidade só é considerada entregue quando:
 
 ## 13. Próximo passo operacional
 
-Validar e publicar a 0.5.0. Em seguida, especificar o pacote de experiência/progressão com critérios de aceite próprios. Bônus de raça dependem de definição criativa: as seis escolhas permanecem narrativas, sem modificadores inventados. Correções da 0.5.0 receberão 0.5.1 e seguintes; novas funcionalidades recebem novo marco MINOR.
+Colher feedback da ficha e especificar o pacote de experiência/progressão com critérios de aceite próprios. Bônus de raça dependem de definição criativa: as seis escolhas permanecem narrativas, sem modificadores inventados. Correções da 0.5.0 receberão 0.5.1 e seguintes; novas funcionalidades recebem novo marco MINOR.
 
 
 ## 14. Política de versões e manutenção do plano
@@ -312,12 +312,15 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 
 ### 15.6 — 0.5.0 — Catálogo e ficha do viajante — 20/10/2026
 
-- **Estado:** em validação; ainda sem confirmação de publicação.
+- **Estado:** entregue; prévia e produção validadas.
 - **Escopo:** catálogo único de classes, atributos e técnicas; prévia dinâmica na criação, ficha expansível na exploração e ataque/magia/defesa no combate.
 - **Preservação:** números, técnicas, regras de combate e raças narrativas inalterados. Checkpoint schema 1 compatível; nenhuma migração necessária.
 - **Validação automatizada:** 53 testes e build TypeScript/Vite passaram. Inclui 18 combinações de perfil, conservação dos atributos e isolamento das instâncias.
 - **Fora do pacote:** XP/nível, equipamentos, bônus raciais, aparência, áudio e arte final. Esses itens não são anunciados como entregues.
-- **Referências e validação manual:** serão registrados após testar a prévia e a produção.
+- **Código:** `f41bdff`; branch `release/0.5.0`. Tag Git pendente.
+- **Validação manual:** troca Guerreiro/Mago/Ladino e raça na criação; Elfo/Ladino salvo, recarregado e levado à batalha com atributos/técnicas coincidentes. Ficha mantida aberta após salvar. Simulações 390×844, 320×568 e 844×390 sem overflow horizontal, painel rolável e mapa visível. Console sem erros observados nesse percurso; não foi repetida partida manual completa até vitória nesta release.
+- **Publicação:** production READY `dpl_C1diFS5NgEP7dRB6RxreYrE71ocu`, código `f41bdff`, https://novo-mundo-basilis.vercel.app. No domínio principal, checkpoint anterior Humano/Guerreiro continuou e a ficha foi conferida; bundle `index--cdtLclw.js` confirmado.
+- **Limitações:** sem aparelho físico/Safari ou medição de desempenho; bundle Phaser permanece acima do aviso de 500 kB. Relatório `docs/RELEASE_0.5.md`.
 
 ### Modelo de inciso para próximas versões
 
