@@ -1,3 +1,5 @@
+import { newCampaign } from "../game/campaign";
+import { loadCampaign } from "../game/persistence/save";
 import Phaser from "phaser";
 import type { UnitClass } from "../game/model";
 
@@ -34,7 +36,7 @@ export class BootScene extends Phaser.Scene {
       })
       .setOrigin(0.5);
     this.add
-      .text(384, 480, "v0.3.0 · Protótipo de combate tático", {
+      .text(384, 480, "v0.4.0 · Exploração e combate", {
         fontSize: "16px",
         color: "#a8c4b6",
       })
@@ -42,13 +44,67 @@ export class BootScene extends Phaser.Scene {
     const form = document.createElement("form");
     form.id = "creation";
     form.innerHTML = `<h2>Seu primeiro passo em Basilis</h2><p>Crie o viajante e proteja a passagem com Lyra.</p><label>Nome<input name="name" maxlength="16" value="Viajante" required></label><label>Raça<select name="race">${["Humano", "Elfo", "Anão", "Teriano", "Draconiano", "Demoniano"].map((r) => `<option>${r}</option>`).join("")}</select></label><label>Classe<select name="cls">${["Guerreiro", "Mago", "Ladino"].map((c) => `<option>${c}</option>`).join("")}</select></label><p>Guerreiro: resistente. Mago: alcance. Ladino: mobilidade.<br>Raça é uma escolha narrativa nesta versão; aparência ainda não disponível.</p><button type="submit">Iniciar expedição</button><p>Mouse ou toque no tabuleiro. Setas/WASD + Enter também movem o cursor. Tab e Enter acionam os comandos.</p>`;
+    let hasPrevious = false;
+    let ready = false;
+    const status = document.createElement("p");
+    status.setAttribute("role", "status");
+    status.textContent = "Consultando checkpoint…";
+    form.prepend(status);
+    const submit = form.querySelector<HTMLButtonElement>(
+      'button[type="submit"]',
+    )!;
+    submit.disabled = true;
+    void loadCampaign().then((result) => {
+      if (!form.isConnected) return;
+      ready = true;
+      submit.disabled = false;
+      hasPrevious = result.status === "loaded" || result.status === "invalid";
+      status.textContent =
+        result.status === "loaded"
+          ? "Uma jornada salva foi encontrada."
+          : result.status === "invalid"
+            ? "O checkpoint não é compatível ou está danificado. Ele não foi apagado."
+            : result.status === "unavailable"
+              ? "Salvamento indisponível neste navegador. Você pode jogar nesta sessão."
+              : "Nenhuma jornada salva neste navegador.";
+      if (result.status === "loaded") {
+        const continueButton = document.createElement("button");
+        continueButton.type = "button";
+        continueButton.textContent = `Continuar jornada de ${result.campaign.character.name}`;
+        continueButton.onclick = () =>
+          this.scene.start("Exploration", { campaign: result.campaign });
+        status.after(continueButton);
+      }
+      if (hasPrevious) {
+        const label = document.createElement("label");
+        const check = document.createElement("input");
+        check.type = "checkbox";
+        check.name = "replace";
+        check.style.width = "auto";
+        label.append(
+          check,
+          document.createTextNode(
+            "Iniciar nova jornada e substituir o checkpoint existente",
+          ),
+        );
+        submit.before(label);
+      }
+    });
     form.onsubmit = (e) => {
       e.preventDefault();
+      if (!ready) return;
       const data = new FormData(form);
-      this.scene.start("Battle", {
-        name: String(data.get("name")).trim().slice(0, 16) || "Viajante",
-        race: String(data.get("race")),
-        cls: data.get("cls") as UnitClass,
+      if (hasPrevious && !data.has("replace")) {
+        status.textContent =
+          "Para uma nova jornada, marque a substituição do checkpoint ou continue a jornada salva.";
+        return;
+      }
+      this.scene.start("Exploration", {
+        campaign: newCampaign({
+          name: String(data.get("name")).trim().slice(0, 16) || "Viajante",
+          race: String(data.get("race")),
+          cls: data.get("cls") as UnitClass,
+        }),
       });
     };
     document.querySelector("#app")!.append(form);

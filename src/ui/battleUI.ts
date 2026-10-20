@@ -7,6 +7,7 @@ export function renderBattleUI(
   refresh: () => void,
   restart: () => void,
   creation: () => void,
+  returnToMap?: () => void,
 ) {
   let root = document.querySelector<HTMLElement>("#battle-ui");
   if (!root) {
@@ -87,7 +88,8 @@ export function renderBattleUI(
     button("end", "Encerrar turno [E]", () => battle.endTurn());
   if (battle.phase === "ended") {
     button("restart", "Repetir batalha", restart);
-    button("character", "Criar personagem", creation);
+    if (returnToMap) button("map", "Voltar à exploração", returnToMap);
+    else button("character", "Criar personagem", creation);
   }
   const roster = document.createElement("div");
   roster.className = "roster";

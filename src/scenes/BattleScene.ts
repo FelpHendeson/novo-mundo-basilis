@@ -1,3 +1,5 @@
+import { finishEncounter, type Campaign } from "../game/campaign";
+import { saveCampaign } from "../game/persistence/save";
 import Phaser from "phaser";
 import { WIDTH, HEIGHT, TERRAIN, reachable } from "../game/model";
 const CELL = 48,
@@ -7,7 +9,9 @@ import { Battle, type Character } from "../game/battle";
 import { renderBattleUI } from "../ui/battleUI";
 export class BattleScene extends Phaser.Scene {
   private battle!: Battle;
-  private character!: Character;
+  private character!: Character & { campaign?: Campaign };
+  private savedResult = false;
+  private campaignSaveNote = "";
   private timer: Phaser.Time.TimerEvent | null = null;
   private graphics!: Phaser.GameObjects.Graphics;
   private overlay: Phaser.GameObjects.GameObject[] = [];
@@ -16,8 +20,10 @@ export class BattleScene extends Phaser.Scene {
   constructor() {
     super("Battle");
   }
-  init(data: Character) {
+  init(data: Character & { campaign?: Campaign }) {
     this.character = data;
+    this.savedResult = false;
+    this.campaignSaveNote = "";
     this.battle = new Battle(data, true);
     this.cursor = { x: 1, y: 4 };
     this.timer = null;
@@ -75,6 +81,24 @@ export class BattleScene extends Phaser.Scene {
   }
   private presenting: number | null = null;
   private redraw() {
+    if (
+      this.battle.phase === "ended" &&
+      this.character.campaign &&
+      !this.savedResult
+    ) {
+      this.savedResult = true;
+      const c = this.character.campaign;
+      if (finishEncounter(c, this.battle.enemies.length === 0)) {
+        this.campaignSaveNote = "Vitória: +3 suprimentos. Salvando checkpoint…";
+        void saveCampaign(c).then((ok) => {
+          if (!this.scene.isActive()) return;
+          this.campaignSaveNote = ok
+            ? "Vitória registrada no checkpoint."
+            : "Vitória nesta sessão; não foi possível salvar.";
+          this.redraw();
+        });
+      }
+    }
     if (this.battle.pending) {
       const event = this.battle.pending;
       if (this.presenting !== event.id) {
@@ -204,7 +228,18 @@ export class BattleScene extends Phaser.Scene {
       () => this.redraw(),
       () => this.scene.restart(this.character),
       () => this.scene.start("Boot"),
+      this.character.campaign
+        ? () =>
+            this.scene.start("Exploration", {
+              campaign: this.character.campaign,
+            })
+        : undefined,
     );
+    if (this.campaignSaveNote) {
+      const p = document.createElement("p");
+      p.textContent = this.campaignSaveNote;
+      document.querySelector("#battle-ui")?.append(p);
+    }
     if (this.battle.phase === "enemy" && !this.timer) {
       this.timer = this.time.delayedCall(450, () => {
         this.timer = null;

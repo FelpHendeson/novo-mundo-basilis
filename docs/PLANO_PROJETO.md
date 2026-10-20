@@ -304,3 +304,10 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 | v1.1 | 20/10/2026 | Linha do tempo e incisos por versão; política PATCH e revisão documental independente; evidências da 0.2.0; aceite da 0.3 ampliado para IA/ciclo de vida; save mínimo antecipado e limites de marcos explicitados. |
 
 | v1.2 | 20/10/2026 | Implementação 0.3.0, evidências automatizadas/manuais, limitações e próximo marco 0.4.0. |
+
+
+## 17. Escopo executável — 0.4.0
+
+Trecho provisório: Clareira da Outra Margem → conversa com Lyra → ruínas (encontro existente) → consequência da vitória → abrigo. Movimento por casas adjacentes, obstáculos, comandos de teclado e botões. A narrativa é provisória, sem estabelecer lore canônica nova.
+
+Aceite: criação entra na exploração; conversa desbloqueia encontro apenas perto da entrada; vitória retorna ao mesmo cenário e concede três suprimentos uma única vez; derrota permite repetir/retornar sem recompensa; checkpoint persiste perfil, posição e eventos após recarregar. Salvamento local IndexedDB schema 1, rejeição de dados inválidos, aviso de falha e confirmação de substituição de jornada. Não salva batalha em andamento: recarregar retorna ao último checkpoint exploratório. Sem combate novo, inventário, base gerenciável ou recrutamento persistente; Lyra é acompanhante provisória do encontro existente.
