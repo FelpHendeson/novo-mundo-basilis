@@ -13,10 +13,10 @@ export function equipmentPanel(c: Campaign, onEquip: (id: EquipmentId | null) =>
   root.append(current);
   const buttons = document.createElement("div");
   buttons.className = "roster";
-  const a = equippedAttributes(c.character.cls, c.character.experience, c.character.equipment);
+  const a = equippedAttributes(c.character.cls, c.character.experience, c.character.equipment, c.adaptation.claimed);
   for (const id of c.inventory) {
     const item = EQUIPMENT[id];
-    const b = equippedAttributes(c.character.cls, c.character.experience, id);
+    const b = equippedAttributes(c.character.cls, c.character.experience, id, c.adaptation.claimed);
     const button = document.createElement("button");
     button.type = "button";
     button.dataset.action = `equip-${id}`;
@@ -34,7 +34,7 @@ export function equipmentPanel(c: Campaign, onEquip: (id: EquipmentId | null) =>
   buttons.append(remove);
   root.append(buttons);
   const note = document.createElement("p");
-  note.textContent = "Três itens iniciais do protótipo, disponíveis para qualquer classe. Bônus não se acumulam ao trocar. Sem lojas, saque, consumo ou durabilidade nesta versão.";
+  note.textContent = "Três itens iniciais do protótipo, disponíveis para qualquer classe. Bônus não se acumulam ao trocar. Sem lojas, saque ou durabilidade. Consumíveis do kit são usados na batalha.";
   root.append(note);
   return root;
 }
