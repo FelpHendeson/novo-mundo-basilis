@@ -1,3 +1,4 @@
+import { characterSheet } from "../ui/characterSheet";
 import Phaser from "phaser";
 import {
   restAtCamp,
@@ -131,6 +132,7 @@ export class ExplorationScene extends Phaser.Scene {
       "Clique na casa vizinha · Setas/WASD · Converse perto de Lyra",
       15,
     );
+    const sheetOpen = this.panel.querySelector<HTMLDetailsElement>(".traveler-sheet")?.open ?? false;
     const scrollTop = this.panel.scrollTop;
     const focused = document.activeElement?.getAttribute("data-action");
     this.panel.replaceChildren();
@@ -225,9 +227,17 @@ export class ExplorationScene extends Phaser.Scene {
       this.draw();
     });
     button("menu", "Voltar ao menu", () => this.scene.start("Boot"));
+    const sheet = document.createElement("details");
+    sheet.className = "traveler-sheet";
+    sheet.open = sheetOpen;
+    const summary = document.createElement("summary");
+    summary.textContent = "Ficha do viajante";
+    summary.dataset.action = "sheet";
+    sheet.append(summary, characterSheet(c.character.cls, c.character.race));
+    this.panel.append(sheet);
     if (focused)
       this.panel
-        .querySelector<HTMLButtonElement>(`[data-action="${focused}"]`)
+        .querySelector<HTMLElement>(`[data-action="${focused}"]`)
         ?.focus({ preventScroll: true });
     this.panel.scrollTop = scrollTop;
   }

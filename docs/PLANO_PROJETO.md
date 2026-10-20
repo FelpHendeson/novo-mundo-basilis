@@ -5,8 +5,8 @@
 **Stack:** Phaser 3, TypeScript, Vite, Vitest  
 **Repositório:** https://github.com/FelpHendeson/novo-mundo-basilis  
 **Publicação:** https://novo-mundo-basilis.vercel.app  
-**Documento:** v1.4 — 20/10/2026  
-**Estado de referência:** 0.4.1 publicada com adaptação mobile, código `3921270`, produção READY. Próximo marco funcional: 0.5, sujeito ao feedback da exploração.
+**Documento:** v1.5 — 20/10/2026  
+**Estado de referência:** 0.5.0 em validação — catálogo de classes e ficha do viajante. 0.4.1 permanece como referência pública até validar a nova publicação.
 **Fonte de referência:** este plano versionado no GitHub; a cópia nos arquivos do Projeto deve acompanhar cada revisão documental.
 
 > Este documento é um plano vivo. Conteúdo narrativo e sistemas ainda não aprovados devem ser tratados como propostas, não como cânone.
@@ -133,7 +133,8 @@ docs/              # design, ADRs, releases e planejamento
 | 0.2 | Estabilização tática | Um encontro jogável, melhorias de seleção/turnos, testes e publicação | Entregue como 0.2.0; desktop validado |
 | **0.3** | **Batalha cinematográfica** | **Tela lateral de confronto funcional, sincronizada com o motor, com animação e retorno ao mapa** | **Entregue; ver inciso 15.3** |
 | 0.4 | Exploração e persistência mínima | Cenário, NPC, diálogo, encontro, consequência e restauração de checkpoint | Entregue; ver inciso 15.4 |
-| 0.5 | Classes, raças e evolução | Entregas menores: dados e diferenciação → experiência → equipamentos; cada pacote com aceite próprio | Planejado |
+| 0.5.0 | Catálogo e ficha do viajante | Dados únicos de classe, prévia de atributos/técnicas, ficha na exploração e preservação dos checkpoints | Em validação |
+| A definir | Evolução e equipamentos | Experiência, equipamentos e efeitos raciais dependem de especificação e aceite próprios | Planejado |
 | 0.6 | Base e recrutamento | Base explorável simples, recrutar e montar equipe | Planejado |
 | 0.7 | Campanha vertical | Prólogo e primeiro capítulo jogáveis ponta a ponta | Planejado |
 | 0.8 | Polimento e conteúdo | UX, áudio, sprites, balanceamento, salvamento robusto | Planejado |
@@ -221,7 +222,7 @@ Uma funcionalidade só é considerada entregue quando:
 
 ## 13. Próximo passo operacional
 
-Colher feedback da 0.4.1 e preparar o primeiro pacote da 0.5 (diferenciação de classes/raças por dados). Falhas publicadas da 0.4 entram antes como 0.4.1 e seguintes, sem ampliar o escopo silenciosamente.
+Validar e publicar a 0.5.0. Em seguida, especificar o pacote de experiência/progressão com critérios de aceite próprios. Bônus de raça dependem de definição criativa: as seis escolhas permanecem narrativas, sem modificadores inventados. Correções da 0.5.0 receberão 0.5.1 e seguintes; novas funcionalidades recebem novo marco MINOR.
 
 
 ## 14. Política de versões e manutenção do plano
@@ -309,6 +310,15 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 - **Publicação:** Vercel READY no deployment `dpl_BXyMBAVThDRteZygHg9dBmzzfUmG`, código `3921270`; URL https://novo-mundo-basilis.vercel.app.
 - **Relatório:** `docs/RELEASE_0.4.1.md`. Tag Git pendente.
 
+### 15.6 — 0.5.0 — Catálogo e ficha do viajante — 20/10/2026
+
+- **Estado:** em validação; ainda sem confirmação de publicação.
+- **Escopo:** catálogo único de classes, atributos e técnicas; prévia dinâmica na criação, ficha expansível na exploração e ataque/magia/defesa no combate.
+- **Preservação:** números, técnicas, regras de combate e raças narrativas inalterados. Checkpoint schema 1 compatível; nenhuma migração necessária.
+- **Validação automatizada:** 53 testes e build TypeScript/Vite passaram. Inclui 18 combinações de perfil, conservação dos atributos e isolamento das instâncias.
+- **Fora do pacote:** XP/nível, equipamentos, bônus raciais, aparência, áudio e arte final. Esses itens não são anunciados como entregues.
+- **Referências e validação manual:** serão registrados após testar a prévia e a produção.
+
 ### Modelo de inciso para próximas versões
 
 - **Versão, título, data e estado.**
@@ -329,6 +339,7 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 | v1.2 | 20/10/2026 | Implementação 0.3.0, evidências automatizadas/manuais, limitações e próximo marco 0.4.0. |
 | v1.3 | 20/10/2026 | Escopo e inciso 0.4.0, exploração/checkpoints, testes e limitações de persistência. |
 | v1.4 | 20/10/2026 | Inciso PATCH 0.4.1 e evidências de simulação mobile em retrato/paisagem. |
+| v1.5 | 20/10/2026 | Escopo 0.5.0 delimitado ao catálogo e ficha; XP/equipamentos separados e efeitos raciais mantidos pendentes. |
 
 
 ## 17. Escopo executável — 0.4.0
@@ -336,3 +347,8 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 Trecho provisório: Clareira da Outra Margem → conversa com Lyra → ruínas (encontro existente) → consequência da vitória → abrigo. Movimento por casas adjacentes, obstáculos, comandos de teclado e botões. A narrativa é provisória, sem estabelecer lore canônica nova.
 
 Aceite: criação entra na exploração; conversa desbloqueia encontro apenas perto da entrada; vitória retorna ao mesmo cenário e concede três suprimentos uma única vez; derrota permite repetir/retornar sem recompensa; checkpoint persiste perfil, posição e eventos após recarregar. Salvamento local IndexedDB schema 1, rejeição de dados inválidos, aviso de falha e confirmação de substituição de jornada. Não salva batalha em andamento: recarregar retorna ao último checkpoint exploratório. Sem combate novo, inventário, base gerenciável ou recrutamento persistente; Lyra é acompanhante provisória do encontro existente.
+
+## 18. Escopo executável — 0.5.0
+
+Tornar legíveis as diferenças de classes já existentes, sem redefinir o balanceamento. Um catálogo tipado alimenta validação de perfil, criação de unidades, prévia e ficha. Aceite: trocar classe atualiza HP/energia/ataque/magia/defesa/movimento e duas técnicas; trocar raça informa seu caráter narrativo; ficha permanece acessível em mobile; valores da prévia coincidem com a batalha; checkpoint schema 1 continua legível. XP e equipamentos são pacotes posteriores, com numeração e aceite ainda a definir.
+

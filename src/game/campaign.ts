@@ -1,12 +1,6 @@
 import type { Character } from "./battle";
-export const RACES = [
-  "Humano",
-  "Elfo",
-  "Anão",
-  "Teriano",
-  "Draconiano",
-  "Demoniano",
-] as const;
+import { RACES, CLASSES } from "./archetypes";
+export { RACES } from "./archetypes";
 export type Campaign = {
   schemaVersion: 1;
   character: Character;
@@ -62,7 +56,7 @@ export function parseCampaign(value: unknown): Campaign | null {
     !c.character.name.trim() ||
     c.character.name.length > 16 ||
     !RACES.includes(c.character.race as (typeof RACES)[number]) ||
-    !["Guerreiro", "Mago", "Ladino"].includes(c.character.cls) ||
+    !CLASSES.includes(c.character.cls) ||
     !c.position ||
     !passable(c.position.x, c.position.y) ||
     (c.position.x === 2 && c.position.y === 3) ||

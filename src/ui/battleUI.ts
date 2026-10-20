@@ -41,7 +41,7 @@ export function renderBattleUI(
     battle.units.find((u) => u.hp > 0 && u.x === cursor.x && u.y === cursor.y);
   if (unit) {
     const info = document.createElement("p");
-    info.textContent = `${unit.name} · ${unit.cls} · HP ${unit.hp}/${unit.maxHp} · EN ${unit.ep}/${unit.maxEp} · Movimento ${unit.move}${unit.acted ? " · Já agiu" : ""}`;
+    info.textContent = `${unit.name} · ${unit.cls} · HP ${unit.hp}/${unit.maxHp} · EN ${unit.ep}/${unit.maxEp} · Ataque ${unit.attack} · Magia ${unit.magic} · Defesa ${unit.defense} · Movimento ${unit.move}${unit.acted ? " · Já agiu" : ""}`;
     root.append(info);
   }
   const actions = document.createElement("div");

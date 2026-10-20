@@ -1,3 +1,5 @@
+import { CLASSES, RACES } from "../game/archetypes";
+import { characterSheet } from "../ui/characterSheet";
 import { newCampaign } from "../game/campaign";
 import { loadCampaign } from "../game/persistence/save";
 import Phaser from "phaser";
@@ -36,14 +38,21 @@ export class BootScene extends Phaser.Scene {
       })
       .setOrigin(0.5);
     this.add
-      .text(384, 480, "v0.4.1 · Exploração e combate", {
+      .text(384, 480, "v0.5.0 · Exploração e combate", {
         fontSize: "16px",
         color: "#a8c4b6",
       })
       .setOrigin(0.5);
     const form = document.createElement("form");
     form.id = "creation";
-    form.innerHTML = `<h2>Seu primeiro passo em Basilis</h2><p>Crie o viajante e proteja a passagem com Lyra.</p><label>Nome<input name="name" maxlength="16" value="Viajante" required></label><label>Raça<select name="race">${["Humano", "Elfo", "Anão", "Teriano", "Draconiano", "Demoniano"].map((r) => `<option>${r}</option>`).join("")}</select></label><label>Classe<select name="cls">${["Guerreiro", "Mago", "Ladino"].map((c) => `<option>${c}</option>`).join("")}</select></label><p>Guerreiro: resistente. Mago: alcance. Ladino: mobilidade.<br>Raça é uma escolha narrativa nesta versão; aparência ainda não disponível.</p><button type="submit">Iniciar expedição</button><p>Mouse ou toque no tabuleiro. Setas/WASD + Enter também movem o cursor. Tab e Enter acionam os comandos.</p>`;
+    form.innerHTML = `<h2>Seu primeiro passo em Basilis</h2><p>Crie o viajante e proteja a passagem com Lyra.</p><label>Nome<input name="name" maxlength="16" value="Viajante" required></label><label>Raça<select name="race">${RACES.map((r) => `<option>${r}</option>`).join("")}</select></label><label>Classe<select name="cls">${CLASSES.map((c) => `<option>${c}</option>`).join("")}</select></label><div id="character-preview" aria-live="polite"></div><button type="submit">Iniciar expedição</button><p>Mouse ou toque no tabuleiro. Setas/WASD + Enter também movem o cursor. Tab e Enter acionam os comandos.</p>`;
+    const preview = form.querySelector<HTMLElement>("#character-preview")!;
+    const updatePreview = () => {
+      const data = new FormData(form);
+      preview.replaceChildren(characterSheet(data.get("cls") as UnitClass, String(data.get("race"))));
+    };
+    form.addEventListener("change", updatePreview);
+    updatePreview();
     let hasPrevious = false;
     let ready = false;
     const status = document.createElement("p");

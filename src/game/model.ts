@@ -1,12 +1,8 @@
 export type Team = "ally" | "enemy";
-export type UnitClass = "Guerreiro" | "Mago" | "Ladino";
-export type Technique = {
-  name: string;
-  power: number;
-  range: number;
-  cost: number;
-  kind: "physical" | "magic";
-};
+import { classAttributes } from "./archetypes";
+import type { UnitClass, Technique } from "./archetypes";
+export { TECHNIQUES } from "./archetypes";
+export type { UnitClass, Technique } from "./archetypes";
 export type Unit = {
   id: string;
   name: string;
@@ -36,20 +32,6 @@ export const TERRAIN = [
   [0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 ] as const;
-export const TECHNIQUES: Record<UnitClass, Technique[]> = {
-  Guerreiro: [
-    { name: "Corte", power: 7, range: 1, cost: 0, kind: "physical" },
-    { name: "Golpe pesado", power: 12, range: 1, cost: 3, kind: "physical" },
-  ],
-  Mago: [
-    { name: "Centelha", power: 7, range: 3, cost: 2, kind: "magic" },
-    { name: "Chama arcana", power: 12, range: 2, cost: 5, kind: "magic" },
-  ],
-  Ladino: [
-    { name: "Punhalada", power: 7, range: 1, cost: 0, kind: "physical" },
-    { name: "Lâmina lançada", power: 6, range: 2, cost: 2, kind: "physical" },
-  ],
-};
 export const dist = (
   a: { x: number; y: number },
   b: { x: number; y: number },
@@ -102,14 +84,6 @@ export function makeUnits(
   name = "Viajante",
   cls: UnitClass = "Guerreiro",
 ): Unit[] {
-  const stats: Record<
-    UnitClass,
-    [number, number, number, number, number, number]
-  > = {
-    Guerreiro: [28, 8, 8, 2, 6, 4],
-    Mago: [21, 15, 3, 10, 3, 4],
-    Ladino: [23, 10, 7, 3, 4, 5],
-  };
   function create(
     id: string,
     n: string,
@@ -118,7 +92,7 @@ export function makeUnits(
     x: number,
     y: number,
   ): Unit {
-    const [hp, ep, attack, magic, defense, move] = stats[c];
+    const { hp, ep, attack, magic, defense, move } = classAttributes(c);
     return {
       id,
       name: n,
