@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { moveExplorer, near, passable, type Campaign } from "../game/campaign";
+import { restAtCamp, moveExplorer, near, passable, type Campaign } from "../game/campaign";
 import { saveCampaign } from "../game/persistence/save";
 export class ExplorationScene extends Phaser.Scene {
   private campaign!: Campaign;
