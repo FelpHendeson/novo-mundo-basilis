@@ -16,7 +16,7 @@ body {
   display: grid;
   grid-template-columns: minmax(0, 768px) minmax(300px, 1fr);
   min-height: 100dvh;
-  align-items: center;
+  align-items: start;
   gap: 24px;
   padding: 24px;
 }
