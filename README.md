@@ -2,7 +2,7 @@
 
 RPG tático original com exploração, recrutamento, classes e construção de comunidade planejados.
 
-**Versão 0.7.0:** inventário inicial e acessórios do viajante com comparação de atributos, troca/remoção e checkpoint compatível.
+**Versão 0.8.0:** primeira base, convite de Lyra, equipe/reserva e treino com formação persistente.
 
 ## Desenvolvimento
 
@@ -41,9 +41,9 @@ Ataques aliados e inimigos apresentam os combatentes frente a frente, técnica, 
 
 ## Limites
 
-Encontro único com duas unidades aliadas. Sem lojas, saque, base gerenciável, recrutamento, vantagens raciais ou personalização visual nesta entrega. O checkpoint local IndexedDB preserva perfil, posição e eventos; recarregar durante a luta retorna à exploração anterior. Limpar dados do navegador remove o progresso; não há sincronização entre dispositivos. A formação de até aproximadamente sete membros permanece como direção de design, não como funcionalidade implementada.
+Um encontro de história com duas unidades aliadas e treino opcional com uma ou duas. Sem lojas, saque, base com múltiplos edifícios, outros recrutáveis, vantagens raciais ou personalização visual nesta entrega. O checkpoint local IndexedDB preserva perfil, posição e eventos; recarregar durante a luta retorna à exploração anterior. Limpar dados do navegador remove o progresso; não há sincronização entre dispositivos. A formação de até aproximadamente sete membros permanece como direção de design, não como funcionalidade implementada.
 
-O motor é original e não utiliza ROMs comerciais. Veja `docs/GAME_DESIGN.md` e `docs/RELEASE_0.7.md`.
+O motor é original e não utiliza ROMs comerciais. Veja `docs/GAME_DESIGN.md` e `docs/RELEASE_0.8.md`.
 
 ## Checkpoint e exploração
 
@@ -68,3 +68,9 @@ Campanhas usam schema 2. Checkpoints schema 1 migram automaticamente ao carregar
 Na exploração, abra **Inventário e acessórios**. O viajante começa com três itens e um espaço vazio: Braçadeira de treino (ataque +2), Foco simples (magia +2), Broche reforçado (defesa +2). Todos servem para qualquer classe. Compare atributos antes de equipar; trocar substitui o bônus anterior, remover restaura os valores da classe/nível. A ficha e a próxima batalha usam os mesmos números. Não é possível trocar durante a luta.
 
 Schema 3 preserva inventário e item equipado. Schemas 1/2 migram automaticamente com os três itens e nenhum equipado, conservando progresso. Sem lojas, loot, consumíveis, durabilidade, múltiplos espaços ou equipamentos dos aliados nesta entrega. Nomes e bônus são provisórios de protótipo.
+
+## Base e equipe 0.8.0
+
+Após vencer nas ruínas, volte para perto do abrigo. Em **Base e equipe**, preparar a base custa os três suprimentos conquistados, uma única vez. Volte para perto de Lyra na trilha e convide-a; ela entra na equipe. No abrigo, alterne Lyra entre equipe e reserva e inicie o treino com a formação escolhida. O viajante sempre participa. **Sair do treino** fica disponível durante a fase aliada. Sem XP, suprimentos ou ferimentos persistentes nos treinos.
+
+A primeira batalha mantém Lyra como acompanhante temporária. Recrutamento e base usam conteúdo provisório e não definem história canônica. Schema 4 migra schemas 1–3 sem gastar recursos/recrutar automaticamente, preservando XP, acessórios e eventos. Base aparece no mesmo mapa, com uma representação simples do abrigo. Sem edifícios adicionais, elenco amplo ou nova região nesta entrega.

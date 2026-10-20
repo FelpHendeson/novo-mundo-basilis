@@ -6,7 +6,7 @@
 **Repositório:** https://github.com/FelpHendeson/novo-mundo-basilis  
 **Publicação:** https://novo-mundo-basilis.vercel.app  
 **Documento:** v1.8 — 20/10/2026  
-**Estado de referência:** 0.8.0 em validação — primeira base e recrutamento; 0.7.0 permanece como última publicação confirmada.
+**Estado de referência:** 0.8.0 publicada — primeira base e recrutamento, código final `2ec2139`, produção READY.
 **Fonte de referência:** este plano versionado no GitHub; a cópia nos arquivos do Projeto deve acompanhar cada revisão documental.
 
 > Este documento é um plano vivo. Conteúdo narrativo e sistemas ainda não aprovados devem ser tratados como propostas, não como cânone.
@@ -137,7 +137,7 @@ docs/              # design, ADRs, releases e planejamento
 | 0.6.0 | Experiência e nível | Primeira vitória concede 100 XP, nível 2 do viajante, ganhos fixos por classe e migração de checkpoint | Entregue |
 | 0.7.0 | Inventário e acessórios | Três itens iniciais, um espaço, troca/remoção e comparação na exploração, efeitos no combate e migração de saves | Entregue |
 | A definir | Efeitos raciais | Dependem de definição criativa e balanceamento próprios | Planejado |
-| 0.8.0 | Primeira base e recrutamento | Preparar abrigo por 3 suprimentos, convidar Lyra por proximidade, alternar equipe/reserva e treinar sem recompensas | Em validação |
+| 0.8.0 | Primeira base e recrutamento | Preparar abrigo por 3 suprimentos, convidar Lyra por proximidade, alternar equipe/reserva e treinar sem recompensas | Entregue |
 | 0.9 | Campanha vertical | Prólogo e primeiro capítulo jogáveis ponta a ponta | Planejado |
 | 0.10 | Polimento e conteúdo | UX, áudio, sprites, balanceamento, salvamento robusto | Planejado |
 | 1.0 | Primeira versão pública estável | Campanha inicial fechada, QA e documentação de release | Futuro |
@@ -224,7 +224,7 @@ Uma funcionalidade só é considerada entregue quando:
 
 ## 13. Próximo passo operacional
 
-Validar a 0.8.0 ponta a ponta, publicar e colher feedback de base/formação. Em seguida, especificar um primeiro pacote da campanha vertical 0.9, sem pressupor um capítulo inteiro implementável em uma entrega. Correções da 0.8 usarão 0.8.1 e seguintes.
+Colher feedback de base/formação da 0.8.0. Em seguida, especificar um primeiro pacote da campanha vertical 0.9, sem pressupor um capítulo inteiro implementável em uma entrega. Correções da 0.8 usarão 0.8.1 e seguintes.
 
 
 ## 14. Política de versões e manutenção do plano
@@ -353,11 +353,15 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 
 ### 15.9 — 0.8.0 — Primeira base e recrutamento — 20/10/2026
 
-- **Estado:** em validação.
+- **Estado:** entregue; ciclo completo verificado na prévia e continuidade do checkpoint conferida em produção.
 - **Escopo:** após vitória, preparar abrigo junto ao acampamento custa 3 suprimentos uma vez; convidar Lyra perto da trilha exige base pronta e diálogo anterior. Convite único a inclui na equipe. No abrigo, alternar equipe/reserva e iniciar treino com a formação escolhida, sem recompensas ou ferimentos persistentes; viajante sempre presente. Primeira batalha mantém acompanhante temporária.
 - **Apresentação:** painel Base e equipe, objetivos orientando as etapas e representação simples do abrigo preparado no mapa existente. Sem nova região, prédios múltiplos ou história canônica de Lyra.
 - **Compatibilidade:** schema 4, migração de schemas 1–3 conserva perfil, equipamentos, XP, recursos e eventos; base começa não preparada, sem consumo/recrutamento automático. IndexedDB mantém versão 1.
-- **Validação inicial:** 98 testes e build passaram; navegador/publicação serão registrados após validação.
+- **Código:** `9bd2007` (implementação) e `2ec2139` (mensagens de retorno/descanso alinhadas à base). Código final `2ec21397bb9440704cd3b3d5238ed5086386c6c6`; branch `release/0.8.0`. Ambos compõem a mesma entrega antes da publicação final, sem PATCH retroativo. Tag Git pendente.
+- **Validação:** 98 testes passaram e build final passou. Prévia `9bd2007`: criação, diálogo, vitória no turno 3, retorno, preparação por 3 suprimentos, convite por proximidade, reserva, treino solo, saída, equipe, treino em dupla, saída e recarga. Base/equipe preservadas com XP 100 e suprimentos 0. Ajuste posterior restrito a mensagens compilado; produção final conferida sem repetir a partida completa.
+- **Mobile:** percurso em 844×390, painel expandido também em 390×844 e 320×568 sem overflow horizontal; botões de base medidos em 48 px em 390×844. Sem aparelho físico/Safari/desempenho.
+- **Publicação:** production READY `dpl_C3ebce8vB6GwYEwRwuSv5PSMELK7`, código `2ec2139`, https://novo-mundo-basilis.vercel.app. Checkpoint anterior continuou preservando perfil, posição/eventos e broche; base não preparada/sem convite automático. Bundle `index-BdajkgyD.js` conferido e console sem erros de aplicação observados.
+- **Relatório:** `docs/RELEASE_0.8.md`. Também corrigida rejeição de inventário esparso corrompido; falhas transitórias da automação de clique foram recuperadas com inspeção visual, não contabilizadas como aprovação de etapas não executadas.
 - **Limitações:** uma aliada, dois membros ativos no máximo, treino no tabuleiro existente, sem slots de 7 membros, novas missões, edifícios adicionais ou equipamento/progressão de Lyra.
 
 ### Modelo de inciso para próximas versões
