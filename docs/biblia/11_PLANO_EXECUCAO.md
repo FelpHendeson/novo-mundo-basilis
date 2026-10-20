@@ -2,6 +2,8 @@
 
 20/10/2026. Fonte avaliada: `d18f741` e os 11 arquivos de `docs/biblia`. Referência implementada: jogo 0.8.0, código `2ec2139`. Este documento planeja entregas; não anuncia novas funcionalidades ou publicação do jogo.
 
+**Registro de execução:** P09-01A entregue como 0.9.0 (`8ef54fa`); ver `../RELEASE_0.9.md` e inciso 15.10 do plano. Próxima especificação: P09-01B. A avaliação abaixo preserva a referência histórica em 0.8.0.
+
 ## Avaliação
 
 A bíblia transforma o protótipo em uma proposta de campanha consistente: Sistema universal, chegada terrestre, castelo reivindicável, habitantes autônomos, trabalho com custos e consequências regionais. A distinção entre habitante, trabalhador, combatente e campeão é útil e deve existir nos dados. Os roteiros SCN_001–015 dão sequência e contexto aos sistemas. Acessibilidade, escolhas adiáveis e ausência de espera obrigatória em tempo real são requisitos desde a implementação, não apenas do polimento.

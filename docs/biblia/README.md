@@ -20,6 +20,6 @@
 **PROPOSTA:** nomes de NPCs, facções, cenários e valores de balanceamento; requer aprovação da direção criativa.
 **MISTÉRIO:** origem do Sistema, significado do transporte, natureza do mundo/reset e abandono do castelo; não revelar prematuramente.
 
-A versão de referência do código é a **0.8** observada no GitHub: não interpretar estes documentos como funcionalidades já lançadas. Preservar Lyra, a clareira, o abrigo, o combate nas ruínas e o checkpoint existentes, integrando-os à nova narrativa.
+A versão de referência do código é a **0.9.0**: introdução e consulta opcional ao Sistema/diário estão implementadas. O restante da bíblia permanece especificação: não interpretar castelo, kit, moradores, mercado e minigames como funcionalidades já lançadas. Preservar Lyra, a clareira, o abrigo, o combate nas ruínas e o checkpoint existentes, integrando-os à nova narrativa.
 
 Revisão 1.2: pacotes de produção usam IDs P09-01–07, separados da versão semver; plano de execução define a 0.9.0 e dependências. O histórico de entregas continua em `../PLANO_PROJETO.md`.

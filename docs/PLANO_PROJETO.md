@@ -6,7 +6,7 @@
 **Repositório:** https://github.com/FelpHendeson/novo-mundo-basilis  
 **Publicação:** https://novo-mundo-basilis.vercel.app  
 **Documento:** v2.0 — 20/10/2026  
-**Estado de referência:** 0.9.0 em validação — introdução/Sistema/diário; 0.8.0 permanece como publicação confirmada até validar a nova entrega.
+**Estado de referência:** 0.9.0 publicada — introdução, Sistema e diário, código `8ef54fa`, produção READY.
 **Fonte de referência:** este plano versionado no GitHub; a cópia nos arquivos do Projeto deve acompanhar cada revisão documental.
 
 > Este documento é um plano vivo. Conteúdo narrativo e sistemas ainda não aprovados devem ser tratados como propostas, não como cânone.
@@ -146,7 +146,7 @@ docs/              # design, ADRs, releases e planejamento
 | 0.7.0 | Inventário e acessórios | Três itens iniciais, um espaço, troca/remoção e comparação na exploração, efeitos no combate e migração de saves | Entregue |
 | A definir | Efeitos raciais | Dependem de definição criativa e balanceamento próprios | Planejado |
 | 0.8.0 | Primeira base e recrutamento | Preparar abrigo por 3 suprimentos, convidar Lyra por proximidade, alternar equipe/reserva e treinar sem recompensas | Entregue |
-| 0.9.0 | Introdução e Sistema universal | SCN_001/parte de SCN_002, consulta opcional, eventos persistentes e preservação dos saves | Em validação; ver inciso 15.10 |
+| 0.9.0 | Introdução e Sistema universal | SCN_001/parte de SCN_002, consulta opcional, eventos persistentes e preservação dos saves | Entregue; ver inciso 15.10 |
 | MINOR posteriores a definir | Arco vertical por pacotes | Adaptação → castelo → contato → assentamento → treinos → mercado → fechamento; ver P09-01B–07 | Planejado |
 | Após integração do arco | Polimento e conteúdo | UX, áudio, sprites, balanceamento, salvamento robusto; melhorias essenciais entram antes quando necessárias | Planejado |
 | 1.0 | Primeira versão pública estável | Campanha inicial fechada, QA e documentação de release | Futuro |
@@ -233,7 +233,7 @@ Uma funcionalidade só é considerada entregue quando:
 
 ## 13. Próximo passo operacional
 
-Validar e publicar a 0.9.0: infraestrutura mínima de eventos/diálogos, introdução e consulta opcional do Sistema, preservando a 0.8.0. O roteiro da bíblia é repartido em pacotes; kit/mana funcional, castelo e população não entram silenciosamente nessa primeira release. Detalhes em `docs/biblia/11_PLANO_EXECUCAO.md`.
+Especificar o pacote P09-01B de adaptação: kit funcional, efeitos/limites dos consumíveis e tutorial de mana acessível, preservando a 0.9.0. O roteiro da bíblia é repartido em pacotes; kit/mana funcional, castelo e população não entram silenciosamente nessa primeira release. Detalhes em `docs/biblia/11_PLANO_EXECUCAO.md`.
 
 
 ## 14. Política de versões e manutenção do plano
@@ -375,13 +375,17 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 
 ### 15.10 — 0.9.0 — Introdução, Sistema e diário — 20/10/2026
 
-- **Estado:** em validação; publicação ainda pendente de conferência.
+- **Estado:** entregue; prévia e domínio público verificados.
 - **Objetivo:** chegada/Sistema em contexto e eventos persistentes, mantendo criação, clareira, Lyra, base, treino e saves existentes.
 - **Escopo/aceite:** documento `docs/biblia/11_PLANO_EXECUCAO.md`, seção Próxima release; SCN_001 e parte de SCN_002. Adiar tutorial não bloqueia jogo; consulta posterior e reentrada seguras; legado não reinicia/teletransporta personagens.
 - **Fora do pacote:** kit funcional, minigame completo, castelo, moradores, comércio e nova curva de XP. Demais pacotes ainda sem número de release reservado.
 - **Implementação:** última manhã → criação → chegada; perguntas onde/identidade, adiamento e consulta posterior; diário derivado das descobertas e conquistas; ledger finito de eventos narrativos sem repetição.
 - **Compatibilidade:** schema 5, migração de schemas 1–4 preserva estado existente e continua na exploração sem chegada obrigatória. Na nova jornada, checkpoint após criação retoma a chegada/resposta até sair; em exploração, mantém posição/eventos. Banco IndexedDB permanece versão 1.
-- **Evidência inicial:** 109 testes e build passaram; navegador/deploy serão registrados depois da validação. Arte original provisória por código: refeição, tiles 32×32 e avatar 32×48, sem spritesheets/áudio final.
+- **Código:** `8ef54fa975a66d2a5a921bb335e662ebdc124315`, branch `release/0.9.0`. Tag Git pendente.
+- **Validação:** 109 testes e build passaram. Prévia: Última manhã → criação Ari/Mago → resposta identidade → recarga/continuação na mesma resposta; adiar, explorar, diário, reabrir Sistema, Onde estou via Enter, continuar preservando posição, diálogo de Lyra e entrada na batalha. Proteção de substituição conferida sem apagar Ari. Console sem erros observados.
+- **Mobile:** 390×844, 320×568 e 844×390 sem overflow horizontal do Sistema; botões 48 px. Em 320×568 painel rola. Arte por código original provisória: refeição, tiles 32×32/avatar 32×48; legenda em canvas reduzida em mobile, conteúdo funcional no HTML. Sem aparelho físico, Safari, áudio/spritesheets ou medição de desempenho.
+- **Publicação:** production READY `dpl_HLmksZmgYE4wDEAuqUxLyFmbp28w`, código `8ef54fa`, https://novo-mundo-basilis.vercel.app. Checkpoint anterior Humano/Guerreiro retomou posição/eventos/broche, diário legado, consulta e retorno preservados. Bundle `index-Cj8o2Hk0.js` confirmado, console sem erros observados.
+- **Limites da validação:** base já preparada/reserva migrada coberta nas fixtures; não foi repetida partida manual até vitória nesta release. Antes da confirmação da criação, não há checkpoint de personagem. Relatório `docs/RELEASE_0.9.md`.
 - **Numeração:** P09-01–07 são IDs de pacotes, não PATCH; mudanças funcionais recebem MINOR, correções PATCH. `+fix` não identifica correção incremental na política do projeto.
 
 ### Modelo de inciso para próximas versões
