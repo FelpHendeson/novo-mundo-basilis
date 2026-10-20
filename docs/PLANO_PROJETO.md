@@ -5,8 +5,8 @@
 **Stack:** Phaser 3, TypeScript, Vite, Vitest  
 **Repositório:** https://github.com/FelpHendeson/novo-mundo-basilis  
 **Publicação:** https://novo-mundo-basilis.vercel.app  
-**Documento:** v1.1 — 20/10/2026  
-**Estado de referência:** jogo 0.2.0 publicado e validado em desktop; código da entrega em `b213e7a`. Próximo marco funcional: 0.3.0.
+**Documento:** v1.2 — 20/10/2026  
+**Estado de referência:** jogo 0.3.0 implementado, com código em `14064d7`; publicação e evidências registradas no inciso 15.3. Próximo marco funcional: 0.4.0.
 **Fonte de referência:** este plano versionado no GitHub; a cópia nos arquivos do Projeto deve acompanhar cada revisão documental.
 
 > Este documento é um plano vivo. Conteúdo narrativo e sistemas ainda não aprovados devem ser tratados como propostas, não como cânone.
@@ -131,7 +131,7 @@ docs/              # design, ADRs, releases e planejamento
 |---|---|---|---|
 | 0.1 | Fundação da aplicação | Projeto Phaser/Vite e protótipo inicial | Histórico |
 | 0.2 | Estabilização tática | Um encontro jogável, melhorias de seleção/turnos, testes e publicação | Entregue como 0.2.0; desktop validado |
-| **0.3** | **Batalha cinematográfica** | **Tela lateral de confronto funcional, sincronizada com o motor, com animação e retorno ao mapa** | **Próxima prioridade** |
+| **0.3** | **Batalha cinematográfica** | **Tela lateral de confronto funcional, sincronizada com o motor, com animação e retorno ao mapa** | **Entregue; ver inciso 15.3** |
 | 0.4 | Exploração e persistência mínima | Cenário, NPC, diálogo, encontro, consequência e restauração de checkpoint | Planejado |
 | 0.5 | Classes, raças e evolução | Entregas menores: dados e diferenciação → experiência → equipamentos; cada pacote com aceite próprio | Planejado |
 | 0.6 | Base e recrutamento | Base explorável simples, recrutar e montar equipe | Planejado |
@@ -159,19 +159,19 @@ Fazer cada ataque confirmado resultar em uma apresentação audiovisual clara e 
 8. Testar regressões; publicar e validar na URL de produção.
 
 ### Critérios de aceite 0.3
-- [ ] Atacar com qualquer classe implementada, como aliado ou inimigo, abre a cena lateral.
-- [ ] Atacante e alvo aparecem frente a frente com identificação e PV.
-- [ ] Técnica escolhida determina o efeito/animação apresentado.
-- [ ] Dano e energia são aplicados **exatamente uma vez**, inclusive em ataque letal, cliques repetidos e pulo repetido.
-- [ ] Prévia e resultado usam as mesmas regras; o resultado recebido pela apresentação é imutável.
-- [ ] Último golpe apresenta seu resultado antes da tela de vitória/derrota; não inicia ação inimiga residual.
-- [ ] Cena retorna ao tabuleiro e conserva posições, turnos e estados corretos.
-- [ ] Ação inválida, fora do alcance ou sem energia não inicia batalha.
-- [ ] Acelerar/pular animação não altera o resultado.
-- [ ] Reiniciar/sair não deixa callbacks ou entradas antigas afetarem uma nova batalha.
-- [ ] Retorno ao mapa restaura foco de teclado e seleção apropriados; comandos permanecem acessíveis.
-- [ ] Build de produção, testes de regras e verificação em navegador passam.
-- [ ] Deploy do Vercel fica `READY` e interface é testável por link público.
+- [x] Atacar com qualquer classe implementada, como aliado ou inimigo, abre a cena lateral.
+- [x] Atacante e alvo aparecem frente a frente com identificação e PV.
+- [x] Técnica escolhida determina o efeito/animação apresentado.
+- [x] Dano e energia são aplicados **exatamente uma vez**, inclusive em ataque letal, cliques repetidos e pulo repetido.
+- [x] Prévia e resultado usam as mesmas regras; o resultado recebido pela apresentação é imutável.
+- [x] Último golpe apresenta seu resultado antes da tela de vitória/derrota; não inicia ação inimiga residual.
+- [x] Cena retorna ao tabuleiro e conserva posições, turnos e estados corretos.
+- [x] Ação inválida, fora do alcance ou sem energia não inicia batalha.
+- [x] Acelerar/pular animação não altera o resultado.
+- [ ] Interrupção abrupta/saída durante apresentação: limpeza implementada, validação manual específica pendente; reinício após vitória foi validado.
+- [x] Retorno ao mapa restaura foco de teclado e seleção apropriados; comandos permanecem acessíveis.
+- [x] Build de produção, testes de regras e verificação em navegador passam.
+- [x] Deploy do Vercel fica `READY` e interface é testável por link público.
 
 ## 9. Qualidade e definição de pronto (DoD)
 
@@ -221,7 +221,7 @@ Uma funcionalidade só é considerada entregue quando:
 
 ## 13. Próximo passo operacional
 
-Implementar a **versão 0.3 — batalha cinematográfica** sobre o estado mais recente da `main`, começando por revisão do sistema de combate atual e teste de regressão. Priorizar um fluxo completo com placeholders antes de produzir um grande catálogo de animações.
+Iniciar especificação executável da **0.4.0 — exploração e persistência mínima**: cenário, NPC/diálogo, encontro, consequência e checkpoint restaurável. Correções publicadas da 0.3 entram antes como 0.3.1 e seguintes.
 
 
 ## 14. Política de versões e manutenção do plano
@@ -275,13 +275,16 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 - **Limitações:** encontro único, sem save/base/exploração/recrutamento; arte temporária. Mobile não validado e execução do workflow GitHub não confirmada. Mobile é expansão futura, não bloqueio deste marco PC.
 - **Detalhamento:** `docs/RELEASE_0.2.md`. Tag `v0.2.0` não verificada nesta revisão.
 
-### 15.3 — 0.3.0 — Batalha cinematográfica — data de entrega em aberto
+### 15.3 — 0.3.0 — Batalha cinematográfica — 20/10/2026
 
-- **Estado:** planejado; próxima prioridade funcional.
-- **Dependência:** estado mais recente da 0.2 e eventuais correções PATCH publicadas antes deste marco.
-- **Objetivo e aceite:** seção 8. Ainda não implementado nem validado.
-- **Commits, testes, publicação e limitações finais:** preencher com evidências durante a execução.
-- **Inserção de correções:** caso uma 0.2.1 seja necessária, inserir seu inciso antes deste e renumerar os incisos posteriores; os identificadores de versão permanecem estáveis.
+- **Estado:** entregue; prévia validada e produção READY no código final.
+- **Motivo:** apresentar cada ataque aliado/inimigo em confronto lateral sem duplicar efeitos.
+- **Escopo:** resultado imutável, fase de apresentação, IA sequencial, CombatScene, HP/energia, efeitos físicos/projéteis/magia, aceleração 1×/3× e pulo.
+- **Commits:** `bf8a18e` e `14064d7`; código final `14064d7`. Tag não criada; limitação registrada no relatório.
+- **Validação:** 22 testes e build passaram. Na prévia: ataque inimigo, aceleração, ataques físicos/mágicos, pulo em golpe letal, vitória no turno 4 e reinício. Três classes e derrota cobertas por testes de domínio; nem todos os casos tiveram partida manual própria.
+- **Publicação:** deployment production `dpl_7qRN3g7aVR3gKpgUKT94paCJsAZN`, código `14064d7`; Vercel READY confirmado, com domínio público associado e bundle final conferido no navegador. URL https://novo-mundo-basilis.vercel.app.
+- **Limitações:** arte temporária, sem áudio; mobile e interrupção abrupta de cena não validados manualmente. Sem save nem mudanças de regras de contra-ataque/progressão.
+- **Relatório:** `docs/RELEASE_0.3.md`.
 
 ### Modelo de inciso para próximas versões
 
@@ -299,3 +302,5 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 |---|---|---|
 | v1.0 | 20/10/2026 | Plano original, direção criativa, roadmap e prioridade da batalha lateral. |
 | v1.1 | 20/10/2026 | Linha do tempo e incisos por versão; política PATCH e revisão documental independente; evidências da 0.2.0; aceite da 0.3 ampliado para IA/ciclo de vida; save mínimo antecipado e limites de marcos explicitados. |
+
+| v1.2 | 20/10/2026 | Implementação 0.3.0, evidências automatizadas/manuais, limitações e próximo marco 0.4.0. |
