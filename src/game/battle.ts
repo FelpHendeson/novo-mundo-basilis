@@ -20,7 +20,7 @@ export type Phase =
   | "enemy"
   | "ended"
   | "presentation";
-export type Character = { name: string; cls: UnitClass; race: string; experience?: number; equipment?: EquipmentId | null };
+export type Character = { name: string; cls: UnitClass; race: string; experience?: number; equipment?: EquipmentId | null; includeLyra?: boolean };
 /** Rules and turn transitions are independent of Phaser and rendering. */
 export class Battle {
   units: Unit[];
@@ -40,7 +40,7 @@ export class Battle {
     character: Character,
     private cinematic = false,
   ) {
-    this.units = makeUnits(character.name, character.cls, character.experience, character.equipment);
+    this.units = makeUnits(character.name, character.cls, character.experience, character.equipment, character.includeLyra);
   }
   say(message: string) {
     this.note = message;

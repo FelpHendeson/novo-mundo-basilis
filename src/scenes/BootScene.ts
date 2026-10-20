@@ -38,7 +38,7 @@ export class BootScene extends Phaser.Scene {
       })
       .setOrigin(0.5);
     this.add
-      .text(384, 480, "v0.7.0 · Exploração e combate", {
+      .text(384, 480, "v0.8.0 · Exploração e combate", {
         fontSize: "16px",
         color: "#a8c4b6",
       })

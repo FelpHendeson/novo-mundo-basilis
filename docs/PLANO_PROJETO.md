@@ -5,8 +5,8 @@
 **Stack:** Phaser 3, TypeScript, Vite, Vitest  
 **Repositório:** https://github.com/FelpHendeson/novo-mundo-basilis  
 **Publicação:** https://novo-mundo-basilis.vercel.app  
-**Documento:** v1.7 — 20/10/2026  
-**Estado de referência:** 0.7.0 publicada — inventário e acessórios, código `475a256`, produção READY.
+**Documento:** v1.8 — 20/10/2026  
+**Estado de referência:** 0.8.0 em validação — primeira base e recrutamento; 0.7.0 permanece como última publicação confirmada.
 **Fonte de referência:** este plano versionado no GitHub; a cópia nos arquivos do Projeto deve acompanhar cada revisão documental.
 
 > Este documento é um plano vivo. Conteúdo narrativo e sistemas ainda não aprovados devem ser tratados como propostas, não como cânone.
@@ -137,7 +137,7 @@ docs/              # design, ADRs, releases e planejamento
 | 0.6.0 | Experiência e nível | Primeira vitória concede 100 XP, nível 2 do viajante, ganhos fixos por classe e migração de checkpoint | Entregue |
 | 0.7.0 | Inventário e acessórios | Três itens iniciais, um espaço, troca/remoção e comparação na exploração, efeitos no combate e migração de saves | Entregue |
 | A definir | Efeitos raciais | Dependem de definição criativa e balanceamento próprios | Planejado |
-| 0.8 | Base e recrutamento | Base explorável simples, recrutar e montar equipe | Planejado |
+| 0.8.0 | Primeira base e recrutamento | Preparar abrigo por 3 suprimentos, convidar Lyra por proximidade, alternar equipe/reserva e treinar sem recompensas | Em validação |
 | 0.9 | Campanha vertical | Prólogo e primeiro capítulo jogáveis ponta a ponta | Planejado |
 | 0.10 | Polimento e conteúdo | UX, áudio, sprites, balanceamento, salvamento robusto | Planejado |
 | 1.0 | Primeira versão pública estável | Campanha inicial fechada, QA e documentação de release | Futuro |
@@ -224,7 +224,7 @@ Uma funcionalidade só é considerada entregue quando:
 
 ## 13. Próximo passo operacional
 
-Colher feedback de equipamentos e especificar a primeira entrega de base/recrutamento antes de implementá-la. Correções da 0.7.0 usarão 0.7.1 e seguintes. Os antigos marcos planejados 0.6/0.7/0.8 foram remanejados para 0.8/0.9/0.10, pois progressão e equipamentos ganharam entregas próprias; entregas históricas foram preservadas.
+Validar a 0.8.0 ponta a ponta, publicar e colher feedback de base/formação. Em seguida, especificar um primeiro pacote da campanha vertical 0.9, sem pressupor um capítulo inteiro implementável em uma entrega. Correções da 0.8 usarão 0.8.1 e seguintes.
 
 
 ## 14. Política de versões e manutenção do plano
@@ -351,6 +351,15 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 - **Limites da validação:** sem aparelho físico/Safari, medição de desempenho ou nova partida manual completa até vitória. Efeitos no dano, nível 2 e migração após vitória cobertos automaticamente; bundle Phaser ainda gera aviso de tamanho.
 - **Limitações:** sem armas/armaduras em múltiplos espaços, equipamento de aliados, durabilidade, consumo, loot ou loja. Nível máximo continua 2.
 
+### 15.9 — 0.8.0 — Primeira base e recrutamento — 20/10/2026
+
+- **Estado:** em validação.
+- **Escopo:** após vitória, preparar abrigo junto ao acampamento custa 3 suprimentos uma vez; convidar Lyra perto da trilha exige base pronta e diálogo anterior. Convite único a inclui na equipe. No abrigo, alternar equipe/reserva e iniciar treino com a formação escolhida, sem recompensas ou ferimentos persistentes; viajante sempre presente. Primeira batalha mantém acompanhante temporária.
+- **Apresentação:** painel Base e equipe, objetivos orientando as etapas e representação simples do abrigo preparado no mapa existente. Sem nova região, prédios múltiplos ou história canônica de Lyra.
+- **Compatibilidade:** schema 4, migração de schemas 1–3 conserva perfil, equipamentos, XP, recursos e eventos; base começa não preparada, sem consumo/recrutamento automático. IndexedDB mantém versão 1.
+- **Validação inicial:** 98 testes e build passaram; navegador/publicação serão registrados após validação.
+- **Limitações:** uma aliada, dois membros ativos no máximo, treino no tabuleiro existente, sem slots de 7 membros, novas missões, edifícios adicionais ou equipamento/progressão de Lyra.
+
 ### Modelo de inciso para próximas versões
 
 - **Versão, título, data e estado.**
@@ -374,6 +383,7 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 | v1.5 | 20/10/2026 | Escopo 0.5.0 delimitado ao catálogo e ficha; XP/equipamentos separados e efeitos raciais mantidos pendentes. |
 | v1.6 | 20/10/2026 | Escopo 0.6.0, progressão inicial de dois níveis, recompensa única e migração para schema 2. |
 | v1.7 | 20/10/2026 | Inventário/acessórios 0.7.0 e schema 3; marcos futuros renumerados para evitar colisão com entregas de progressão/equipamentos. |
+| v1.8 | 20/10/2026 | Primeiro ciclo de base/recrutamento 0.8.0, formação e treino sem recompensa, migração schema 4. |
 
 
 ## 17. Escopo executável — 0.4.0
@@ -393,3 +403,7 @@ Aceite: iniciar com nível 1/0 XP; primeira vitória na passagem concede 100 XP,
 ## 20. Escopo executável — 0.7.0
 
 Aceite: inventário acessível em exploração; equipar, trocar e remover entre três acessórios iniciais, um por vez; comparação revela ganho/perda; ficha e próxima batalha usam os mesmos atributos, sem acumulação e sem alterar NPCs. Save/restauração preservam item e inventário; schemas antigos recebem catálogo inicial sem equipar nada; dados inválidos não sobrescrevem saves válidos. Nível/XP, recompensa única e mobile preservados. Equipamentos são itens de protótipo, sem estabelecer material, cultura ou lore canônicos.
+
+## 21. Escopo executável — 0.8.0
+
+Aceite: preparar abrigo só após vitória, perto dele e com três suprimentos; repetição não cobra novamente. Recrutar Lyra apenas com base preparada, diálogo e proximidade, uma vez. Alternar equipe/reserva só no abrigo; formação aplicada no treino e persistida. Treino sem XP/suprimentos/ferimentos persistentes, com saída durante fase aliada e retorno à exploração. Checkpoints antigos não consomem recursos nem recrutam sozinhos. Fluxo inicial com Lyra temporária e progressão/equipamentos preservados. Integração narrativa provisória; não estabelece biografia ou arco canônico de Lyra.

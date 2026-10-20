@@ -86,6 +86,7 @@ export function makeUnits(
   cls: UnitClass = "Guerreiro",
   experience = 0,
   equipment: EquipmentId | null = null,
+  includeLyra = true,
 ): Unit[] {
   function create(
     id: string,
@@ -116,7 +117,7 @@ export function makeUnits(
   }
   return [
     create("hero", name, "ally", cls, 1, 4),
-    create("lyra", "Lyra", "ally", "Mago", 1, 6),
+    ...(includeLyra ? [create("lyra", "Lyra", "ally", "Mago", 1, 6)] : []),
     create("bandit1", "Saqueador", "enemy", "Guerreiro", 9, 2),
     create("bandit2", "Batedor", "enemy", "Ladino", 10, 5),
   ];

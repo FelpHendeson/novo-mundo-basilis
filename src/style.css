@@ -227,6 +227,7 @@ summary {
   }
 }
 
-.equipment-panel .roster {
+.equipment-panel .roster,
+.base-panel .roster {
   grid-template-columns: 1fr;
 }

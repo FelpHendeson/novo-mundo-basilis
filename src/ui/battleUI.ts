@@ -8,6 +8,7 @@ export function renderBattleUI(
   restart: () => void,
   creation: () => void,
   returnToMap?: () => void,
+  practice = false,
 ) {
   let root = document.querySelector<HTMLElement>("#battle-ui");
   if (!root) {
@@ -131,6 +132,8 @@ export function renderBattleUI(
     if (returnToMap) button("map", "Voltar à exploração", returnToMap);
     else button("character", "Criar personagem", creation);
   }
+  if (practice && returnToMap && battle.phase !== "ended")
+    button("leave-training", "Sair do treino", returnToMap, battle.phase === "enemy" || battle.phase === "presentation");
   const roster = document.createElement("div");
   roster.className = "roster";
   for (const ally of battle.allies) {

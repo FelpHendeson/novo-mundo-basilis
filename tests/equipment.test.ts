@@ -59,7 +59,7 @@ describe("inventário e acessório do viajante", () => {
     expect(equipAccessory(c, "forged" as EquipmentId)).toBe(false);
     expect(c.character.equipment).toBeNull();
   });
-  it("rejeita inventário malformado e acessório ausente/não possuído no schema 3", () => {
+  it("rejeita inventário malformado e acessório ausente/não possuído no schema atual", () => {
     for (const inventory of [undefined, null, {}, ["unknown"], ["training-band", "training-band"], [123]]) {
       expect(parseCampaign({ ...create(), inventory })).toBeNull();
     }
@@ -77,7 +77,7 @@ describe("inventário e acessório do viajante", () => {
     const { inventory: __, ...old } = c;
     const source = { ...old, schemaVersion: version, character };
     const migrated = parseCampaign(source)!;
-    expect(migrated.schemaVersion).toBe(3);
+    expect(migrated.schemaVersion).toBe(4);
     expect(migrated.character.experience).toBe(100);
     expect(migrated.character.equipment).toBeNull();
     expect(migrated.inventory).toEqual(EQUIPMENT_IDS);

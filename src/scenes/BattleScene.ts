@@ -11,7 +11,7 @@ import { Battle, type Character } from "../game/battle";
 import { renderBattleUI } from "../ui/battleUI";
 export class BattleScene extends Phaser.Scene {
   private battle!: Battle;
-  private character!: Character & { campaign?: Campaign };
+  private character!: Character & { campaign?: Campaign; practice?: boolean };
   private savedResult = false;
   private campaignSaveNote = "";
   private timer: Phaser.Time.TimerEvent | null = null;
@@ -22,7 +22,7 @@ export class BattleScene extends Phaser.Scene {
   constructor() {
     super("Battle");
   }
-  init(data: Character & { campaign?: Campaign }) {
+  init(data: Character & { campaign?: Campaign; practice?: boolean }) {
     this.character = { ...data, ...(data.campaign?.character ?? {}) };
     this.savedResult = false;
     this.campaignSaveNote = "";
@@ -86,6 +86,7 @@ export class BattleScene extends Phaser.Scene {
     if (
       this.battle.phase === "ended" &&
       this.character.campaign &&
+      !this.character.practice &&
       !this.savedResult
     ) {
       this.savedResult = true;
@@ -236,9 +237,10 @@ export class BattleScene extends Phaser.Scene {
               campaign: this.character.campaign,
             })
         : undefined,
+      this.character.practice ?? false,
     );
     const progress = document.createElement("p");
-    progress.textContent = `${progressLabel(this.character.experience)} · Atributos desta batalha · ${equipmentLabel(this.character.equipment)}`;
+    progress.textContent = `${this.character.practice ? "TREINO · sem XP ou recompensa · " : ""}${progressLabel(this.character.experience)} · Atributos desta batalha · ${equipmentLabel(this.character.equipment)}`;
     document.querySelector("#battle-ui")?.append(progress);
     if (this.campaignSaveNote) {
       const p = document.createElement("p");

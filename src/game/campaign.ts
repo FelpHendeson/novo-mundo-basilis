@@ -4,9 +4,10 @@ import type { Character } from "./battle";
 import { RACES, CLASSES } from "./archetypes";
 export { RACES } from "./archetypes";
 export type Campaign = {
-  schemaVersion: 3;
+  schemaVersion: 4;
   character: Character & { experience: number; equipment: EquipmentId | null };
   inventory: EquipmentId[];
+  base: { prepared: boolean; lyraRecruited: boolean; lyraDeployed: boolean };
   position: { x: number; y: number };
   metLyra: boolean;
   passageCleared: boolean;
@@ -14,9 +15,10 @@ export type Campaign = {
   expeditionComplete: boolean;
 };
 export const newCampaign = (character: Character): Campaign => ({
-  schemaVersion: 3,
+  schemaVersion: 4,
   character: { name: character.name, cls: character.cls, race: character.race, experience: 0, equipment: null },
   inventory: [...EQUIPMENT_IDS],
+  base: { prepared: false, lyraRecruited: false, lyraDeployed: false },
   position: { x: 1, y: 4 },
   metLyra: false,
   passageCleared: false,
@@ -55,7 +57,7 @@ export function parseCampaign(value: unknown): Campaign | null {
   if (!value || typeof value !== "object") return null;
   const c = value as Omit<Campaign, "schemaVersion"> & { schemaVersion: number };
   if (
-    (c.schemaVersion !== 1 && c.schemaVersion !== 2 && c.schemaVersion !== 3) ||
+    ![1, 2, 3, 4].includes(c.schemaVersion) ||
     !c.character ||
     typeof c.character.name !== "string" ||
     !c.character.name.trim() ||
@@ -83,12 +85,17 @@ export function parseCampaign(value: unknown): Campaign | null {
   const inventory = c.schemaVersion < 3 ? [...EQUIPMENT_IDS] : c.inventory;
   const equipment = c.schemaVersion < 3 ? null : c.character.equipment;
   if (!Array.isArray(inventory) || inventory.length > EQUIPMENT_IDS.length ||
-      !inventory.every(isEquipmentId) || new Set(inventory).size !== inventory.length ||
+      !Array.from(inventory).every(isEquipmentId) || new Set(inventory).size !== inventory.length ||
       (equipment !== null && (!isEquipmentId(equipment) || !inventory.includes(equipment)))) return null;
+  const base = c.schemaVersion < 4 ? { prepared: false, lyraRecruited: false, lyraDeployed: false } : c.base;
+  if (!base || typeof base.prepared !== "boolean" || typeof base.lyraRecruited !== "boolean" ||
+      typeof base.lyraDeployed !== "boolean" || (base.prepared && !c.passageCleared) ||
+      (base.lyraRecruited && (!base.prepared || !c.metLyra)) || (base.lyraDeployed && !base.lyraRecruited)) return null;
   return {
-    schemaVersion: 3,
+    schemaVersion: 4,
     character: { name: c.character.name, cls: c.character.cls, race: c.character.race, experience, equipment },
     inventory: [...inventory],
+    base: { prepared: base.prepared, lyraRecruited: base.lyraRecruited, lyraDeployed: base.lyraDeployed },
     position: { ...c.position },
     metLyra: c.metLyra,
     passageCleared: c.passageCleared,
@@ -109,4 +116,33 @@ export function equipAccessory(c: Campaign, equipment: EquipmentId | null): bool
   if (c.character.equipment === equipment) return false;
   c.character.equipment = equipment;
   return true;
+}
+
+export const BASE_COST = 3;
+export function prepareBase(c: Campaign): boolean {
+  if (c.base.prepared || !c.passageCleared || !near(c, 1, 5) || c.supplies < BASE_COST) return false;
+  c.supplies -= BASE_COST;
+  c.base.prepared = true;
+  return true;
+}
+export function recruitLyra(c: Campaign): boolean {
+  if (c.base.lyraRecruited || !c.base.prepared || !c.metLyra || !near(c, 2, 3)) return false;
+  c.base.lyraRecruited = true;
+  c.base.lyraDeployed = true;
+  return true;
+}
+export function setLyraDeployed(c: Campaign, deployed: boolean): boolean {
+  if (!c.base.lyraRecruited || !near(c, 1, 5) || c.base.lyraDeployed === deployed) return false;
+  c.base.lyraDeployed = deployed;
+  return true;
+}
+export function trainingCharacter(c: Campaign): Character | null {
+  if (!c.base.prepared || !c.passageCleared || !near(c, 1, 5)) return null;
+  return { ...c.character, includeLyra: c.base.lyraRecruited && c.base.lyraDeployed };
+}
+export function campaignObjective(c: Campaign): string {
+  if (!c.passageCleared) return c.metLyra ? "Objetivo: alcance as ruínas e proteja a passagem." : "Objetivo: aproxime-se de Lyra e converse.";
+  if (!c.base.prepared) return "Objetivo: prepare a base junto ao abrigo (3 suprimentos).";
+  if (!c.base.lyraRecruited) return "Objetivo: volte à trilha e convide Lyra para a equipe.";
+  return "Base pronta. Monte a equipe junto ao abrigo e teste a formação em treino.";
 }

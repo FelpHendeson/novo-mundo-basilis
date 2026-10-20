@@ -1,3 +1,5 @@
+import { basePanel } from "../ui/baseUI";
+import { prepareBase, recruitLyra, setLyraDeployed, trainingCharacter, campaignObjective } from "../game/campaign";
 import { equipmentPanel } from "../ui/equipmentUI";
 import { equipAccessory } from "../game/campaign";
 import { equipmentLabel } from "../game/equipment";
@@ -118,14 +120,18 @@ export class ExplorationScene extends Phaser.Scene {
             passable(x, y) ? ((x + y) % 2 ? 0x476953 : 0x54765d) : 0x243e39,
           )
           .fillRect(64 + x * 80, 55 + y * 72, 78, 70);
-    text(64 + 2 * 80 + 10, 55 + 3 * 72 + 24, "Lyra");
+    text(64 + 2 * 80 + 10, 55 + 3 * 72 + 24, c.base.lyraRecruited ? "Lyra ✓" : "Lyra");
     text(
       64 + 6 * 80 + 3,
       55 + 2 * 72 + 22,
       c.passageCleared ? "Livre" : "Ruínas",
       15,
     );
-    text(64 + 1 * 80 + 2, 55 + 5 * 72 + 23, "Abrigo", 15);
+    if (c.base.prepared) {
+      this.g.fillStyle(0xc2a66e).fillTriangle(150, 455, 182, 420, 214, 455);
+      this.g.fillStyle(0x8e7249).fillRect(158, 455, 48, 26);
+    }
+    text(64 + 1 * 80 + 2, 55 + 5 * 72 + 23, c.base.prepared ? "Base" : "Abrigo", 15);
     const px = 104 + c.position.x * 80,
       py = 91 + c.position.y * 72;
     this.g.fillStyle(0x7db3e2).fillCircle(px, py, 18);
@@ -136,6 +142,7 @@ export class ExplorationScene extends Phaser.Scene {
       "Clique na casa vizinha · Setas/WASD · Converse perto de Lyra",
       15,
     );
+    const baseOpen = this.panel.querySelector<HTMLDetailsElement>(".base-panel")?.open ?? false;
     const inventoryOpen = this.panel.querySelector<HTMLDetailsElement>(".equipment-panel")?.open ?? false;
     const sheetOpen = this.panel.querySelector<HTMLDetailsElement>(".traveler-sheet")?.open ?? false;
     const scrollTop = this.panel.scrollTop;
@@ -155,15 +162,7 @@ export class ExplorationScene extends Phaser.Scene {
     p(
       `${c.character.name} · ${c.character.race} · ${c.character.cls}`,
     ).className = "profile";
-    p(
-      c.expeditionComplete
-        ? "Expedição concluída. A passagem está livre e o grupo tem um abrigo."
-        : c.passageCleared
-          ? "Objetivo: retorne ao abrigo para concluir a expedição."
-          : c.metLyra
-            ? "Objetivo: alcance as ruínas e proteja a passagem."
-            : "Objetivo: aproxime-se de Lyra e converse.",
-    );
+    p(campaignObjective(c));
     p(this.message, "status");
     p(this.saveMessage).className = "save-status";
     p(
@@ -220,7 +219,7 @@ export class ExplorationScene extends Phaser.Scene {
       () => {
         restAtCamp(c);
         this.message = c.passageCleared
-          ? "Expedição concluída. A passagem está livre e o grupo tem um lugar para descansar. A jornada continua em versões futuras."
+          ? "Expedição concluída. A passagem está livre e o grupo tem um lugar para descansar. Prepare a base e convide Lyra pelo painel Base e equipe."
           : "Um abrigo simples oferece descanso. Lyra aguarda perto da trilha.";
         this.persist();
         this.draw();
@@ -232,6 +231,23 @@ export class ExplorationScene extends Phaser.Scene {
       this.draw();
     });
     button("menu", "Voltar ao menu", () => this.scene.start("Boot"));
+    const updateBase = (change: () => boolean, message: string) => {
+      if (!change()) return;
+      this.message = message;
+      this.persist();
+      this.draw();
+    };
+    const base = basePanel(c, {
+      prepare: () => updateBase(() => prepareBase(c), "Base preparada: -3 suprimentos. Volte à trilha e convide Lyra."),
+      recruit: () => updateBase(() => recruitLyra(c), "Lyra aceitou integrar a equipe. Organize a formação junto ao abrigo."),
+      toggle: () => updateBase(() => setLyraDeployed(c, !c.base.lyraDeployed), "Formação atualizada. A próxima batalha de treino usará esta equipe."),
+      train: () => {
+        const character = trainingCharacter(c);
+        if (character) this.scene.start("Battle", { ...character, campaign: c, practice: true });
+      },
+    });
+    base.open = baseOpen;
+    this.panel.append(base);
     const inventory = equipmentPanel(c, (id) => {
       if (!equipAccessory(c, id)) return;
       this.message = `Acessório atualizado: ${equipmentLabel(id)}.`;
