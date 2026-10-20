@@ -1,5 +1,11 @@
 import Phaser from "phaser";
-import { restAtCamp, moveExplorer, near, passable, type Campaign } from "../game/campaign";
+import {
+  restAtCamp,
+  moveExplorer,
+  near,
+  passable,
+  type Campaign,
+} from "../game/campaign";
 import { saveCampaign } from "../game/persistence/save";
 export class ExplorationScene extends Phaser.Scene {
   private campaign!: Campaign;
@@ -125,6 +131,7 @@ export class ExplorationScene extends Phaser.Scene {
       "Clique na casa vizinha · Setas/WASD · Converse perto de Lyra",
       15,
     );
+    const scrollTop = this.panel.scrollTop;
     const focused = document.activeElement?.getAttribute("data-action");
     this.panel.replaceChildren();
     const h = document.createElement("h2");
@@ -135,9 +142,12 @@ export class ExplorationScene extends Phaser.Scene {
       el.textContent = value;
       if (role) el.setAttribute("role", role);
       this.panel.append(el);
+      return el;
     };
-    p("Uma trilha entre árvores desconhecidas.");
-    p(`${c.character.name} · ${c.character.race} · ${c.character.cls}`);
+    p("Uma trilha entre árvores desconhecidas.").className = "scene-intro";
+    p(
+      `${c.character.name} · ${c.character.race} · ${c.character.cls}`,
+    ).className = "profile";
     p(
       c.expeditionComplete
         ? "Expedição concluída. A passagem está livre e o grupo tem um abrigo."
@@ -148,7 +158,7 @@ export class ExplorationScene extends Phaser.Scene {
             : "Objetivo: aproxime-se de Lyra e converse.",
     );
     p(this.message, "status");
-    p(this.saveMessage);
+    p(this.saveMessage).className = "save-status";
     p(
       `Suprimentos: ${c.supplies} · Posição ${c.position.x + 1}, ${c.position.y + 1}`,
     );
@@ -218,6 +228,7 @@ export class ExplorationScene extends Phaser.Scene {
     if (focused)
       this.panel
         .querySelector<HTMLButtonElement>(`[data-action="${focused}"]`)
-        ?.focus();
+        ?.focus({ preventScroll: true });
+    this.panel.scrollTop = scrollTop;
   }
 }

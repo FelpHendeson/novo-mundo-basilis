@@ -124,3 +124,105 @@ ol {
     grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   }
 }
+
+/* The canvas stays visible while the adjacent command pane scrolls. */
+.touch-cursor {
+  display: none;
+}
+summary {
+  cursor: pointer;
+  min-height: 44px;
+  padding: 12px 0;
+  color: #b7d9c1;
+}
+#combat-ui button {
+  margin: 4px;
+}
+@media (max-width: 900px) {
+  body:has(#battle-ui, #exploration-ui, #combat-ui) {
+    overflow: hidden;
+  }
+  #app:has(#battle-ui, #exploration-ui, #combat-ui) {
+    height: 100dvh;
+    min-height: 0;
+    grid-template-rows: auto minmax(0, 1fr);
+    padding: 8px;
+    gap: 8px;
+  }
+  #app:has(#battle-ui, #exploration-ui, #combat-ui) #game {
+    width: min(100%, 53.333dvh);
+    margin: auto;
+  }
+  #battle-ui,
+  #exploration-ui,
+  #combat-ui {
+    height: 100%;
+    min-height: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+    padding: 12px;
+    scrollbar-gutter: stable;
+  }
+  #battle-ui h2,
+  #exploration-ui h2,
+  #combat-ui h2 {
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+  #battle-ui p,
+  #exploration-ui p,
+  #combat-ui p {
+    margin: 8px 0;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  .actions,
+  .roster {
+    margin: 8px 0;
+    gap: 6px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .actions button,
+  .roster button,
+  .touch-cursor button {
+    min-height: 48px;
+    padding: 10px;
+    font-size: 14px;
+    overflow-wrap: anywhere;
+  }
+  .scene-intro,
+  .profile {
+    display: none;
+  }
+  .notice {
+    padding: 8px;
+  }
+  .touch-cursor {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+    margin: 8px 0;
+  }
+  .touch-cursor p,
+  .touch-cursor [data-action="position"] {
+    grid-column: 1/-1;
+  }
+  details {
+    margin-top: 8px;
+  }
+}
+@media (max-width: 900px) and (orientation: landscape) {
+  #app:has(#battle-ui, #exploration-ui, #combat-ui) {
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 0.8fr);
+    grid-template-rows: minmax(0, 1fr);
+  }
+  #app:has(#battle-ui, #exploration-ui, #combat-ui) #game {
+    width: min(100%, calc((100dvh - 16px) * 1.333333));
+    align-self: start;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
