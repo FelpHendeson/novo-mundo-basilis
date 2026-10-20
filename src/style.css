@@ -226,3 +226,7 @@ summary {
     scroll-behavior: auto;
   }
 }
+
+.equipment-panel .roster {
+  grid-template-columns: 1fr;
+}

@@ -1,10 +1,12 @@
+import { EQUIPMENT_IDS, isEquipmentId, type EquipmentId } from "./equipment";
 import { ENCOUNTER_XP, validExperience } from "./progression";
 import type { Character } from "./battle";
 import { RACES, CLASSES } from "./archetypes";
 export { RACES } from "./archetypes";
 export type Campaign = {
-  schemaVersion: 2;
-  character: Character & { experience: number };
+  schemaVersion: 3;
+  character: Character & { experience: number; equipment: EquipmentId | null };
+  inventory: EquipmentId[];
   position: { x: number; y: number };
   metLyra: boolean;
   passageCleared: boolean;
@@ -12,8 +14,9 @@ export type Campaign = {
   expeditionComplete: boolean;
 };
 export const newCampaign = (character: Character): Campaign => ({
-  schemaVersion: 2,
-  character: { name: character.name, cls: character.cls, race: character.race, experience: 0 },
+  schemaVersion: 3,
+  character: { name: character.name, cls: character.cls, race: character.race, experience: 0, equipment: null },
+  inventory: [...EQUIPMENT_IDS],
   position: { x: 1, y: 4 },
   metLyra: false,
   passageCleared: false,
@@ -52,7 +55,7 @@ export function parseCampaign(value: unknown): Campaign | null {
   if (!value || typeof value !== "object") return null;
   const c = value as Omit<Campaign, "schemaVersion"> & { schemaVersion: number };
   if (
-    (c.schemaVersion !== 1 && c.schemaVersion !== 2) ||
+    (c.schemaVersion !== 1 && c.schemaVersion !== 2 && c.schemaVersion !== 3) ||
     !c.character ||
     typeof c.character.name !== "string" ||
     !c.character.name.trim() ||
@@ -77,9 +80,15 @@ export function parseCampaign(value: unknown): Campaign | null {
   // Schema 1 predates XP: award completed encounters once during migration.
   const experience = c.schemaVersion === 1 ? (c.passageCleared ? ENCOUNTER_XP : 0) : c.character.experience;
   if (!validExperience(experience) || experience !== (c.passageCleared ? ENCOUNTER_XP : 0)) return null;
+  const inventory = c.schemaVersion < 3 ? [...EQUIPMENT_IDS] : c.inventory;
+  const equipment = c.schemaVersion < 3 ? null : c.character.equipment;
+  if (!Array.isArray(inventory) || inventory.length > EQUIPMENT_IDS.length ||
+      !inventory.every(isEquipmentId) || new Set(inventory).size !== inventory.length ||
+      (equipment !== null && (!isEquipmentId(equipment) || !inventory.includes(equipment)))) return null;
   return {
-    schemaVersion: 2,
-    character: { name: c.character.name, cls: c.character.cls, race: c.character.race, experience },
+    schemaVersion: 3,
+    character: { name: c.character.name, cls: c.character.cls, race: c.character.race, experience, equipment },
+    inventory: [...inventory],
     position: { ...c.position },
     metLyra: c.metLyra,
     passageCleared: c.passageCleared,
@@ -91,5 +100,13 @@ export function parseCampaign(value: unknown): Campaign | null {
 export function restAtCamp(c: Campaign) {
   if (!near(c, 1, 5) || !c.passageCleared) return false;
   c.expeditionComplete = true;
+  return true;
+}
+
+/** Equipment can be changed from exploration; battle receives a snapshot on entry. */
+export function equipAccessory(c: Campaign, equipment: EquipmentId | null): boolean {
+  if (equipment !== null && (!isEquipmentId(equipment) || !c.inventory.includes(equipment))) return false;
+  if (c.character.equipment === equipment) return false;
+  c.character.equipment = equipment;
   return true;
 }

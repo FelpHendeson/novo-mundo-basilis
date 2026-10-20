@@ -5,8 +5,8 @@
 **Stack:** Phaser 3, TypeScript, Vite, Vitest  
 **Repositório:** https://github.com/FelpHendeson/novo-mundo-basilis  
 **Publicação:** https://novo-mundo-basilis.vercel.app  
-**Documento:** v1.6 — 20/10/2026  
-**Estado de referência:** 0.6.0 publicada — experiência e nível, código `5f1511d`, produção READY.
+**Documento:** v1.7 — 20/10/2026  
+**Estado de referência:** 0.7.0 em validação — inventário e acessórios; 0.6.0 permanece como última publicação confirmada.
 **Fonte de referência:** este plano versionado no GitHub; a cópia nos arquivos do Projeto deve acompanhar cada revisão documental.
 
 > Este documento é um plano vivo. Conteúdo narrativo e sistemas ainda não aprovados devem ser tratados como propostas, não como cânone.
@@ -135,10 +135,11 @@ docs/              # design, ADRs, releases e planejamento
 | 0.4 | Exploração e persistência mínima | Cenário, NPC, diálogo, encontro, consequência e restauração de checkpoint | Entregue; ver inciso 15.4 |
 | 0.5.0 | Catálogo e ficha do viajante | Dados únicos de classe, prévia de atributos/técnicas, ficha na exploração e preservação dos checkpoints | Entregue |
 | 0.6.0 | Experiência e nível | Primeira vitória concede 100 XP, nível 2 do viajante, ganhos fixos por classe e migração de checkpoint | Entregue |
-| A definir | Equipamentos e efeitos raciais | Dependem de especificação e aceite próprios | Planejado |
-| 0.6 | Base e recrutamento | Base explorável simples, recrutar e montar equipe | Planejado |
-| 0.7 | Campanha vertical | Prólogo e primeiro capítulo jogáveis ponta a ponta | Planejado |
-| 0.8 | Polimento e conteúdo | UX, áudio, sprites, balanceamento, salvamento robusto | Planejado |
+| 0.7.0 | Inventário e acessórios | Três itens iniciais, um espaço, troca/remoção e comparação na exploração, efeitos no combate e migração de saves | Em validação |
+| A definir | Efeitos raciais | Dependem de definição criativa e balanceamento próprios | Planejado |
+| 0.8 | Base e recrutamento | Base explorável simples, recrutar e montar equipe | Planejado |
+| 0.9 | Campanha vertical | Prólogo e primeiro capítulo jogáveis ponta a ponta | Planejado |
+| 0.10 | Polimento e conteúdo | UX, áudio, sprites, balanceamento, salvamento robusto | Planejado |
 | 1.0 | Primeira versão pública estável | Campanha inicial fechada, QA e documentação de release | Futuro |
 
 Os números da tabela são marcos resumidos: 0.2 corresponde a 0.2.0, por exemplo. O marco 1.0.0 só será planejado para execução após definir duração pretendida, cenários/encontros, elenco mínimo e encerramento da campanha inicial; esses limites ainda não estão aprovados.
@@ -223,7 +224,7 @@ Uma funcionalidade só é considerada entregue quando:
 
 ## 13. Próximo passo operacional
 
-Colher feedback da 0.6.0 sobre a primeira evolução. O próximo pacote funcional será equipamentos, com escopo e aceite próprios antes da implementação. Correções publicadas desta entrega usarão 0.6.1 e seguintes.
+Validar e publicar a 0.7.0. Em seguida, colher feedback de equipamentos e especificar a primeira entrega de base/recrutamento antes de implementá-la. Correções da 0.7.0 usarão 0.7.1 e seguintes. Os antigos marcos planejados 0.6/0.7/0.8 foram remanejados para 0.8/0.9/0.10, pois progressão e equipamentos ganharam entregas próprias; entregas históricas foram preservadas.
 
 
 ## 14. Política de versões e manutenção do plano
@@ -336,6 +337,15 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 - **Relatório:** `docs/RELEASE_0.6.md`. Migração de checkpoint antigo já vitorioso coberta em IndexedDB nos testes, sem uma segunda partida manual específica em produção.
 - **Limitações:** apenas viajante, um encontro e dois níveis; sem equipamento, novas técnicas, bônus raciais ou progressão de Lyra. Números provisórios de balanceamento, sem estabelecer lore nova.
 
+### 15.8 — 0.7.0 — Inventário e acessórios — 20/10/2026
+
+- **Estado:** em validação.
+- **Escopo:** inventário inicial com Braçadeira de treino (ataque +2), Foco simples (magia +2) e Broche reforçado (defesa +2). Um espaço de acessório, válido para qualquer classe. Trocar/remover somente na exploração; comparação de ataque/magia/defesa e ficha usam os mesmos atributos da batalha.
+- **Balanceamento provisório:** nomes genéricos, sem lore nova. Itens iniciais disponíveis sem loja/saque; nenhum começa equipado, preservando os atributos anteriores até a escolha do jogador. Apenas viajante recebe bônus.
+- **Compatibilidade:** schema 3; schemas 1/2 recebem inventário inicial e acessório vazio, preservando XP e demais eventos. Valida posse, IDs e duplicatas. Banco IndexedDB mantém versão 1/stores.
+- **Validação:** 87 testes e build passaram. Navegador/publicação pendentes de registro.
+- **Limitações:** sem armas/armaduras em múltiplos espaços, equipamento de aliados, durabilidade, consumo, loot ou loja. Nível máximo continua 2.
+
 ### Modelo de inciso para próximas versões
 
 - **Versão, título, data e estado.**
@@ -358,6 +368,7 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 | v1.4 | 20/10/2026 | Inciso PATCH 0.4.1 e evidências de simulação mobile em retrato/paisagem. |
 | v1.5 | 20/10/2026 | Escopo 0.5.0 delimitado ao catálogo e ficha; XP/equipamentos separados e efeitos raciais mantidos pendentes. |
 | v1.6 | 20/10/2026 | Escopo 0.6.0, progressão inicial de dois níveis, recompensa única e migração para schema 2. |
+| v1.7 | 20/10/2026 | Inventário/acessórios 0.7.0 e schema 3; marcos futuros renumerados para evitar colisão com entregas de progressão/equipamentos. |
 
 
 ## 17. Escopo executável — 0.4.0
@@ -373,3 +384,7 @@ Tornar legíveis as diferenças de classes já existentes, sem redefinir o balan
 ## 19. Escopo executável — 0.6.0
 
 Aceite: iniciar com nível 1/0 XP; primeira vitória na passagem concede 100 XP, nível 2 e ganhos declarados de classe; derrota e repetição não acrescentam XP ou suprimentos; salvar/recarregar conserva progresso; saves schema 1 migram preservando perfil/posição/eventos. Ficha mostra XP, nível, ganhos e limite atual. Atributos evoluídos são reconstruídos na próxima batalha, sem aplicar aumentos em duplicidade nem alterar o encontro em andamento. Apenas protagonista evolui; próximo conteúdo exigirá revisar limite e curva antes de expandi-los.
+
+## 20. Escopo executável — 0.7.0
+
+Aceite: inventário acessível em exploração; equipar, trocar e remover entre três acessórios iniciais, um por vez; comparação revela ganho/perda; ficha e próxima batalha usam os mesmos atributos, sem acumulação e sem alterar NPCs. Save/restauração preservam item e inventário; schemas antigos recebem catálogo inicial sem equipar nada; dados inválidos não sobrescrevem saves válidos. Nível/XP, recompensa única e mobile preservados. Equipamentos são itens de protótipo, sem estabelecer material, cultura ou lore canônicos.

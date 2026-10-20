@@ -1,3 +1,4 @@
+import { equipmentLabel } from "../game/equipment";
 import { progressLabel } from "../game/progression";
 import { finishEncounter, type Campaign } from "../game/campaign";
 import { saveCampaign } from "../game/persistence/save";
@@ -237,7 +238,7 @@ export class BattleScene extends Phaser.Scene {
         : undefined,
     );
     const progress = document.createElement("p");
-    progress.textContent = `${progressLabel(this.character.experience)} · Atributos desta batalha`;
+    progress.textContent = `${progressLabel(this.character.experience)} · Atributos desta batalha · ${equipmentLabel(this.character.equipment)}`;
     document.querySelector("#battle-ui")?.append(progress);
     if (this.campaignSaveNote) {
       const p = document.createElement("p");

@@ -1,3 +1,6 @@
+import { equipmentPanel } from "../ui/equipmentUI";
+import { equipAccessory } from "../game/campaign";
+import { equipmentLabel } from "../game/equipment";
 import { progressLabel } from "../game/progression";
 import { characterSheet } from "../ui/characterSheet";
 import Phaser from "phaser";
@@ -133,6 +136,7 @@ export class ExplorationScene extends Phaser.Scene {
       "Clique na casa vizinha · Setas/WASD · Converse perto de Lyra",
       15,
     );
+    const inventoryOpen = this.panel.querySelector<HTMLDetailsElement>(".equipment-panel")?.open ?? false;
     const sheetOpen = this.panel.querySelector<HTMLDetailsElement>(".traveler-sheet")?.open ?? false;
     const scrollTop = this.panel.scrollTop;
     const focused = document.activeElement?.getAttribute("data-action");
@@ -228,13 +232,21 @@ export class ExplorationScene extends Phaser.Scene {
       this.draw();
     });
     button("menu", "Voltar ao menu", () => this.scene.start("Boot"));
+    const inventory = equipmentPanel(c, (id) => {
+      if (!equipAccessory(c, id)) return;
+      this.message = `Acessório atualizado: ${equipmentLabel(id)}.`;
+      this.persist();
+      this.draw();
+    });
+    inventory.open = inventoryOpen;
+    this.panel.append(inventory);
     const sheet = document.createElement("details");
     sheet.className = "traveler-sheet";
     sheet.open = sheetOpen;
     const summary = document.createElement("summary");
     summary.textContent = "Ficha do viajante";
     summary.dataset.action = "sheet";
-    sheet.append(summary, characterSheet(c.character.cls, c.character.race, c.character.experience));
+    sheet.append(summary, characterSheet(c.character.cls, c.character.race, c.character.experience, c.character.equipment));
     this.panel.append(sheet);
     if (focused)
       this.panel

@@ -1,3 +1,4 @@
+import type { EquipmentId } from "./equipment";
 import { resolveCombat, type CombatEvent } from "./combat";
 import {
   damage,
@@ -19,7 +20,7 @@ export type Phase =
   | "enemy"
   | "ended"
   | "presentation";
-export type Character = { name: string; cls: UnitClass; race: string; experience?: number };
+export type Character = { name: string; cls: UnitClass; race: string; experience?: number; equipment?: EquipmentId | null };
 /** Rules and turn transitions are independent of Phaser and rendering. */
 export class Battle {
   units: Unit[];
@@ -39,7 +40,7 @@ export class Battle {
     character: Character,
     private cinematic = false,
   ) {
-    this.units = makeUnits(character.name, character.cls, character.experience);
+    this.units = makeUnits(character.name, character.cls, character.experience, character.equipment);
   }
   say(message: string) {
     this.note = message;

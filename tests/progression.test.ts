@@ -43,7 +43,7 @@ describe("progressão do viajante", () => {
       const { experience: _, ...character } = create().character;
       const old = { ...create(), schemaVersion: 1, character, passageCleared, supplies: passageCleared ? 3 : 0 };
       const migrated = parseCampaign(old)!;
-      expect(migrated.schemaVersion).toBe(2);
+      expect(migrated.schemaVersion).toBe(3);
       expect(migrated.character.experience).toBe(passageCleared ? 100 : 0);
       if (passageCleared) {
         expect(finishEncounter(migrated, true)).toBe(false);
@@ -53,7 +53,7 @@ describe("progressão do viajante", () => {
       expect(old.schemaVersion).toBe(1);
     }
   });
-  it("rejeita XP inválido, ausente ou incompatível com o encontro no schema 2", () => {
+  it("rejeita XP inválido, ausente ou incompatível com o encontro no schema atual", () => {
     for (const xp of [undefined, null, -1, 1.5, 1, 100, 101, NaN, Infinity, "100"]) {
       const c = create();
       expect(parseCampaign({ ...c, character: { ...c.character, experience: xp } })).toBeNull();
@@ -61,9 +61,9 @@ describe("progressão do viajante", () => {
     const c = create();
     finishEncounter(c, true);
     expect(parseCampaign({ ...c, character: { ...c.character, experience: 0 } })).toBeNull();
-    expect(parseCampaign({ ...c, schemaVersion: 3 })).toBeNull();
+    expect(parseCampaign({ ...c, schemaVersion: 4 })).toBeNull();
   });
-  it("persistência migra checkpoint real antigo e grava schema 2", async () => {
+  it("persistência migra checkpoint real antigo e grava schema 3", async () => {
     const { experience: _, ...character } = create().character;
     const old = { ...create(), schemaVersion: 1, character, passageCleared: true, metLyra: true, supplies: 3, position: { x: 1, y: 5 } };
     await new Promise<void>((resolve, reject) => {
