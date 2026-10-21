@@ -51,7 +51,7 @@ describe("introdução, Sistema e diário", () => {
       ...(version === 4 ? { base: { prepared:true, lyraRecruited:true, lyraDeployed:false } } : {}),
     };
     const c = parseCampaign(fixture)!;
-    expect(c.schemaVersion).toBe(8);
+    expect(c.schemaVersion).toBe(9);
     expect(campaignScene(c.narrative)).toBe("Exploration");
     expect(c.position).toEqual(fixture.position);
     expect(c.character.experience).toBe(100);
@@ -94,7 +94,7 @@ describe("introdução, Sistema e diário", () => {
   it("rejeita nós, cenas, eventos duplicados/desconhecidos e estados incoerentes", () => {
     for (const value of [null, {}, { ...newNarrative(), sceneId:"CASTLE" }, { ...newNarrative(), nodeId:"unknown" }, { ...newNarrative(), appliedEvents:["grant.gold"] }, { ...newNarrative(), appliedEvents:["system.where", "system.where"] }, { ...newNarrative(), appliedEvents:new Array(1) }, { ...newNarrative(), sceneId:"AREA_CLEARING" }, { ...newNarrative(), nodeId:"where" }, { ...newNarrative(), nodeId:"deferred" }]) expect(parseNarrative(value)).toBeNull();
     expect(parseCampaign({ ...create(), narrative:undefined })).toBeNull();
-    expect(parseCampaign({ ...create(), schemaVersion:9 })).toBeNull();
+    expect(parseCampaign({ ...create(), schemaVersion:10 })).toBeNull();
   });
   it("checkpoint narrativo inválido não sobrescreve save válido", async () => {
     const c = create();

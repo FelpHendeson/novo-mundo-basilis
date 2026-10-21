@@ -1,4 +1,5 @@
 import { MISSIONS, type Mission } from "../game/missions";
+import { finishContact } from "../game/contact";
 import { finishCreature } from "../game/creature";
 import { equipmentLabel } from "../game/equipment";
 import { progressLabel } from "../game/progression";
@@ -28,7 +29,7 @@ export class BattleScene extends Phaser.Scene {
     this.character = { ...data, ...(data.campaign?.character ?? {}) };
     this.savedResult = false;
     this.campaignSaveNote = "";
-    this.battle = new Battle(this.character, true, this.character.campaign ? (this.character.practice ? structuredClone(this.character.campaign.adaptation) : this.character.campaign.adaptation) : undefined, data.mission === "creature" ? "creature" : "ruins");
+    this.battle = new Battle(this.character, true, this.character.campaign ? (this.character.practice ? structuredClone(this.character.campaign.adaptation) : this.character.campaign.adaptation) : undefined, data.mission === "contact" ? "contact" : data.mission === "creature" ? "creature" : "ruins");
     this.cursor = { x: this.battle.units[0].x, y: this.battle.units[0].y };
     this.timer = null;
     this.presenting = null;
@@ -36,6 +37,9 @@ export class BattleScene extends Phaser.Scene {
   create() {
     if (this.battle.mission === "creature" && (!this.character.campaign || this.character.campaign.creature.outcome !== "pending" || !this.character.campaign.creature.engaged)) {
       this.scene.start(this.character.campaign ? "Exploration" : "Boot", { campaign: this.character.campaign }); return;
+    }
+    if (this.battle.mission === "contact" && (!this.character.campaign || this.character.campaign.contact.combat !== "active")) {
+      this.scene.start(this.character.campaign ? "Exploration" : "Boot", {campaign:this.character.campaign}); return;
     }
     this.cameras.main.setBackgroundColor("#152229");
     this.add.text(48, 20, MISSIONS[this.battle.mission].banner, {
@@ -96,8 +100,10 @@ export class BattleScene extends Phaser.Scene {
     ) {
       this.savedResult = true;
       const c = this.character.campaign;
-      if (this.battle.mission === "creature") {
-        if (finishCampaignBattle(c, "creature", this.battle.enemies.length === 0)) this.saveCreature();
+      if (this.battle.mission === "contact") {
+        if (finishCampaignBattle(c,"contact",this.battle.outcome === "win",this.battle.outcome === "truce")) this.saveSideEncounter();
+      } else if (this.battle.mission === "creature") {
+        if (finishCampaignBattle(c, "creature", this.battle.enemies.length === 0)) this.saveSideEncounter();
       } else if (finishCampaignBattle(c, "ruins", this.battle.enemies.length === 0)) {
         this.campaignSaveNote = "Vitória: +3 suprimentos · +100 XP · Nível 2. Salvando checkpoint…";
         void saveCampaign(c).then((ok) => {
@@ -117,6 +123,7 @@ export class BattleScene extends Phaser.Scene {
         this.scene.pause();
         this.scene.launch("Combat", {
           event,
+          nonLethal: this.battle.mission === "contact",
           onComplete: () => {
             this.presenting = null;
             this.battle.completePresentation(event.id);
@@ -240,7 +247,7 @@ export class BattleScene extends Phaser.Scene {
       () => this.scene.start("Boot"),
       this.character.campaign
         ? () =>
-            this.scene.start("Exploration", {
+            this.scene.start(this.battle.mission === "contact" ? "Contact" : "Exploration", {
               campaign: this.character.campaign,
             })
         : undefined,
@@ -253,7 +260,12 @@ export class BattleScene extends Phaser.Scene {
           if (this.scene.isActive()) this.redraw();
         });
       },
-      this.battle.mission === "creature" ? () => {
+      this.battle.mission === "contact" ? () => {
+        const c=this.character.campaign;
+        if(c && finishContact(c.contact,"retreated",c.adaptation)) {
+          void saveCampaign(c);this.scene.start("Contact",{campaign:c});
+        }
+      } : this.battle.mission === "creature" ? () => {
         if (this.character.campaign && finishCreature(this.character.campaign.creature, false)) {
           void saveCampaign(this.character.campaign);
           this.scene.start("Exploration", { campaign: this.character.campaign });
@@ -276,7 +288,7 @@ export class BattleScene extends Phaser.Scene {
       });
     }
   }
-  private saveCreature() {
+  private saveSideEncounter() {
     this.campaignSaveNote = "Encontro encerrado sem XP ou saque. Salvando checkpoint…";
     void saveCampaign(this.character.campaign!).then(ok => {
       if (!this.scene.isActive()) return;

@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import type { CombatEvent } from "../game/combat";
 
-type CombatData = { event: CombatEvent; onComplete: () => void };
+type CombatData = { nonLethal?: boolean; event: CombatEvent; onComplete: () => void };
 /** An audiovisual projection of an already committed immutable result. */
 export class CombatScene extends Phaser.Scene {
   private combatData!: CombatData;
@@ -74,13 +74,13 @@ export class CombatScene extends Phaser.Scene {
       140,
       480,
       `${e.attacker.name}\nHP ${e.attacker.hp}/${e.attacker.maxHp}\nEN ${e.attacker.ep} → ${e.epAfter}`,
-      { fontSize: "19px", color: "#e3ebdf" },
+      { fontSize: "18px", color: "#e3ebdf", wordWrap: { width: 210 } },
     );
     this.hp = this.add.text(
       520,
       480,
       `${e.defender.name}\nHP ${e.defender.hp}/${e.defender.maxHp}`,
-      { fontSize: "19px", color: "#e3ebdf" },
+      { fontSize: "18px", color: "#e3ebdf", wordWrap: { width: 210 } },
     );
     this.hit = this.add
       .text(570, 225, "", { fontSize: "38px", color: "#ffe1aa" })
@@ -111,7 +111,7 @@ export class CombatScene extends Phaser.Scene {
     root.append(skip);
     const help = document.createElement("p");
     help.textContent =
-      "Acompanhe o confronto em 1× ou 3×, ou pule para voltar ao tabuleiro.";
+      this.combatData.nonLethal ? "Confronto não letal: HP 0 representa neutralização. Você pode pular a animação." : "Acompanhe o confronto em 1× ou 3×, ou pule para voltar ao tabuleiro.";
     root.append(help);
     document.querySelector("#app")!.append(root);
     this.controls = root;
@@ -173,12 +173,12 @@ export class CombatScene extends Phaser.Scene {
       this.hp.setText(
         `${e.defender.name}\nHP ${e.hpAfter}/${e.defender.maxHp}`,
       );
-      this.hit.setText(`−${e.damage}`);
+      this.hit.setText(e.hpAfter === 0 && this.combatData.nonLethal ? "Neutralizado" : `−${e.damage}`);
       this.cameras.main.shake(120, 0.006);
     }
     if (this.impacted) {
       this.target.alpha =
-        e.hpAfter === 0 ? Math.max(0, 1 - (this.elapsed - 1100) / 600) : 1;
+        e.hpAfter === 0 ? Math.max(this.combatData.nonLethal ? 0.35 : 0, 1 - (this.elapsed - 1100) / 600) : 1;
       this.hit.y = 225 - Math.max(0, this.elapsed - 1000) / 35;
     }
     if (this.elapsed >= 2100) this.finish();

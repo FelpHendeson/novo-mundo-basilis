@@ -1,3 +1,4 @@
+import { CONTACT_POSITION } from "./contact";
 import type { Campaign } from "./campaign";
 import { CASTLE_ROUTE, CASTLE_ENTRANCE, adjacent } from "./areas";
 export function canEnterCastle(c: Campaign): boolean {
@@ -13,4 +14,8 @@ export function canLeaveCastle(c: Campaign): boolean {
 export function leaveCastle(c: Campaign): boolean {
   if(!canLeaveCastle(c)) return false;
   c.area="clearing";return true;
+}
+
+export function canMeetContact(c: Campaign): boolean {
+  return c.area === "clearing" && c.narrative.sceneId === "AREA_CLEARING" && c.castle.visited && adjacent(c.position, CONTACT_POSITION);
 }

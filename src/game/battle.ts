@@ -1,4 +1,4 @@
-import { MISSIONS, CREATURE_TECHNIQUES, creatureUnit, type Mission } from "./missions";
+import { MISSIONS, CREATURE_TECHNIQUES, creatureUnit, GUARD_TECHNIQUES, contactGuardUnit, CONTACT_TRUCE_ROUNDS, type Mission } from "./missions";
 import { CONSUMABLES, type Adaptation, type Consumable } from "./adaptation";
 import type { EquipmentId } from "./equipment";
 import { resolveCombat, type CombatEvent } from "./combat";
@@ -30,6 +30,7 @@ export class Battle {
   selected: Unit | null = null;
   skill: Technique | null = null;
   turn = 1;
+  outcome: "win" | "loss" | "truce" | null = null;
   note = "Selecione um aliado azul disponível.";
   log: string[] = [];
   pending: CombatEvent | null = null;
@@ -45,14 +46,14 @@ export class Battle {
     readonly mission: Mission = "ruins",
   ) {
     this.units = makeUnits(character.name, character.cls, character.experience, character.equipment, character.includeLyra, adaptation?.claimed);
-    if (mission === "creature") {
+    if (mission === "creature" || mission === "contact") {
       const hero = this.units[0];
       hero.x = 3; hero.y = 4;
-      this.units = [hero, creatureUnit()];
+      this.units = [hero, mission === "contact" ? contactGuardUnit() : creatureUnit()];
     }
   }
   techniques(unit: Unit): readonly Technique[] {
-    return unit.id === "creature" ? CREATURE_TECHNIQUES : TECHNIQUES[unit.cls];
+    return unit.id === "creature" ? CREATURE_TECHNIQUES : unit.id === "survivor-guard" ? GUARD_TECHNIQUES : TECHNIQUES[unit.cls];
   }
   say(message: string) {
     this.note = message;
@@ -66,7 +67,9 @@ export class Battle {
   }
   checkEnd() {
     if (this.pending) return false;
+    if (this.phase === "ended") return true;
     if (!this.enemies.length || !this.allies.length) {
+      this.outcome = !this.enemies.length ? "win" : "loss";
       this.phase = "ended";
       this.selected = null;
       this.skill = null;
@@ -181,7 +184,7 @@ export class Battle {
     target.hp = result.hpAfter;
     unit.ep = result.epAfter;
     this.say(
-      `${unit.name} usou ${skill.name}: ${result.damage} de dano em ${target.name}${target.hp === 0 ? " (derrotado)" : ""}.`,
+      `${unit.name} usou ${skill.name}: ${result.damage} de dano em ${target.name}${target.hp === 0 ? (this.mission === "contact" ? " (neutralizado)" : " (derrotado)") : ""}.`,
     );
     if (this.cinematic) {
       this.resume = this.phase === "enemy" ? "enemy" : "ally";
@@ -237,6 +240,11 @@ export class Battle {
       if (this.checkEnd()) return;
     }
     this.enemyQueue = null;
+    if (this.mission === "contact" && this.turn >= CONTACT_TRUCE_ROUNDS) {
+      this.outcome = "truce"; this.phase = "ended"; this.selected = null; this.skill = null;
+      this.say("Trégua: você resistiu por três rodadas. O guardião baixa a arma e aceita conversar.");
+      return;
+    }
     for (const unit of this.units.filter((u) => u.hp > 0)) {
       unit.acted = false;
       unit.ep = Math.min(unit.maxEp, unit.ep + 2);

@@ -1,3 +1,4 @@
+import { newContact, parseContact, finishContact, type ContactState } from "./contact";
 import { newCastle, parseCastle, type CastleState } from "./castle";
 import type { AreaId } from "./areas";
 import type { Mission } from "./missions";
@@ -10,13 +11,14 @@ import type { Character } from "./battle";
 import { RACES, CLASSES } from "./archetypes";
 export { RACES } from "./archetypes";
 export type Campaign = {
-  schemaVersion: 8;
+  schemaVersion: 9;
   character: Character & { experience: number; equipment: EquipmentId | null };
   narrative: NarrativeState;
   adaptation: Adaptation;
   creature: CreatureState;
   area: AreaId;
   castle: CastleState;
+  contact: ContactState;
   inventory: EquipmentId[];
   base: { prepared: boolean; lyraRecruited: boolean; lyraDeployed: boolean };
   position: { x: number; y: number };
@@ -26,13 +28,14 @@ export type Campaign = {
   expeditionComplete: boolean;
 };
 export const newCampaign = (character: Character): Campaign => ({
-  schemaVersion: 8,
+  schemaVersion: 9,
   character: { name: character.name, cls: character.cls, race: character.race, experience: 0, equipment: null },
   narrative: newNarrative(),
   adaptation: newAdaptation(),
   creature: newCreature(),
   area: "clearing",
   castle: newCastle(),
+  contact: newContact(),
   inventory: [...EQUIPMENT_IDS],
   base: { prepared: false, lyraRecruited: false, lyraDeployed: false },
   position: { x: 1, y: 4 },
@@ -73,7 +76,7 @@ export function parseCampaign(value: unknown): Campaign | null {
   if (!value || typeof value !== "object") return null;
   const c = value as Omit<Campaign, "schemaVersion"> & { schemaVersion: number };
   if (
-    ![1, 2, 3, 4, 5, 6, 7, 8].includes(c.schemaVersion) ||
+    ![1, 2, 3, 4, 5, 6, 7, 8, 9].includes(c.schemaVersion) ||
     !c.character ||
     typeof c.character.name !== "string" ||
     !c.character.name.trim() ||
@@ -116,13 +119,16 @@ export function parseCampaign(value: unknown): Campaign | null {
   const area = c.schemaVersion < 8 ? "clearing" : c.area;
   const castle = c.schemaVersion < 8 ? newCastle() : parseCastle(c.castle);
   if (!castle || !["clearing", "castle"].includes(area) || (area === "castle" && (!castle.visited || !narrative.appliedEvents.includes("arrival.completed")))) return null;
+  const contact = c.schemaVersion < 9 ? newContact() : parseContact(c.contact);
+  if (!contact || (contact.seen && !castle.visited) || (contact.offer === "invited" && !castle.name) || ((contact.aidGiven || contact.recovery === "ration") && !adaptation.claimed)) return null;
   return {
-    schemaVersion: 8,
+    schemaVersion: 9,
     narrative,
     adaptation,
     creature,
     area,
     castle,
+    contact,
     character: { name: c.character.name, cls: c.character.cls, race: c.character.race, experience, equipment },
     inventory: [...inventory],
     base: { prepared: base.prepared, lyraRecruited: base.lyraRecruited, lyraDeployed: base.lyraDeployed },
@@ -178,7 +184,8 @@ export function campaignObjective(c: Campaign): string {
 }
 
 /** Mission-specific completion prevents the tutorial from granting ruin rewards. */
-export function finishCampaignBattle(c: Campaign, mission: Mission, won: boolean): boolean {
+export function finishCampaignBattle(c: Campaign, mission: Mission, won: boolean, truce = false): boolean {
+  if (mission === "contact") return finishContact(c.contact, truce ? "survived" : won ? "neutralized" : "defeated", c.adaptation);
   return mission === "creature" ? finishCreature(c.creature, won) : finishEncounter(c, won);
 }
 

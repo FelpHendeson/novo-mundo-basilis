@@ -137,14 +137,14 @@ export function renderBattleUI(
   if (battle.phase === "idle")
     button("end", "Encerrar turno [E]", () => battle.endTurn());
   if (battle.phase === "ended") {
-    if (battle.mission !== "creature") button("restart", "Repetir batalha", restart);
-    if (returnToMap) button("map", "Voltar à exploração", returnToMap);
+    if (battle.mission === "ruins") button("restart", "Repetir batalha", restart);
+    if (returnToMap) button("map", battle.mission === "contact" ? "Continuar conversa" : "Voltar à exploração", returnToMap);
     else button("character", "Criar personagem", creation);
   }
   if (practice && returnToMap && battle.phase !== "ended")
     button("leave-training", "Sair do treino", returnToMap, battle.phase === "enemy" || battle.phase === "presentation");
   if (retreat && battle.phase !== "ended")
-    button("retreat", "Recuar da criatura", retreat, battle.phase === "enemy" || battle.phase === "presentation");
+    button("retreat", battle.mission === "contact" ? "Recuar e conversar" : "Recuar da criatura", retreat, battle.phase === "enemy" || battle.phase === "presentation");
   const roster = document.createElement("div");
   roster.className = "roster";
   for (const ally of battle.allies) {

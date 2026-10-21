@@ -1,3 +1,4 @@
+import { ContactScene } from "./scenes/ContactScene";
 import { CastleScene } from "./scenes/CastleScene";
 import { CreatureScene } from "./scenes/CreatureScene";
 import { ArrivalScene } from "./scenes/ArrivalScene";
@@ -15,6 +16,6 @@ new Phaser.Game({
   backgroundColor: "#121e22",
   pixelArt: true,
   roundPixels: true,
-  scene: [BootScene, ArrivalScene, ExplorationScene, CastleScene, CreatureScene, BattleScene, CombatScene],
+  scene: [BootScene, ArrivalScene, ExplorationScene, ContactScene, CastleScene, CreatureScene, BattleScene, CombatScene],
   scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
 });

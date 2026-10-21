@@ -1,3 +1,4 @@
+import { CONTACT_ANSWERS, contactTrust } from "./contact";
 import { CASTLE_POINTS } from "./castle";
 import type { Campaign } from "./campaign";
 import { campaignObjective } from "./campaign";
@@ -22,6 +23,18 @@ export function journalEntries(c: Campaign): string[] {
   if (c.castle.claimDeferred) entries.push("Você adiou a reivindicação do castelo; acesso e descobertas foram preservados.");
   if (c.castle.name) entries.push(`Castelo ${c.castle.name}: autoridade administrativa registrada pelo Sistema. Não implica reconhecimento por outras autoridades.`);
   if (c.castle.priority) entries.push(`Primeira prioridade: ${CASTLE_POINTS[c.castle.priority].repair}. Nenhuma obra executada ou material consumido.`);
+  if(c.contact.seen) entries.push(`Sobreviventes encontrados na trilha. Confiança inicial: ${contactTrust(c.contact)}.`);
+  if(c.contact.observed) entries.push("Doze pessoas observadas, algumas feridas, protegidas por um guardião cauteloso.");
+  if(c.contact.combat==="active") entries.push("Confronto com o guardião interrompido. Volte ao grupo para reiniciar ou recuar.");
+  if(c.contact.combat==="survived") entries.push("Você resistiu três rodadas e o guardião aceitou uma trégua sem mortes.");
+  if(c.contact.combat==="neutralized") entries.push("O guardião foi neutralizado e o confronto terminou sem mortes.");
+  if(c.contact.combat==="defeated") entries.push(c.contact.recovery==="ration" ? "Confronto perdido; uma ração foi usada na recuperação, uma vez. A conversa continua." : "Confronto perdido; descanso assistido sem ração disponível. A conversa continua.");
+  if(c.contact.combat==="retreated") entries.push("Você baixou as armas e conversou à distância, sem mortes.");
+  for(const id of c.contact.questions) entries.push(CONTACT_ANSWERS[id]);
+  if(c.contact.aidGiven) entries.push("Uma ração foi oferecida aos feridos, uma única vez. O grupo continua livre para decidir.");
+  if(c.contact.terms) entries.push(c.contact.terms==="honest" ? "Você esclareceu os limites do castelo." : "Você prometeu reparos rápidos; o grupo espera provas.");
+  if(c.contact.offer==="declined") entries.push("Você encerrou o contato sem oferecer convite.");
+  if(c.contact.offer==="invited") entries.push(c.contact.response==="considering" ? "O grupo considera o convite, mas exige verificar água, abrigo e segurança antes de mudar." : "O grupo recusou a proposta nas condições atuais. Nenhum morador foi transferido.");
   if (c.metLyra) entries.push("Lyra ofereceu ajuda para proteger a passagem nas ruínas.");
   if (c.passageCleared) entries.push("Passagem liberada. A recompensa da primeira vitória já foi registrada.");
   if (c.base.prepared) entries.push("Abrigo preparado com três suprimentos, pagos uma única vez.");
