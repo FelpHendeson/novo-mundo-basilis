@@ -122,7 +122,7 @@ describe("schema 9 e diário",()=>{
  it.each([1,2,3,4,5,6,7,8])("migra schema %i sem gerar contato, população ou alterar conquistas",schemaVersion=>{
   const c=create();finishEncounter(c,true);c.metLyra=true;c.base={prepared:true,lyraRecruited:true,lyraDeployed:false};c.supplies=0;c.character.equipment="simple-focus";
   c.castle.visited=true;c.castle.throneActivated=true;c.castle.name="Aurora";c.castle.inspected=["gate"];c.castle.priority="gate";claimKit(c.adaptation);c.adaptation.rations=1;
-  const m=parseCampaign({...c,schemaVersion})!;expect(m.schemaVersion).toBe(9);expect(m.contact).toEqual(newContact());expect(m.supplies).toBe(0);expect(m.character.experience).toBe(100);
+  const m=parseCampaign({...c,schemaVersion})!;expect(m.schemaVersion).toBe(10);expect(m.contact).toEqual(newContact());expect(m.supplies).toBe(0);expect(m.character.experience).toBe(100);
   if(schemaVersion>=4)expect(m.base).toEqual(c.base);if(schemaVersion>=6)expect(m.adaptation).toEqual(c.adaptation);if(schemaVersion>=8)expect(m.castle).toEqual(c.castle);
  });
  it("salva respostas, convite em avaliação, termos e ajuda sem reaplicar custos",async()=>{

@@ -83,7 +83,7 @@ describe("base, recrutamento e formação", () => {
     const c = victorious();
     const { base: _, ...old } = c;
     const migrated = parseCampaign({ ...old, schemaVersion })!;
-    expect(migrated.schemaVersion).toBe(9);
+    expect(migrated.schemaVersion).toBe(10);
     expect(migrated.base).toEqual({ prepared: false, lyraRecruited: false, lyraDeployed: false });
     expect(migrated.supplies).toBe(3);
     expect(migrated.character.experience).toBe(100);

@@ -1,3 +1,5 @@
+import { settlementPanel } from "../ui/settlementUI";
+import { settlementView, RESOURCE_POINT } from "../game/settlement";
 import { CONTACT_POSITION } from "../game/contact";
 import { enterCastle, canEnterCastle, canMeetContact } from "../game/travel";
 import { CASTLE_ROUTE } from "../game/areas";
@@ -110,6 +112,7 @@ export class ExplorationScene extends Phaser.Scene {
   }
   private draw() {
     const c = this.campaign;
+    const settlement=settlementView(c.settlement),escorting=settlement.phase==="escorting";
     this.g.clear();
     this.labels.forEach((t) => t.destroy());
     this.labels = [];
@@ -129,7 +132,9 @@ export class ExplorationScene extends Phaser.Scene {
             passable(x, y) ? ((x + y) % 2 ? 0x476953 : 0x54765d) : 0x243e39,
           )
           .fillRect(64 + x * 80, 55 + y * 72, 78, 70);
-    if (c.castle.visited) text(64 + CONTACT_POSITION.x * 80 + 3, 55 + CONTACT_POSITION.y * 72 + 24, "Vozes", 14);
+    if(c.castle.name)text(64+RESOURCE_POINT.x*80+3,55+RESOURCE_POINT.y*72+24,"Coleta",14);
+    if(escorting)this.g.fillStyle(0xd5b46f).fillCircle(92+c.position.x*80,108+c.position.y*72,8);
+    if (c.castle.visited && settlement.phase!=="arrived") text(64 + CONTACT_POSITION.x * 80 + 3, 55 + CONTACT_POSITION.y * 72 + 24, "Vozes", 14);
     text(64 + CASTLE_ROUTE.x * 80 + 3, 55 + CASTLE_ROUTE.y * 72 + 24, "Castelo", 14);
     text(64 + 3 * 80 + 3, 55 + 1 * 72 + 24, c.creature.outcome === "pending" ? "Rastros" : "Toca", 14);
     text(64 + 2 * 80 + 10, 55 + 3 * 72 + 24, c.base.lyraRecruited ? "Lyra ✓" : "Lyra");
@@ -154,6 +159,7 @@ export class ExplorationScene extends Phaser.Scene {
       "Clique na casa vizinha · Setas/WASD · Converse perto de Lyra",
       15,
     );
+    const settlementOpen=this.panel.querySelector<HTMLDetailsElement>(".settlement-panel")?.open??false;
     const journalOpen = this.panel.querySelector<HTMLDetailsElement>(".journal-panel")?.open ?? false;
     const baseOpen = this.panel.querySelector<HTMLDetailsElement>(".base-panel")?.open ?? false;
     const inventoryOpen = this.panel.querySelector<HTMLDetailsElement>(".equipment-panel")?.open ?? false;
@@ -176,7 +182,8 @@ export class ExplorationScene extends Phaser.Scene {
       `${c.character.name} · ${c.character.race} · ${c.character.cls}`,
     ).className = "profile";
     p(campaignObjective(c));
-    if (c.castle.visited) p("Vozes e sinais de luta na trilha leste (casa 8, 5). Você pode investigar ou seguir por outro caminho.");
+    if(escorting)p(`Acompanhando ${settlement.party.length} pessoas. Siga ao norte até a casa 8,2 e entre no castelo; a viagem não cobra novas provisões.`);
+    if (c.castle.visited && !escorting && settlement.phase!=="arrived") p("Vozes e sinais de luta na trilha leste (casa 8, 5). Você pode investigar ou seguir por outro caminho.");
     p(c.castle.visited ? `Trilha do castelo disponível ao nordeste · ${c.castle.name ?? "posse ainda não reivindicada"}.` : "Uma trilha antiga segue ao nordeste (casa 8, 2). Você pode investigar o castelo sem combater.");
     if (c.creature.outcome === "pending") p("Opcional: investigue os rastros junto à toca (casa 4, 2), ao norte da abertura.");
     p(this.message, "status");
@@ -227,7 +234,7 @@ export class ExplorationScene extends Phaser.Scene {
       () => {
         this.scene.start("Battle", { ...c.character, campaign: c });
       },
-      !c.metLyra || c.passageCleared || !near(c, 6, 2),
+      escorting || !c.metLyra || c.passageCleared || !near(c, 6, 2),
     );
     button(
       "camp",
@@ -244,12 +251,12 @@ export class ExplorationScene extends Phaser.Scene {
       },
       !near(c, 1, 5),
     );
-    button("creature", c.creature.outcome === "pending" ? "Investigar os rastros" : "Rever encontro da toca", () => this.scene.start("Creature", { campaign: c }), !near(c, CREATURE_POSITION.x, CREATURE_POSITION.y));
+    button("creature", c.creature.outcome === "pending" ? "Investigar os rastros" : "Rever encontro da toca", () => this.scene.start("Creature", { campaign: c }), escorting || !near(c, CREATURE_POSITION.x, CREATURE_POSITION.y));
     button("castle", "Seguir a trilha do castelo", () => {
       if (!enterCastle(c)) return;
       this.persist(); this.scene.start("Castle", { campaign: c });
     }, !canEnterCastle(c));
-    button("contact", c.contact.seen ? "Retomar contato com sobreviventes" : "Investigar vozes na trilha", () => this.scene.start("Contact", { campaign:c }), !canMeetContact(c));
+    button("contact", settlement.phase==="arrived" ? "Sobreviventes no castelo" : c.contact.seen ? "Retomar contato com sobreviventes" : "Investigar vozes na trilha", () => this.scene.start("Contact", { campaign:c }), !canMeetContact(c));
     button("save", "Salvar checkpoint", () => {
       this.persist();
       this.draw();
@@ -260,6 +267,7 @@ export class ExplorationScene extends Phaser.Scene {
       this.scene.start("Arrival", { campaign: c });
     });
     button("menu", "Voltar ao menu", () => this.scene.start("Boot"));
+    const work=settlementPanel(c,message=>{this.message=message;this.draw();this.persist();},"trail");work.open=settlementOpen;this.panel.append(work);
     const journal = journalPanel(c);
     journal.open = journalOpen;
     this.panel.append(journal);
@@ -279,7 +287,7 @@ export class ExplorationScene extends Phaser.Scene {
       },
     });
     base.open = baseOpen;
-    this.panel.append(base);
+    if(!escorting)this.panel.append(base);
     const inventory = equipmentPanel(c, (id) => {
       if (!equipAccessory(c, id)) return;
       this.message = `Acessório atualizado: ${equipmentLabel(id)}.`;

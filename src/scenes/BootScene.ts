@@ -20,7 +20,7 @@ export class BootScene extends Phaser.Scene {
     g.fillStyle(0x896e48).fillRect(358, 362, 40, 20);
     g.fillStyle(0xc7c8ae).fillRect(514, 336, 32, 52);
     this.add.text(384, 494, "NOVO MUNDO: BASILIS", { fontFamily: "Georgia", fontSize: "28px", color: "#eadbb7" }).setOrigin(0.5);
-    this.add.text(384, 542, "0.13.0 · Primeiro contato · Arte provisória", { fontSize: "16px", color: "#c8d9ca" }).setOrigin(0.5);
+    this.add.text(384, 542, "0.14.0 · Primeiro assentamento · Arte provisória", { fontSize: "16px", color: "#c8d9ca" }).setOrigin(0.5);
     const menu = document.createElement("section");
     menu.id = "boot-ui";
     menu.innerHTML = '<h2>Última manhã</h2><p>Era um dia livre. Você acordara tarde. O mundo parecia seguir seu curso.</p><p>A última lembrança é banal: uma refeição interrompida.</p><p>Depois, apenas uma lacuna. Sem uma resposta sobre o que aconteceu.</p>';

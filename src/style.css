@@ -266,3 +266,8 @@ summary {
 
 #contact-ui .actions { grid-template-columns: 1fr; }
 #contact-ui h2, #contact-ui button { overflow-wrap: anywhere; }
+
+.settlement-panel { margin-top: 16px; overflow-wrap: anywhere; }
+.settlement-panel > button { display: block; width: 100%; min-height: 48px; margin: 8px 0; text-align: left; white-space: normal; }
+.settlement-panel select { min-height: 48px; }
+.settlement-panel ul { padding-left: 20px; }

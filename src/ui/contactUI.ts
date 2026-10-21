@@ -1,6 +1,10 @@
+import { settlementPanel } from "./settlementUI";
+import { settlementView } from "../game/settlement";
 import type { Campaign } from "../game/campaign";
 import { CONTACT_BALANCE, CONTACT_QUESTIONS, CONTACT_ANSWERS, CONTACT_RESULTS, contactTrust, contactResolved, observeContact, finishContact, askContact, donateContactRation, setContactTerms, inviteContact, declineContact, reviewContactInvitation, type ContactOpening } from "../game/contact";
 export function renderContactUI(root:HTMLElement,c:Campaign,changed:(message?:string)=>void,start:(opening?:ContactOpening)=>void,back:()=>void,feedback:string,saveMessage:string) {
+  const settlementOpen=root.querySelector<HTMLDetailsElement>(".settlement-panel")?.open??false;
+  const escort=settlementView(c.settlement).phase==="escorting";
   const scroll=root.scrollTop,focus=document.activeElement?.getAttribute("data-action");
   const detailsOpen=root.querySelector<HTMLDetailsElement>(".contact-answers")?.open??false;
   root.replaceChildren();const s=c.contact;
@@ -48,6 +52,8 @@ export function renderContactUI(root:HTMLElement,c:Campaign,changed:(message?:st
     for(const id of s.questions){const el=document.createElement("p");el.textContent=CONTACT_ANSWERS[id];details.append(el);}
     const rules=document.createElement("p");rules.textContent="A abertura cautelosa, a resistência, a ajuda e a honestidade influenciam a confiança. Repetir perguntas não acrescenta pontos. Este encontro não concede XP ou saque.";details.append(rules);root.append(details);
   }
+  const work=settlementPanel(c,message=>changed(message),"contact");work.open=settlementOpen;root.append(work);
+  if(escort)p("O grupo aguarda sua saída pela clareira. Siga a trilha norte até o castelo.","status");
   button("back","Voltar à clareira",back);
   p(saveMessage).className="save-status";
   if(focus)root.querySelector<HTMLElement>(`[data-action="${focus}"]`)?.focus({preventScroll:true});root.scrollTop=scroll;

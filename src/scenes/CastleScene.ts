@@ -1,3 +1,5 @@
+import { settlementPanel } from "../ui/settlementUI";
+import { settlementView } from "../game/settlement";
 import Phaser from "phaser";
 import type { Campaign } from "../game/campaign";
 import { AREAS, CASTLE_ENTRANCE, castlePassable } from "../game/areas";
@@ -70,6 +72,7 @@ export class CastleScene extends Phaser.Scene {
   }
   private draw() {
     const c = this.campaign.castle;
+    const settlement=settlementView(this.campaign.settlement);
     this.graphics.clear(); this.labels.forEach(t => t.destroy()); this.labels = [];
     const text = (x:number,y:number,label:string,size=15) => this.labels.push(this.add.text(x,y,label,{fontSize:`${size}px`,color:"#eee2bd",wordWrap:{width:640}}));
     text(64,18,"BASILIS / CASTELO ABANDONADO",21);
@@ -84,6 +87,10 @@ export class CastleScene extends Phaser.Scene {
       this.graphics.fillStyle(c.inspected.includes(id) ? 0xb7c982 : 0xd5b16c).fillRect(70+p.x*80,61+p.y*72,12,12);
       text(68+p.x*80,80+p.y*72,short[id],13);
     }
+    for(const id of ["gate","dormitory","storehouse"] as const) if(settlement.done.includes(id)) {
+      const p=CASTLE_POINTS[id];this.graphics.lineStyle(4,0xb9d78b).strokeRect(66+p.x*80,57+p.y*72,74,66);
+    }
+    if(settlement.phase==="arrived")text(64,480,`${settlement.party.length} moradores · obras concluídas em verde`,15);
     this.graphics.fillStyle(c.name ? 0xd5b46f : 0x82619b).fillRect(314,60,28,24);
     text(310,96,"Trono",13); text(306,442,"Trilha",13);
     const x=104+c.position.x*80,y=91+c.position.y*72;
@@ -93,6 +100,8 @@ export class CastleScene extends Phaser.Scene {
   }
   private renderPanel() {
     const c=this.campaign.castle;
+    const settlement=settlementView(this.campaign.settlement);
+    const settlementOpen=this.panel.querySelector<HTMLDetailsElement>(".settlement-panel")?.open??false;
     const oldInput=this.panel.querySelector<HTMLInputElement>("#castle-name");
     if (oldInput) this.draftName=oldInput.value;
     const focus=document.activeElement?.getAttribute("data-action"), scroll=this.panel.scrollTop;
@@ -138,8 +147,8 @@ export class CastleScene extends Phaser.Scene {
       });
     }
     if (c.name) {
-      p("Administração do castelo · 0 moradores assentados · estruturas danificadas. Lyra continua aliada da expedição; não foi transferida automaticamente para a população.");
-      p("Prioridade de reparo: "+(c.priority ? CASTLE_POINTS[c.priority].repair : "ainda não definida")+". Materiais e trabalhadores ainda precisam ser obtidos; escolher não executa a obra.");
+      p(`Administração do castelo · ${settlement.phase==="arrived"?settlement.party.length:0} moradores assentados · ${settlement.done.filter(id=>["gate","dormitory","storehouse"].includes(id)).length} obras concluídas. Lyra continua aliada da expedição; não foi transferida automaticamente para a população.`);
+      p("Prioridade de reparo: "+(c.priority ? CASTLE_POINTS[c.priority].repair : "ainda não definida")+". Escolher a prioridade não executa a obra. Use o quadro de assentamento para reunir recursos e trabalhar.");
       const repairs=document.createElement("div");repairs.className="roster castle-repairs";
       for(const id of REPAIR_IDS) button(`priority-${id}`,`Priorizar: ${CASTLE_POINTS[id].repair}${c.inspected.includes(id) ? "" : " · inspecione primeiro"}`,()=>{
         if(!prioritizeRepair(c,id)) return;
@@ -147,6 +156,7 @@ export class CastleScene extends Phaser.Scene {
       },!c.inspected.includes(id) || c.priority===id,repairs);
       this.panel.append(repairs);
     } else p(c.claimDeferred ? "Reivindicação adiada. O castelo permanece acessível; volte ao trono para decidir." : "A administração só será registrada se você decidir reivindicar o castelo no trono.");
+    const work=settlementPanel(this.campaign,message=>{this.message=message;this.draw();this.persist();},"castle");work.open=settlementOpen;this.panel.append(work);
     button("exit","Voltar pela trilha à clareira",()=>{
       if(!leaveCastle(this.campaign)) return;
       this.persist();this.scene.start("Exploration",{campaign:this.campaign});

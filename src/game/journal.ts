@@ -1,3 +1,4 @@
+import { settlementView, settlementClock } from "./settlement";
 import { CONTACT_ANSWERS, contactTrust } from "./contact";
 import { CASTLE_POINTS } from "./castle";
 import type { Campaign } from "./campaign";
@@ -22,7 +23,7 @@ export function journalEntries(c: Campaign): string[] {
   if (c.castle.throneActivated) entries.push("O trono respondeu: núcleo territorial inativo detectado. A reivindicação depende da sua decisão.");
   if (c.castle.claimDeferred) entries.push("Você adiou a reivindicação do castelo; acesso e descobertas foram preservados.");
   if (c.castle.name) entries.push(`Castelo ${c.castle.name}: autoridade administrativa registrada pelo Sistema. Não implica reconhecimento por outras autoridades.`);
-  if (c.castle.priority) entries.push(`Primeira prioridade: ${CASTLE_POINTS[c.castle.priority].repair}. Nenhuma obra executada ou material consumido.`);
+  if (c.castle.priority) entries.push(`Primeira prioridade: ${CASTLE_POINTS[c.castle.priority].repair}. A prioridade sozinha não executa obra nem consome materiais; confira os registros de trabalho.`);
   if(c.contact.seen) entries.push(`Sobreviventes encontrados na trilha. Confiança inicial: ${contactTrust(c.contact)}.`);
   if(c.contact.observed) entries.push("Doze pessoas observadas, algumas feridas, protegidas por um guardião cauteloso.");
   if(c.contact.combat==="active") entries.push("Confronto com o guardião interrompido. Volte ao grupo para reiniciar ou recuar.");
@@ -39,5 +40,7 @@ export function journalEntries(c: Campaign): string[] {
   if (c.passageCleared) entries.push("Passagem liberada. A recompensa da primeira vitória já foi registrada.");
   if (c.base.prepared) entries.push("Abrigo preparado com três suprimentos, pagos uma única vez.");
   if (c.base.lyraRecruited) entries.push(`Lyra aceitou integrar o grupo e está ${c.base.lyraDeployed ? "na equipe" : "na reserva"}.`);
+  const settlement=settlementView(c.settlement);
+  if(c.settlement.events.length) entries.push(`${settlementClock(settlement)} · obras: ${settlement.done.filter(id=>["gate","dormitory","storehouse"].includes(id)).join(", ")||"nenhuma"} · moradores: ${settlement.phase==="arrived"?settlement.party.length:0}.`);
   return entries;
 }
