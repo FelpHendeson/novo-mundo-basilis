@@ -1,8 +1,9 @@
+import { CASTLE_POINTS } from "./castle";
 import type { Campaign } from "./campaign";
 import { campaignObjective } from "./campaign";
 export function journalEntries(c: Campaign): string[] {
   const events = c.narrative.appliedEvents;
-  const entries = [campaignObjective(c)];
+  const entries = [c.area === "castle" ? "Explore o castelo; reivindicar sua administração é opcional." : campaignObjective(c)];
   if (events.includes("journey.legacy")) entries.push("A jornada já estava em curso. Perfil, posição e conquistas anteriores foram preservados.");
   if (events.includes("system.welcome")) entries.push("Uma interface apresentou o nome Basilis. A origem do transporte continua desconhecida.");
   if (events.includes("system.where")) entries.push("Sistema: designação ambiental Basilis; região não identificada.");
@@ -15,6 +16,12 @@ export function journalEntries(c: Campaign): string[] {
   if (c.creature.outcome === "repelled") entries.push("A criatura foi afugentada. Não houve saque ou recompensa de XP.");
   if (c.creature.outcome === "retreated") entries.push("Você recuou do confronto na toca e continuou a jornada.");
   if (c.creature.engaged && c.creature.outcome === "pending") entries.push("Confronto da toca interrompido: volte aos rastros para reiniciar ou encerrar recuando.");
+  if (c.castle.visited) entries.push("Uma trilha antiga conecta a clareira a um castelo abandonado. Sua origem e antigos donos permanecem desconhecidos.");
+  for (const id of c.castle.inspected) entries.push(`${CASTLE_POINTS[id].name}: ${CASTLE_POINTS[id].clue}`);
+  if (c.castle.throneActivated) entries.push("O trono respondeu: núcleo territorial inativo detectado. A reivindicação depende da sua decisão.");
+  if (c.castle.claimDeferred) entries.push("Você adiou a reivindicação do castelo; acesso e descobertas foram preservados.");
+  if (c.castle.name) entries.push(`Castelo ${c.castle.name}: autoridade administrativa registrada pelo Sistema. Não implica reconhecimento por outras autoridades.`);
+  if (c.castle.priority) entries.push(`Primeira prioridade: ${CASTLE_POINTS[c.castle.priority].repair}. Nenhuma obra executada ou material consumido.`);
   if (c.metLyra) entries.push("Lyra ofereceu ajuda para proteger a passagem nas ruínas.");
   if (c.passageCleared) entries.push("Passagem liberada. A recompensa da primeira vitória já foi registrada.");
   if (c.base.prepared) entries.push("Abrigo preparado com três suprimentos, pagos uma única vez.");

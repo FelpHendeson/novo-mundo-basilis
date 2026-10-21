@@ -43,7 +43,7 @@ describe("progressão do viajante", () => {
       const { experience: _, ...character } = create().character;
       const old = { ...create(), schemaVersion: 1, character, passageCleared, supplies: passageCleared ? 3 : 0 };
       const migrated = parseCampaign(old)!;
-      expect(migrated.schemaVersion).toBe(7);
+      expect(migrated.schemaVersion).toBe(8);
       expect(migrated.character.experience).toBe(passageCleared ? 100 : 0);
       if (passageCleared) {
         expect(finishEncounter(migrated, true)).toBe(false);
@@ -61,7 +61,7 @@ describe("progressão do viajante", () => {
     const c = create();
     finishEncounter(c, true);
     expect(parseCampaign({ ...c, character: { ...c.character, experience: 0 } })).toBeNull();
-    expect(parseCampaign({ ...c, schemaVersion: 8 })).toBeNull();
+    expect(parseCampaign({ ...c, schemaVersion: 9 })).toBeNull();
   });
   it("persistência migra checkpoint real antigo e grava schema 5", async () => {
     const { experience: _, ...character } = create().character;

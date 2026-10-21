@@ -1,6 +1,6 @@
 import { adaptationUI } from "../ui/adaptationUI";
 import Phaser from "phaser";
-import type { Campaign } from "../game/campaign";
+import { campaignStartScene, type Campaign } from "../game/campaign";
 import { chooseDialogue, recordNarrativeEvent, systemDialogue, type DialogueChoice } from "../game/narrative";
 import { saveCampaign } from "../game/persistence/save";
 
@@ -64,7 +64,7 @@ export class ArrivalScene extends Phaser.Scene {
     line.textContent = systemDialogue[this.campaign.narrative.nodeId]; this.panel.append(line);
     const actions = document.createElement("div"); actions.className = "actions";
     for (const [id, label] of [["where", "Onde estou?"], ["identity", "Quem é você?"], ["defer", "Agora não"], ["continue", "Seguir pela clareira"]] as const) {
-      const b = document.createElement("button"); b.dataset.choice = id; b.textContent = label;
+      const b = document.createElement("button"); b.dataset.choice = id; b.textContent = id === "continue" && this.campaign.area === "castle" ? "Voltar ao castelo" : label;
       b.onclick = () => this.choose(id); actions.append(b);
     }
     this.panel.append(actions);
@@ -79,7 +79,7 @@ export class ArrivalScene extends Phaser.Scene {
   private choose(choice: DialogueChoice) {
     if (!chooseDialogue(this.campaign.narrative, choice)) return;
     this.persist();
-    if (this.campaign.narrative.sceneId === "AREA_CLEARING") this.scene.start("Exploration", { campaign: this.campaign });
+    if (this.campaign.narrative.sceneId === "AREA_CLEARING") this.scene.start(campaignStartScene(this.campaign), { campaign: this.campaign });
     else this.render();
   }
 }

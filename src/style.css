@@ -139,17 +139,17 @@ summary {
   margin: 4px;
 }
 @media (max-width: 900px) {
-  body:has(#battle-ui, #exploration-ui, #combat-ui, #system-ui, #encounter-ui) {
+  body:has(#battle-ui, #exploration-ui, #combat-ui, #system-ui, #encounter-ui, #castle-ui) {
     overflow: hidden;
   }
-  #app:has(#battle-ui, #exploration-ui, #combat-ui, #system-ui, #encounter-ui) {
+  #app:has(#battle-ui, #exploration-ui, #combat-ui, #system-ui, #encounter-ui, #castle-ui) {
     height: 100dvh;
     min-height: 0;
     grid-template-rows: auto minmax(0, 1fr);
     padding: 8px;
     gap: 8px;
   }
-  #app:has(#battle-ui, #exploration-ui, #combat-ui, #system-ui, #encounter-ui) #game {
+  #app:has(#battle-ui, #exploration-ui, #combat-ui, #system-ui, #encounter-ui, #castle-ui) #game {
     width: min(100%, 53.333dvh);
     margin: auto;
   }
@@ -157,7 +157,8 @@ summary {
   #exploration-ui,
   #combat-ui,
   #system-ui,
-  #encounter-ui {
+  #encounter-ui,
+  #castle-ui {
     height: 100%;
     min-height: 0;
     overflow: auto;
@@ -169,7 +170,8 @@ summary {
   #exploration-ui h2,
   #combat-ui h2,
   #system-ui h2,
-  #encounter-ui h2 {
+  #encounter-ui h2,
+  #castle-ui h2 {
     font-size: 20px;
     margin-bottom: 8px;
   }
@@ -177,7 +179,8 @@ summary {
   #exploration-ui p,
   #combat-ui p,
   #system-ui p,
-  #encounter-ui p {
+  #encounter-ui p,
+  #castle-ui p {
     margin: 8px 0;
     font-size: 14px;
     line-height: 1.4;
@@ -218,11 +221,11 @@ summary {
   }
 }
 @media (max-width: 900px) and (orientation: landscape) {
-  #app:has(#battle-ui, #exploration-ui, #combat-ui, #system-ui, #encounter-ui) {
+  #app:has(#battle-ui, #exploration-ui, #combat-ui, #system-ui, #encounter-ui, #castle-ui) {
     grid-template-columns: minmax(0, 1fr) minmax(260px, 0.8fr);
     grid-template-rows: minmax(0, 1fr);
   }
-  #app:has(#battle-ui, #exploration-ui, #combat-ui, #system-ui, #encounter-ui) #game {
+  #app:has(#battle-ui, #exploration-ui, #combat-ui, #system-ui, #encounter-ui, #castle-ui) #game {
     width: min(100%, calc((100dvh - 16px) * 1.333333));
     align-self: start;
   }
@@ -252,3 +255,8 @@ summary {
 .mana-tutorial { margin-block: 12px; }
 
 #encounter-ui .actions { grid-template-columns: 1fr; }
+
+.castle-claim { padding: 12px; margin-block: 12px; }
+.castle-claim button { width: 100%; }
+.castle-repairs { grid-template-columns: 1fr; }
+#castle-ui h2 { overflow-wrap: anywhere; }

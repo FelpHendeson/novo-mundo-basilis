@@ -1,3 +1,5 @@
+import { newCastle, parseCastle, type CastleState } from "./castle";
+import type { AreaId } from "./areas";
 import type { Mission } from "./missions";
 import { newCreature, parseCreature, finishCreature, type CreatureState } from "./creature";
 import { newAdaptation, parseAdaptation, type Adaptation } from "./adaptation";
@@ -8,11 +10,13 @@ import type { Character } from "./battle";
 import { RACES, CLASSES } from "./archetypes";
 export { RACES } from "./archetypes";
 export type Campaign = {
-  schemaVersion: 7;
+  schemaVersion: 8;
   character: Character & { experience: number; equipment: EquipmentId | null };
   narrative: NarrativeState;
   adaptation: Adaptation;
   creature: CreatureState;
+  area: AreaId;
+  castle: CastleState;
   inventory: EquipmentId[];
   base: { prepared: boolean; lyraRecruited: boolean; lyraDeployed: boolean };
   position: { x: number; y: number };
@@ -22,11 +26,13 @@ export type Campaign = {
   expeditionComplete: boolean;
 };
 export const newCampaign = (character: Character): Campaign => ({
-  schemaVersion: 7,
+  schemaVersion: 8,
   character: { name: character.name, cls: character.cls, race: character.race, experience: 0, equipment: null },
   narrative: newNarrative(),
   adaptation: newAdaptation(),
   creature: newCreature(),
+  area: "clearing",
+  castle: newCastle(),
   inventory: [...EQUIPMENT_IDS],
   base: { prepared: false, lyraRecruited: false, lyraDeployed: false },
   position: { x: 1, y: 4 },
@@ -44,7 +50,7 @@ export const passable = (x: number, y: number) =>
   y < 6 &&
   !((x === 4 && y !== 2) || (x === 2 && y === 1));
 export function moveExplorer(c: Campaign, dx: number, dy: number) {
-  if (Math.abs(dx) + Math.abs(dy) !== 1) return false;
+  if (c.area !== "clearing" || Math.abs(dx) + Math.abs(dy) !== 1) return false;
   const x = c.position.x + dx,
     y = c.position.y + dy;
   if (!passable(x, y) || (x === 2 && y === 3)) return false;
@@ -52,7 +58,7 @@ export function moveExplorer(c: Campaign, dx: number, dy: number) {
   return true;
 }
 export const near = (c: Campaign, x: number, y: number) =>
-  Math.abs(c.position.x - x) + Math.abs(c.position.y - y) <= 1;
+  c.area === "clearing" && Math.abs(c.position.x - x) + Math.abs(c.position.y - y) <= 1;
 export function finishEncounter(c: Campaign, won: boolean) {
   if (won && !c.passageCleared) {
     c.passageCleared = true;
@@ -67,7 +73,7 @@ export function parseCampaign(value: unknown): Campaign | null {
   if (!value || typeof value !== "object") return null;
   const c = value as Omit<Campaign, "schemaVersion"> & { schemaVersion: number };
   if (
-    ![1, 2, 3, 4, 5, 6, 7].includes(c.schemaVersion) ||
+    ![1, 2, 3, 4, 5, 6, 7, 8].includes(c.schemaVersion) ||
     !c.character ||
     typeof c.character.name !== "string" ||
     !c.character.name.trim() ||
@@ -107,11 +113,16 @@ export function parseCampaign(value: unknown): Campaign | null {
   if (!adaptation) return null;
   const creature = c.schemaVersion < 7 ? newCreature() : parseCreature(c.creature);
   if (!creature) return null;
+  const area = c.schemaVersion < 8 ? "clearing" : c.area;
+  const castle = c.schemaVersion < 8 ? newCastle() : parseCastle(c.castle);
+  if (!castle || !["clearing", "castle"].includes(area) || (area === "castle" && (!castle.visited || !narrative.appliedEvents.includes("arrival.completed")))) return null;
   return {
-    schemaVersion: 7,
+    schemaVersion: 8,
     narrative,
     adaptation,
     creature,
+    area,
+    castle,
     character: { name: c.character.name, cls: c.character.cls, race: c.character.race, experience, equipment },
     inventory: [...inventory],
     base: { prepared: base.prepared, lyraRecruited: base.lyraRecruited, lyraDeployed: base.lyraDeployed },
@@ -169,4 +180,9 @@ export function campaignObjective(c: Campaign): string {
 /** Mission-specific completion prevents the tutorial from granting ruin rewards. */
 export function finishCampaignBattle(c: Campaign, mission: Mission, won: boolean): boolean {
   return mission === "creature" ? finishCreature(c.creature, won) : finishEncounter(c, won);
+}
+
+/** Narrative consultations return to the current area; legacy saves default to the clearing. */
+export function campaignStartScene(c: Campaign): "Arrival" | "Exploration" | "Castle" {
+  return c.narrative.sceneId === "SCN_002_AWAKEN" ? "Arrival" : c.area === "castle" ? "Castle" : "Exploration";
 }

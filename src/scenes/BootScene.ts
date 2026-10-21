@@ -1,8 +1,7 @@
 import Phaser from "phaser";
 import { CLASSES, RACES } from "../game/archetypes";
 import { characterSheet } from "../ui/characterSheet";
-import { newCampaign } from "../game/campaign";
-import { campaignScene } from "../game/narrative";
+import { campaignStartScene, newCampaign } from "../game/campaign";
 import { loadCampaign, saveCampaign, type LoadResult } from "../game/persistence/save";
 import type { UnitClass } from "../game/model";
 
@@ -21,7 +20,7 @@ export class BootScene extends Phaser.Scene {
     g.fillStyle(0x896e48).fillRect(358, 362, 40, 20);
     g.fillStyle(0xc7c8ae).fillRect(514, 336, 32, 52);
     this.add.text(384, 494, "NOVO MUNDO: BASILIS", { fontFamily: "Georgia", fontSize: "28px", color: "#eadbb7" }).setOrigin(0.5);
-    this.add.text(384, 542, "0.9.0 · Última manhã · Arte provisória", { fontSize: "16px", color: "#c8d9ca" }).setOrigin(0.5);
+    this.add.text(384, 542, "0.12.0 · O castelo · Arte provisória", { fontSize: "16px", color: "#c8d9ca" }).setOrigin(0.5);
     const menu = document.createElement("section");
     menu.id = "boot-ui";
     menu.innerHTML = '<h2>Última manhã</h2><p>Era um dia livre. Você acordara tarde. O mundo parecia seguir seu curso.</p><p>A última lembrança é banal: uma refeição interrompida.</p><p>Depois, apenas uma lacuna. Sem uma resposta sobre o que aconteceu.</p>';
@@ -47,7 +46,7 @@ export class BootScene extends Phaser.Scene {
       if (loaded.status === "loaded") {
         const resume = document.createElement("button");
         resume.textContent = `Continuar jornada de ${loaded.campaign.character.name}`;
-        resume.onclick = () => this.scene.start(campaignScene(loaded.campaign.narrative), { campaign: loaded.campaign });
+        resume.onclick = () => this.scene.start(campaignStartScene(loaded.campaign), { campaign: loaded.campaign });
         start.before(resume);
       }
     });

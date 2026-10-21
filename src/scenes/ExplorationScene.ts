@@ -1,3 +1,5 @@
+import { enterCastle, canEnterCastle } from "../game/travel";
+import { CASTLE_ROUTE } from "../game/areas";
 import { CREATURE_POSITION } from "../game/creature";
 import { journalPanel } from "../ui/journalUI";
 import { openSystem } from "../game/narrative";
@@ -40,6 +42,7 @@ export class ExplorationScene extends Phaser.Scene {
     this.saveMessage = "Salvando checkpoint…";
   }
   create() {
+    if (this.campaign.area === "castle") { this.scene.start("Castle", { campaign: this.campaign }); return; }
     this.cameras.main.setBackgroundColor("#122129");
     this.g = this.add.graphics();
     this.panel = document.createElement("section");
@@ -125,6 +128,7 @@ export class ExplorationScene extends Phaser.Scene {
             passable(x, y) ? ((x + y) % 2 ? 0x476953 : 0x54765d) : 0x243e39,
           )
           .fillRect(64 + x * 80, 55 + y * 72, 78, 70);
+    text(64 + CASTLE_ROUTE.x * 80 + 3, 55 + CASTLE_ROUTE.y * 72 + 24, "Castelo", 14);
     text(64 + 3 * 80 + 3, 55 + 1 * 72 + 24, c.creature.outcome === "pending" ? "Rastros" : "Toca", 14);
     text(64 + 2 * 80 + 10, 55 + 3 * 72 + 24, c.base.lyraRecruited ? "Lyra ✓" : "Lyra");
     text(
@@ -170,6 +174,7 @@ export class ExplorationScene extends Phaser.Scene {
       `${c.character.name} · ${c.character.race} · ${c.character.cls}`,
     ).className = "profile";
     p(campaignObjective(c));
+    p(c.castle.visited ? `Trilha do castelo disponível ao nordeste · ${c.castle.name ?? "posse ainda não reivindicada"}.` : "Uma trilha antiga segue ao nordeste (casa 8, 2). Você pode investigar o castelo sem combater.");
     if (c.creature.outcome === "pending") p("Opcional: investigue os rastros junto à toca (casa 4, 2), ao norte da abertura.");
     p(this.message, "status");
     p(this.saveMessage).className = "save-status";
@@ -237,6 +242,10 @@ export class ExplorationScene extends Phaser.Scene {
       !near(c, 1, 5),
     );
     button("creature", c.creature.outcome === "pending" ? "Investigar os rastros" : "Rever encontro da toca", () => this.scene.start("Creature", { campaign: c }), !near(c, CREATURE_POSITION.x, CREATURE_POSITION.y));
+    button("castle", "Seguir a trilha do castelo", () => {
+      if (!enterCastle(c)) return;
+      this.persist(); this.scene.start("Castle", { campaign: c });
+    }, !canEnterCastle(c));
     button("save", "Salvar checkpoint", () => {
       this.persist();
       this.draw();
