@@ -16,6 +16,7 @@ export class BattleScene extends Phaser.Scene {
   private battle!: Battle;
   private character!: Character & { campaign?: Campaign; practice?: boolean; mission?: Mission };
   private savedResult = false;
+  private saveGeneration = 0;
   private campaignSaveNote = "";
   private timer: Phaser.Time.TimerEvent | null = null;
   private graphics!: Phaser.GameObjects.Graphics;
@@ -26,6 +27,7 @@ export class BattleScene extends Phaser.Scene {
     super("Battle");
   }
   init(data: Character & { campaign?: Campaign; practice?: boolean; mission?: Mission }) {
+    this.saveGeneration++;
     this.character = { ...data, ...(data.campaign?.character ?? {}) };
     this.savedResult = false;
     this.campaignSaveNote = "";
@@ -82,6 +84,7 @@ export class BattleScene extends Phaser.Scene {
       this.handleKey(event),
     );
     this.events.once("shutdown", () => {
+      this.saveGeneration++;
       this.input.keyboard?.off("keydown");
       this.input.off("pointerdown");
       this.timer?.remove();
@@ -106,8 +109,9 @@ export class BattleScene extends Phaser.Scene {
         if (finishCampaignBattle(c, "creature", this.battle.enemies.length === 0)) this.saveSideEncounter();
       } else if (finishCampaignBattle(c, "ruins", this.battle.enemies.length === 0)) {
         this.campaignSaveNote = "Vitória: +3 suprimentos · +100 XP · Nível 2. Salvando checkpoint…";
+        const generation = this.saveGeneration;
         void saveCampaign(c).then((ok) => {
-          if (!this.scene.isActive()) return;
+          if (generation !== this.saveGeneration) return;
           this.campaignSaveNote = ok
             ? "Vitória: +3 suprimentos · +100 XP · Nível 2. Checkpoint salvo."
             : "Vitória: +3 suprimentos · +100 XP · Nível 2 nesta sessão; não foi possível salvar.";
@@ -255,9 +259,11 @@ export class BattleScene extends Phaser.Scene {
       () => {
         if (!this.character.campaign || this.character.practice) return;
         this.campaignSaveNote = "Salvando consumo de item…";
+        const generation = this.saveGeneration;
         void saveCampaign(this.character.campaign).then(ok => {
+          if (generation !== this.saveGeneration) return;
           this.campaignSaveNote = ok ? "Consumo de item salvo." : "Consumo mantido nesta sessão; falha ao salvar.";
-          if (this.scene.isActive()) this.redraw();
+          this.redraw();
         });
       },
       this.battle.mission === "contact" ? () => {
@@ -290,8 +296,9 @@ export class BattleScene extends Phaser.Scene {
   }
   private saveSideEncounter() {
     this.campaignSaveNote = "Encontro encerrado sem XP ou saque. Salvando checkpoint…";
+    const generation = this.saveGeneration;
     void saveCampaign(this.character.campaign!).then(ok => {
-      if (!this.scene.isActive()) return;
+      if (generation !== this.saveGeneration) return;
       this.campaignSaveNote = ok ? "Decisão do encontro salva. Sem XP ou saque." : "Decisão mantida nesta sessão; não foi possível salvar.";
       this.redraw();
     });

@@ -19,3 +19,5 @@ Schema9 migra schemas1–8, sem gerar contato ou modificar conquistas anteriores
 
 ## Limites e sequência
 Arte/mapa provisórios, sem áudio/sprites finais, identidade completa dos doze, assentamento automático, calendário ou fonte nova de materiais. A confiança deste contato não substitui moral/lealdade. A migração protege o abrigo, a formação de Lyra, o castelo e o encontro da criatura. Próximo: P09-04, condições individuais de adesão, retorno físico, fontes/custos e primeiro reparo real. Arco I ainda incompleto.
+
+Correção durante QA: avisos de salvamento da batalha usam uma geração de sessão, em vez de ignorar callbacks durante a pausa da cinemática. Isso evita aviso “Salvando…” permanente e descarta callbacks de uma batalha já encerrada/reiniciada.
