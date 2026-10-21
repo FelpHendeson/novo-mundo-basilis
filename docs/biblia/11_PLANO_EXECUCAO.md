@@ -2,7 +2,7 @@
 
 20/10/2026. Fonte avaliada: `d18f741` e os 11 arquivos de `docs/biblia`. Referência implementada: jogo 0.8.0, código `2ec2139`. Este documento planeja entregas; não anuncia novas funcionalidades ou publicação do jogo.
 
-**Registro de execução:** P09-01A entregue como 0.9.0 (`8ef54fa`); ver `../RELEASE_0.9.md` e inciso 15.10 do plano. P09-01B1 entregue como 0.10.0 (`feed9f6c`), kit/consumíveis e exercício guiado de mana. Próximo: P09-01B2, criatura observar/evitar/enfrentar; só depois P09-02. Ver `../RELEASE_0.10.md` e inciso 15.11. A avaliação abaixo preserva a referência histórica em 0.8.0.
+**Registro de execução:** P09-01A entregue como 0.9.0 (`8ef54fa`); ver `../RELEASE_0.9.md` e inciso 15.10 do plano. P09-01B1 entregue como 0.10.0 (`feed9f6c`), kit/consumíveis e exercício guiado de mana. P09-01B2 entregue como 0.11.0 (`28c8564`), criatura observar/contornar/enfrentar; próximo P09-02. Ver `../RELEASE_0.10.md` e inciso 15.11. A avaliação abaixo preserva a referência histórica em 0.8.0.
 
 ## Avaliação
 
@@ -92,6 +92,8 @@ A direção nova já estabelece Sistema universal, mana acessível a combatentes
 
 Nenhuma dessas decisões impede começar a infraestrutura e a consulta do Sistema da 0.9.0. As respostas aos mistérios permanecem deliberadamente indefinidas.
 
-## Execução 0.10.0 e recorte seguinte
+## Execução 0.10.0/0.11.0 e recorte seguinte
 
 P09-01B foi dividido em B1 (entregue: kit funcional, consumíveis, exercício acessível e persistência schema 6) e B2 (próximo: primeiro encontro com criatura, observar/evitar/enfrentar e consequências sem bloqueio). A 0.10.0 não conclui toda SCN_003. Valores provisórios e evidências em `../RELEASE_0.10.md`; próximos MINOR definidos ao fechar escopo, PATCH reservado a correções. Não antecipar castelo ou novas recompensas de XP.
+
+P09-01B2 entregue em 21/10/2026: ver `../RELEASE_0.11.md` e inciso 15.12. Observação produz registro, sem anunciar progressão profissional ainda ausente. Próxima entrega P09-02 (castelo); inspeção, posse adiável e compatibilidade do abrigo devem ser especificadas antes de expandir população/economia.

@@ -2,7 +2,7 @@
 
 RPG tático original com exploração, recrutamento, classes e construção de comunidade planejados.
 
-**Versão 0.10.0:** kit de adaptação opcional, arma compatível, poções/rações utilizáveis em batalha e exercício de mana com assistência. Save schema 6, compatível com schemas 1–5. [Relatório e limitações](docs/RELEASE_0.10.md).
+**Versão 0.11.0:** primeiro encontro opcional de criatura: observar, contornar ou enfrentar. Resultados persistentes, retirada segura, técnicas e objetivos por missão. Saves schema 1–6 migram para 7. [Relatório e limitações](docs/RELEASE_0.11.md).
 
 ## Desenvolvimento
 
@@ -82,3 +82,5 @@ A primeira batalha mantém Lyra como acompanhante temporária. Recrutamento e ba
 Nova jornada: Última manhã → criação → chegada. Pergunte Onde estou?/Quem é você? ou adie com Agora não. Na exploração, use Consultar o Sistema e Diário da jornada. Recarregar após criação e antes de sair da chegada permite continuar no nó de resposta salvo. Antes da criação não há personagem para salvar: voltar à tela inicial não cria checkpoint parcial.
 
 Schema 5 migra schemas 1–4 para exploração, conservando posição, conquistas, equipe e acessórios; não força a introdução nem inventa respostas já consultadas. O diário não concede XP/recursos e o ledger narrativo não duplica eventos. Arte original provisória por código, sem áudio/spritesheets finais. Kit de adaptação, consumíveis, tutorial de mana e castelo são pacotes seguintes.
+
+Na clareira, aproxime-se dos rastros junto à casa 4,2 e use **Investigar os rastros**. Este encontro não exige kit, tutorial ou conversa com Lyra e não bloqueia a trilha.

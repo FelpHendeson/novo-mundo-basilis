@@ -5,8 +5,8 @@
 **Stack:** Phaser 3, TypeScript, Vite, Vitest  
 **Repositório:** https://github.com/FelpHendeson/novo-mundo-basilis  
 **Publicação:** https://novo-mundo-basilis.vercel.app  
-**Documento:** v2.1 — 20/10/2026  
-**Estado de referência:** 0.10.0 publicada — kit de adaptação, consumíveis e exercício de mana, código `feed9f6c`, produção READY.
+**Documento:** v2.2 — 21/10/2026
+**Estado de referência:** 0.11.0 publicada — primeiro encontro opcional de criatura, código `28c8564`, produção READY.
 **Fonte de referência:** este plano versionado no GitHub; a cópia nos arquivos do Projeto deve acompanhar cada revisão documental.
 
 > Este documento é um plano vivo. Conteúdo narrativo e sistemas ainda não aprovados devem ser tratados como propostas, não como cânone.
@@ -233,7 +233,7 @@ Uma funcionalidade só é considerada entregue quando:
 
 ## 13. Próximo passo operacional
 
-P09-01B1 entregue como 0.10.0. Seguir com P09-01B2: primeiro encontro de criatura em SCN_003, com observar/evitar/enfrentar, consequências persistentes e saídas seguras. Fechar espécie provisória, mapa e tabela de consequências antes de implementar. Sem obrigar combate, repetir recompensa ou introduzir respostas aos mistérios. Só depois avançar ao castelo P09-02. A próxima versão funcional será MINOR ao fechar o escopo; correções da 0.10.0 recebem PATCH e inciso próprio.
+P09-01B2 entregue como 0.11.0: primeiro encontro de criatura com observar/contornar/enfrentar e saídas persistentes. Seguir com P09-02: caminho ao castelo, inspeção e reivindicação voluntária com nome validado. Fechar mapa, pontos interativos, estado do núcleo e relação com o abrigo/Lyra antes do código; adiar a posse não pode bloquear exploração. Não introduzir materiais, população ou renda sem origem. A próxima versão funcional será MINOR ao fechar o escopo; correções da 0.11.0 recebem PATCH e inciso próprio. O primeiro arco completo ainda não está entregue.
 
 ## 14. Política de versões e manutenção do plano
 
@@ -401,6 +401,20 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 - **Limites:** primeira criatura observar/evitar/enfrentar fica em P09-01B2. Bolsa sem limite de peso; exercício guiado, não minigame de ritmo. Recarga não retoma turno/HP, mas conserva itens gastos. Base/reserva e migrações cobertas por testes; partida manual completa até vitória não repetida nesta release. Sem nova curva de XP, castelo ou moradores.
 - **Documentação:** relatório `docs/RELEASE_0.10.md`. Plano canônico no GitHub atualizado; cópia anexa do Projeto não sincronizada nesta sessão por indisponibilidade do ambiente de arquivos.
 
+### 15.12 — 0.11.0 — Primeiro encontro de criatura — 21/10/2026
+
+- **Estado:** entregue; P09-01B2. Complementa kit/exercício de mana; não anuncia todo minigame de percepção/proficiência de SCN_003 como completo.
+- **Escopo:** toca opcional na casa 4,2 da clareira. Observar registra comportamento sem combate; voltar permite decidir depois; contornar encerra pacificamente. Enfrentar abre combate individual; vitória afugenta, derrota/retirada encerram em segurança. Resultados terminais sem replay. Sem XP/saque, morte obrigatória ou bloqueio do encontro antigo.
+- **Balanceamento provisório:** criatura 20 HP/ataque 4/defesa 2/movimento 3; Garrada potência 5, alcance 1, custo 0. Espécie não identificada, silhueta quadrúpede original provisória. Arena reutiliza tabuleiro existente; não é mapa definitivo da toca.
+- **Arquitetura:** catálogo tipado de missões; resultado da campanha por missão; técnicas próprias e estado de contato independente. Cinemética permanece projeção imutável do resultado. Ficha/recompensas/base das ruínas preservadas.
+- **Compatibilidade:** schema 7, migração 1–6, banco IndexedDB versão 1. Saves antigos recebem encontro pendente sem movimento/recompensa automática. Recarga durante confronto retorna à exploração; interação na toca permite reiniciar com HP/EN restaurados ou encerrar recuando. Consumo salvo não é reposto.
+- **Código:** `28c856496954bf2698795738271e4fb48b8f9d84`, branch `release/0.11.0`. Tag Git pendente; relatório `docs/RELEASE_0.11.md`.
+- **Testes:** 148 testes/11 arquivos e TypeScript/Vite passaram localmente e na prévia remota. 26 casos novos cobrem escolhas, resultado único, migração 1–6, IndexedDB, interrupção, três classes sem kit/tutorial, derrota, eventos de cinemática e isolamento da recompensa das ruínas.
+- **Navegador:** Observador/Guerreiro sem kit → toca → observar via Enter → sair/recarregar → observação preservada → contornar → reentrada somente leitura. Combatente/Guerreiro sem kit → combate → recarga → reiniciar interrompido → dois Cortes, uma Garrada, vitória com HP25/28 → exploração com 0 XP/0 suprimentos e diário. Retirada/Guerreiro → recuar do combate → rever resultado sem nova luta. Sem erros de console observados.
+- **Mobile:** encontro em 320×568, 390×844 e 844×390 sem overflow horizontal; botões 48px em 320. Combate validado por botões em 390×844; animação pulada pelos controles. Sem aparelho físico/Safari/desempenho medido; legendas em canvas pequenas no mobile.
+- **Publicação:** production READY `dpl_Es7Hb2BnLpwC2YkE4Xn7K4yTnYCn`, código `28c8564`, https://novo-mundo-basilis.vercel.app. Bundle público `index-v0g4BxER.js`; checkpoint anterior retomou posição 6,3, XP0 e broche/defesa8. Inspeção abriu sem efeitos automáticos; posição restaurada após QA.
+- **Limites:** observação apenas no diário, sem progressão de competência; nenhuma espécie/mistério canonizado. Sem turno/HP persistente, novo mapa definitivo, castelo/população ou sete aliados. Derrota e regressões da base/treino cobertas em testes; partida completa das ruínas não repetida manualmente. Histórico da 0.10.0 preservado; cópia anexa do plano sincronizada nesta revisão.
+
 ### Modelo de inciso para próximas versões
 
 - **Versão, título, data e estado.**
@@ -428,6 +442,7 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 | v1.9 | 20/10/2026 | Avaliação dos 11 documentos novos da bíblia, escopo 0.9.0, dependências por pacotes, compatibilidade do legado e correção da numeração funcional/PATCH. |
 | v2.0 | 20/10/2026 | Introdução/Sistema/diário 0.9.0 e migração schema 5; revisão documental independente da versão do jogo. |
 | v2.1 | 20/10/2026 | Kit/consumíveis/mana 0.10.0, schema 6, evidências remotas e divisão P09-01B1/B2. |
+| v2.2 | 21/10/2026 | Primeiro encontro 0.11.0, schema 7, resultados por missão, evidências e próximo pacote do castelo. |
 
 
 ## 17. Escopo executável — 0.4.0
