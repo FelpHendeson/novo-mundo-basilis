@@ -108,3 +108,6 @@ P09-03 entregue: contato com guardião/porta-voz, alternativa sem luta, confront
 
 ## Execução 0.14.0
 P09-04 entregue na primeira fatia operacional: doze candidatos individuais, critérios variáveis, recursos finitos rastreáveis, períodos/custos de trabalho, três reparos, provisões e retorno físico ao castelo. Sem nomes definitivos, filas paralelas, economia renovável ou calendário global. Evidências/limites em `../RELEASE_0.14.md` e inciso15.15. PróximoP09-05: guarda de espada, treino assistido/delegado, avaliação prática e elegibilidade de campeão. Preservar exercício de mana existente e distinção morador/trabalhador/combatente/campeão. Arco I incompleto.
+
+## Execução0.15.0 — P09-05A em validação
+Código implementado em prévia,275testes/build aprovados. Mana/guarda por turnos, assistência/delegação individual, fadiga/calendário, consentimento e avaliação/eligibilidade. Navegador: mana/recarga/delegação/descanso passaram; guarda iniciou, mas conexão falhou antes de concluir avaliação/mobile. Produção continua0.14.0. Ver `../RELEASE_0.15.md` e inciso15.16. Terminar QA e publicar antes de declarar entrega. P09-05B (turmas, nomeação e integração tática) posterior; não avançar como se todo pacote estivesse concluído.

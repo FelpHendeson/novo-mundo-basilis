@@ -91,3 +91,6 @@ Após visitar o castelo, investigue as vozes na trilha leste (casa8,5). Você po
 
 ### Primeiro assentamento (0.14.0)
 Reivindique o castelo no trono, inspecione pátio/portão/dormitório e abra **Assentamento e trabalho**. Recupere ferramentas no pátio; colete madeira, pedra e provisões na casa8,4 da clareira. Vistorie a trilha, repare portão e dormitório e trate água na cisterna inspecionada. Com24refeições e12água, apresente a proposta concreta no contato. Confira decisões individuais, separe provisões e acompanhe o grupo pela trilha norte até entrar no castelo. Adultos assentados podem executar tarefas locais, como o depósito; crianças e ferido não trabalham. Fontes finitas, sem fome diária automática ou produção renovável.
+
+### Prévia0.15.0 — em validação
+P09-05A implementada na branch `release/0.15.0`: formação no pátio, mana/guarda por turnos, assistência/delegação individual, fadiga/descanso e elegibilidade do guardião voluntário. **Não publicada em produção**: QA de navegador interrompido por falha de conexão. [Relatório e pendências](docs/RELEASE_0.15.md). Nomeação, turmas e integração tática ficam para P09-05B.

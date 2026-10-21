@@ -5,9 +5,9 @@
 **Stack:** Phaser 3, TypeScript, Vite, Vitest  
 **Repositório:** https://github.com/FelpHendeson/novo-mundo-basilis  
 **Publicação:** https://novo-mundo-basilis.vercel.app  
-**Documento:** v2.5 — 21/10/2026
+**Documento:** v2.6 — 21/10/2026
 **Estado de referência:** 0.14.0 publicada — primeiro assentamento, adesão individual, fontes finitas, trabalho e reparos; código `0388698`, produção READY.
-**Fonte de referência:** este plano versionado no GitHub; a cópia nos arquivos do Projeto deve acompanhar cada revisão documental.
+**Fonte de referência:** este plano versionado no GitHub; revisão2.6 na branch `release/0.15.0`, ainda em validação. A cópia nos arquivos do Projeto acompanha a revisão documental.
 
 > Este documento é um plano vivo. Conteúdo narrativo e sistemas ainda não aprovados devem ser tratados como propostas, não como cânone.
 
@@ -233,7 +233,7 @@ Uma funcionalidade só é considerada entregue quando:
 
 ## 13. Próximo passo operacional
 
-P09-04 entregue como 0.14.0 na primeira fatia operacional: doze candidatos com papéis provisórios, critérios individuais, fontes finitas, calendário de trabalho, custos e três reparos, partida com provisões e chegada física. Identidade narrativa final, produção renovável, filas simultâneas e calendário global continuam pendentes. Próximo P09-05: guarda de espada, treino assistido/delegado, avaliação prática e elegibilidade de campeão; mana existente será preservada. Arco I ainda incompleto: faltam formação, comércio/contrato e fecho do domínio. Correções da0.14 recebem PATCH e inciso próprio; funcionalidades novas, MINOR. Não transformar moradores em combatentes automaticamente.
+Produção permanece0.14.0. P09-05A implementada na prévia0.15.0: mana/guarda por turnos, assistência/delegação individual, custos/calendário/fadiga, consentimento do guardião e elegibilidade após avaliação/descanso. Ainda não declarada concluída: falha da conexão do navegador interrompeu QA de guarda/avaliação. Próximo passo imediato é terminar esse fluxo, simular mobile e publicar/validar0.15.0. Só depois P09-05B: turmas consentidas, nomeação explícita e integração militar compatível. A0.15 não conclui todo pacoteP09-05 e não promove moradores automaticamente. Comércio/contratos vêm após formação. Arco I continua incompleto.
 
 ## 14. Política de versões e manutenção do plano
 
@@ -458,6 +458,17 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 - **Publicação:** production READY `dpl_2jJEyJW4Pmj4NFyeutg48g8oR4Yd`, código `0388698`, https://novo-mundo-basilis.vercel.app. Bundle público `index-Boz-OAqQ.js` confirmado. Checkpoint anterior Viajante/Humano/Guerreiro preservou posição6,3, XP0, suprimentos0 e broche/defesa8; quadro iniciou com estoque/população0 e dia1/período1, sem reivindicação/custos automáticos. Console sem erros observados. Produção também passou248testes e build. Relatório em `docs/RELEASE_0.14.md`.
 - **Limites:** não é economia completa: sem produção renovável/comércio, XP profissional, filas paralelas, chuva, fome diária automática ou calendário global dos outros sistemas. Reparos simplificados, sem minigame manual. Identidades finais dos12 permanecem propostas. Morador não equivale a súdito/combatente/campeão. PróximoP09-05; arco não concluído. Plano v2.5 acompanha a cópia anexa.
 
+### 15.16 — 0.15.0 — Formação no pátio — 21/10/2026 — Em validação
+
+- **Estado:** código implementado na branch `release/0.15.0`; prévia READY, sem publicação em produção. Domínio principal continua0.14.0. Não considerar concluída apenas por compilar.
+- **Escopo P09-05A:** dois exercícios introdutórios por turnos (mana e guarda), seis sinais, assistência e delegação individual. Manual com4acertos dá2proficiência, demais modos/falhas1, cap3 por habilidade/participante. Sem XP, atributos, técnicas ou itens novos. Máximo2sessões/dia, fadiga2, descanso com custo; mesmo calendário/estoque do assentamento. Proteção da reserva antes da chegada. Exercício de mana da introdução preservado.
+- **Agência:** apenas protagonista e guardião assentado/voluntário podem participar nesta fatia. Avaliação de3decisões, aprovação com2acertos, custo2refeições/1período; assistência disponível, sem delegação da avaliação. Elegibilidade exige consentimento, confiança2, guarda2, avaliação/armamento próprio e descanso. Não exige mana/nível arbitrário nem realiza nomeação/entrada na equipe tática.
+- **Persistência:** schema11 migra1–10 sem custos, treinamento ou promoção retroativos. Registro do assentamento limitado256eventos, com espaço reservado para concluir/cancelar sessão; respostas e custos persistidos. Recarga retoma sessão em andamento. Atividade ativa bloqueia trabalho/retorno ao mapa; cancelamento não reembolsa.
+- **Código:** `65b6c70cb96986bacab3a0756c4c425a9726293d`, árvore `3c960371bd18684834e2c7cb5250b482832d27e4` idêntica à local. Prévia `dpl_AtZeUC5i55jf5MSmL4pSTLff8dYY`, https://novo-mundo-basilis-git-release-0150-felipe-hendeson-s-projects.vercel.app. Tag pendente.
+- **Testes:**275testes/15arquivos,27novos; TypeScript/Vite local e remoto passaram. Testes incluem treino/cap/avaliação, consentimento/civis, fadiga/limite diário, reserva, cancelamento, migrações1–10 e IndexedDB interrompido sem duplicação.
+- **QA parcial:** jornada Aprendiz/Humano/Guerreiro, Horizonte. Mana assistida6/6, recarga retomou etapa2/6 sem cobrar novamente; mana delegada2/3, fadiga2 bloqueou início, descanso debitou1refeição/2períodos. Onze pessoas chegaram; guardião consentiu, guarda manual iniciou com22refeições, dia9/período2, e primeira defesa correta registrada. Conexão perdeu a aba e falhou repetidamente ao recuperar; guarda/avaliação/elegibilidade/mobile ainda não concluídos no navegador. Não substituir estes resultados por afirmação de QA integral. Detalhes em `docs/RELEASE_0.15.md`.
+- **Limites/próximo:** sem timing real, turmas2–8, nomeação ou novos combatentes; sem benchmark/aparelho físico/Safari. Retomar QA, publicar e validar domínio antes de concluirP09-05A. P09-05B permanece futura. Plano v2.6 acompanha cópia anexa; produção0.14.0 preservada.
+
 ### Modelo de inciso para próximas versões
 
 - **Versão, título, data e estado.**
@@ -489,6 +500,7 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 | v2.3 | 21/10/2026 | Castelo 0.12.0, schema 8, posse voluntária, prioridade e retomada por área; próximo primeiro contato. |
 | v2.4 | 21/10/2026 | Contato 0.13.0, schema9, confiança/convite, confronto não letal e correção de confirmação de save; próximo assentamento. |
 | v2.5 | 21/10/2026 | Assentamento0.14.0, schema10, adesão individual, fontes/custos, tempo de trabalho e reparos; próximo formação. |
+| v2.6 | 21/10/2026 | Formação0.15.0 implementada em prévia;275testes, QA parcial e bloqueio de conexão documentados; produção0.14 preservada, divisãoP09-05A/B. |
 
 
 ## 17. Escopo executável — 0.4.0
