@@ -5,8 +5,8 @@
 **Stack:** Phaser 3, TypeScript, Vite, Vitest  
 **Repositório:** https://github.com/FelpHendeson/novo-mundo-basilis  
 **Publicação:** https://novo-mundo-basilis.vercel.app  
-**Documento:** v2.3 — 21/10/2026
-**Estado de referência:** 0.12.0 publicada — exploração do castelo, posse opcional e prioridade de reparo, código `223fe5f`, produção READY.
+**Documento:** v2.4 — 21/10/2026
+**Estado de referência:** 0.13.0 publicada — primeiro contato não letal, confiança e convite, código `fcc9818`, produção READY.
 **Fonte de referência:** este plano versionado no GitHub; a cópia nos arquivos do Projeto deve acompanhar cada revisão documental.
 
 > Este documento é um plano vivo. Conteúdo narrativo e sistemas ainda não aprovados devem ser tratados como propostas, não como cânone.
@@ -233,7 +233,7 @@ Uma funcionalidade só é considerada entregue quando:
 
 ## 13. Próximo passo operacional
 
-P09-02 entregue como 0.12.0: castelo conectado à clareira, inspeção, trono, reivindicação adiável, nome e prioridade de reparo. Seguir com P09-03: rastros/primeiro contato com confronto não letal, diálogo posterior, confiança e convite/recusa; derrota deve permitir continuidade. Antes do código, fechar condições de encontro, recuperação, fontes/custos e limites de confiança. Elenco e falas continuam provisórios conforme a bíblia. Não gerar população ou executar reparos antes de P09-04. O primeiro arco completo ainda não está entregue. Mudanças funcionais recebem MINOR; correções da 0.12.0 recebem PATCH com inciso próprio.
+P09-03 entregue como 0.13.0: contato com sobreviventes, conversa sem luta, confronto não letal, confiança, ajuda e convite/recusa. Próximo P09-04: identidade individual dos candidatos, condições reais de adesão (água/abrigo/segurança), decisão autônoma de cada pessoa, retorno físico, fontes/custos de comida/materiais e primeiro reparo executável. O convite atual apenas registra avaliação: não declarar população instalada. Preservar caminho sem convite com alternativas de obtenção de ajuda/recursos; promessas não substituem condições. Não reutilizar suprimentos genéricos como madeira/comida sem regra explícita. Arco I ainda incompleto. Funcionalidade nova recebe MINOR; correções da 0.13.0 recebem PATCH e inciso próprio.
 
 ## 14. Política de versões e manutenção do plano
 
@@ -428,6 +428,22 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 - **Publicação:** production READY `dpl_CTBGwDRarFnusndLTYXRpjkMK7Jp`, código `223fe5f`, https://novo-mundo-basilis.vercel.app. Bundle público `index-B35Qhoe5.js`; checkpoint anterior preservou posição6,3, XP0 e broche/defesa8. Entrada/retorno conferidos sem reivindicação automática; posição original restaurada.
 - **Limites:** arte/mapa provisórios, torre inspecionada pela base, sem andares. Sem renomeação após posse, obra executada, economia, trabalhadores ou moradores. Base/treino e vitórias antigas preservados por testes; ruínas não jogadas manualmente até o fim nesta versão. Plano v2.3 sincronizado com a cópia anexa.
 
+### 15.14 — 0.13.0 — Primeiro contato — 21/10/2026
+
+- **Estado:** entregue; P09-03, primeiro contato e proposta sob condições. Assentamento individual e trabalho permanecem em P09-04.
+- **Escopo:** visita ao castelo libera vozes na trilha leste (casa8,5), independentemente de posse. Observar revela doze pessoas; baixar armas permite conversa sem luta. Explicar/exigir inicia confronto individual não letal: resistir3 rodadas, neutralizar ou retirar-se. Derrota também libera conversa.
+- **Consequências:** confiança derivada de decisões finitas, perguntas não acumulam pontos. Ajuda usa uma ração real uma vez; derrota usa uma ração disponível uma vez, ou descanso assistido se não houver. Sem XP/saque nem conversão de suprimentos da base em comida. Promessa vaga reduz confiança; honestidade sobre precariedade melhora.
+- **Convite:** exige posse/nome e condições apresentadas; grupo pode recusar com baixa confiança ou aceitar avaliar com confiança>=2. Ajuda posterior exige pedido de reavaliação para mudar resposta. Jogador pode encerrar sem convidar. Nenhuma escolha instala população ou recruta guardião automaticamente; água/abrigo/segurança ainda serão verificados.
+- **Direção:** nomes propostos de elenco não canonizados; papéis/IDs estáveis de guardião/porta-voz. Origem dos perseguidores continua desconhecida. O gatilho de roteiro nesta fatia é visita ao castelo, sem fingir coleta de materiais ainda ausente.
+- **Arquitetura/compatibilidade:** schema9 migra1–8, IndexedDB versão1. Estado de contato independente, resposta persistida, custos idempotentes e desfecho de missão tipado (vitória/derrota/trégua). Recarga de confronto retorna à clareira; reinício/retirada não reaplicam abertura/confiança. Consumíveis já salvos continuam gastos; turno/HP não persistem.
+- **Commits:** `f5e58c8126500ae1f87837b636f1a0a4786028e0` (funcionalidades), `fcc98183a523911b469e8383edb95bf64224ca33` (confirmação de save durante pausa de cinemática), branch `release/0.13.0`; tag Git pendente. Árvore final idêntica à local `179534160af798d3b56132864c25f89400ffc93e`.
+- **Testes:** 219 testes/13 arquivos e TypeScript/Vite passaram localmente e na prévia final. 34 casos novos: decisões únicas, custo de ajuda/recuperação, convite/recusa/reavaliação, migrações1–8, IndexedDB, neutralização sem kit nas3 classes, trégua após última cinemática e derrota na terceira rodada. Sem regressões observadas nos testes de abrigo/Lyra/castelo/criatura.
+- **Navegador:** Mensageiro/Guerreiro: castelo Aurora, observação via Enter, baixar armas, honestidade, convite recusado(confiança1), ração -1, reavaliação(confiança2), recarga conserva estoque1 e avaliação pendente. Guarda/Guerreiro sem kit: três rodadas, trégua com HP10/28 e encerramento sem convite. Retorno/Mago com kit: interrupção/reinício conserva confiança1, derrota na terceira rodada, recuperação -1 ração, recarga conserva estoque1 e conversa. Sem XP/suprimentos novos. Neutralização nas3 classes e ausência de ração na derrota cobertas por testes, não repetidas manualmente.
+- **Correção durante QA:** aviso “Salvando…” podia ficar desatualizado quando a confirmação chegava durante pausa da cinemática. Guardas por geração da batalha permitem atualizar a mesma sessão e descartam callbacks de sessões encerradas/reiniciadas. Prévia final confirmou trégua com HP10/28 e aviso “Decisão do encontro salva. Sem XP ou saque.” após a cinemática, sem erros no console.
+- **Mobile:** contato em320×568/390×844/844×390 sem overflow horizontal; botões>=48px no menor. Combate conferido em390×844. Arte/mapa provisórios, cinemáticas puladas em parte da verificação; sem aparelho físico/Safari/benchmark. Bundle Phaser continua grande, sem medição de desempenho.
+- **Publicação:** production READY `dpl_5ch6Yg4khZiNRbJsAUgADCE4j55v`, código `fcc9818`, https://novo-mundo-basilis.vercel.app. Bundle público `index-DVIHQgWK.js` confirmado; checkpoint anterior continuou e abriu o contato sem decisões automáticas. Posição6,3 restaurada; console sem erros observados. Detalhes em `docs/RELEASE_0.13.md`.
+- **Limites:** convite apenas em avaliação; sem identidade completa dos12, assentamento, economia, calendário ou reparo executado. Confiança deste contato não substitui moral/lealdade. Plano v2.4 sincronizado com a cópia anexa. Primeiro arco ainda não concluído.
+
 ### Modelo de inciso para próximas versões
 
 - **Versão, título, data e estado.**
@@ -457,6 +473,7 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 | v2.1 | 20/10/2026 | Kit/consumíveis/mana 0.10.0, schema 6, evidências remotas e divisão P09-01B1/B2. |
 | v2.2 | 21/10/2026 | Primeiro encontro 0.11.0, schema 7, resultados por missão, evidências e próximo pacote do castelo. |
 | v2.3 | 21/10/2026 | Castelo 0.12.0, schema 8, posse voluntária, prioridade e retomada por área; próximo primeiro contato. |
+| v2.4 | 21/10/2026 | Contato 0.13.0, schema9, confiança/convite, confronto não letal e correção de confirmação de save; próximo assentamento. |
 
 
 ## 17. Escopo executável — 0.4.0

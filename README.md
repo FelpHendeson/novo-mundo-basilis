@@ -2,7 +2,7 @@
 
 RPG tático original com exploração, recrutamento, classes e construção de comunidade planejados.
 
-**Versão 0.12.0:** caminho ao castelo, sete inspeções, reivindicação opcional com nome e prioridade de reparo. Continuar jornada/Sistema preservam área e posição. Save schema 8 compatível com schemas 1–7. [Relatório e limitações](docs/RELEASE_0.12.md).
+**Versão 0.13.0:** primeiro contato com sobreviventes, alternativa sem luta, confronto não letal, confiança, ajuda e convite/recusa. O grupo avalia condições; não se instala automaticamente. Save schema9 compatível com1–8. [Relatório e limitações](docs/RELEASE_0.13.md).
 
 ## Desenvolvimento
 
@@ -86,3 +86,5 @@ Schema 5 migra schemas 1–4 para exploração, conservando posição, conquista
 Na clareira, aproxime-se dos rastros junto à casa 4,2 e use **Investigar os rastros**. Este encontro não exige kit, tutorial ou conversa com Lyra e não bloqueia a trilha.
 
 O castelo é acessível pela trilha na casa 8,2 da clareira, sem exigir combate. Explore, aproxime-se do trono e escolha reivindicar ou adiar. Priorizar reparo não constrói nem consome materiais; o abrigo continua separado.
+
+Após visitar o castelo, investigue as vozes na trilha leste (casa8,5). Você pode baixar armas e conversar, resistir3 rodadas, neutralizar o guardião ou recuar. Todos os caminhos permitem continuar; não há morte obrigatória, XP ou saque neste encontro.
