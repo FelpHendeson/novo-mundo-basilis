@@ -35,7 +35,7 @@ export function renderContactUI(root:HTMLElement,c:Campaign,changed:(message?:st
     if(s.terms===null) {
       button("honest","Esclarecer os limites do castelo",()=>update(()=>setContactTerms(s,"honest"),c.castle.name ? "Você esclarece que o castelo ainda não oferece moradia pronta, alimento ou segurança garantida." : "Você esclarece que encontrou uma construção abandonada e ainda não reivindicou sua administração."));
       button("promise","Prometer reparos rápidos",()=>update(()=>setContactTerms(s,"promise"),"Porta-voz: uma promessa não garante água, comida nem segurança. Precisamos de condições verificáveis."));
-    } else p(s.terms==="honest" ? "Condições esclarecidas: o castelo permanece precário, sem garantias de sustento." : "Promessa registrada: o grupo espera provas dos reparos prometidos.");
+    } else p(s.terms==="honest" ? "Na conversa inicial, você esclareceu a precariedade do castelo. O quadro de assentamento mostra as condições atuais." : "Promessa registrada: o grupo espera provas dos reparos prometidos.");
     if(s.offer==="none") {
       button("invite","Convidar o grupo a avaliar o castelo",()=>update(()=>inviteContact(s,c.castle.name)),!c.castle.name || s.terms===null);
       if(!c.castle.name) p("Você pode continuar a conversa e ajudar sem ter um castelo. Para oferecer acesso sob sua administração, primeiro decida a reivindicação no trono.");
@@ -46,7 +46,7 @@ export function renderContactUI(root:HTMLElement,c:Campaign,changed:(message?:st
       p(s.response==="considering" ? "Porta-voz: vamos avaliar a proposta. Antes de decidir mudar, precisamos verificar água, abrigo e segurança. Ninguém parte agora." : "Porta-voz: nestas condições, não aceitamos a proposta. Podemos conversar, mas a confiança ainda precisa ser construída.");
       if(s.response==="refused") button("review","Pedir reavaliação do convite",()=>update(()=>reviewContactInvitation(s)),trust<CONTACT_BALANCE.invitationTrust);
     }
-    if(s.offer==="declined") p("Contato encerrado sem convite. As pessoas não se tornaram súditas nem foram transferidas para o castelo.");
+    if(s.offer==="declined") p("O primeiro contato foi encerrado sem convite. Uma proposta concreta posterior é registrada separadamente no quadro de assentamento.");
     const details=document.createElement("details");details.className="contact-answers";details.open=detailsOpen;
     const summary=document.createElement("summary");summary.dataset.action="answers";summary.textContent="Respostas e consequências";details.append(summary);
     for(const id of s.questions){const el=document.createElement("p");el.textContent=CONTACT_ANSWERS[id];details.append(el);}

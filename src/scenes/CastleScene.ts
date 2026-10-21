@@ -22,7 +22,8 @@ export class CastleScene extends Phaser.Scene {
   constructor() { super("Castle"); }
   init(data: { campaign: Campaign }) {
     this.campaign = data.campaign;
-    this.message = "A trilha termina num portão quebrado. O castelo está silencioso; sua história permanece desconhecida.";
+    const v=settlementView(this.campaign.settlement);
+    this.message = v.phase==="arrived" ? `${v.party.length} pessoas chegaram pela trilha e se instalaram no dormitório. Confira reservas e tarefas no quadro.` : v.done.includes("gate") ? "O portão reforçado recebe você. A origem do castelo permanece desconhecida." : "A trilha termina num portão quebrado. O castelo está silencioso; sua história permanece desconhecida.";
     this.saveMessage = "Salvando checkpoint…";
     this.draftName = "";
   }
@@ -66,7 +67,8 @@ export class CastleScene extends Phaser.Scene {
   }
   private inspect(id: CastlePoint) {
     const c = this.campaign.castle;
-    this.message = CASTLE_POINTS[id].clue;
+    const v=settlementView(this.campaign.settlement);
+    this.message = v.done.includes(id as "gate"|"dormitory"|"storehouse") ? `${CASTLE_POINTS[id].name}: reparo concluído. A descoberta inicial continua registrada no diário.` : CASTLE_POINTS[id].clue;
     if (inspectCastle(c,id)) this.persist();
     this.draw();
   }
