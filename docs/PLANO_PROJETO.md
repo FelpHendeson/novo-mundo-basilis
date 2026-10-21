@@ -5,8 +5,8 @@
 **Stack:** Phaser 3, TypeScript, Vite, Vitest  
 **Repositório:** https://github.com/FelpHendeson/novo-mundo-basilis  
 **Publicação:** https://novo-mundo-basilis.vercel.app  
-**Documento:** v2.2 — 21/10/2026
-**Estado de referência:** 0.11.0 publicada — primeiro encontro opcional de criatura, código `28c8564`, produção READY.
+**Documento:** v2.3 — 21/10/2026
+**Estado de referência:** 0.12.0 publicada — exploração do castelo, posse opcional e prioridade de reparo, código `223fe5f`, produção READY.
 **Fonte de referência:** este plano versionado no GitHub; a cópia nos arquivos do Projeto deve acompanhar cada revisão documental.
 
 > Este documento é um plano vivo. Conteúdo narrativo e sistemas ainda não aprovados devem ser tratados como propostas, não como cânone.
@@ -233,7 +233,7 @@ Uma funcionalidade só é considerada entregue quando:
 
 ## 13. Próximo passo operacional
 
-P09-01B2 entregue como 0.11.0: primeiro encontro de criatura com observar/contornar/enfrentar e saídas persistentes. Seguir com P09-02: caminho ao castelo, inspeção e reivindicação voluntária com nome validado. Fechar mapa, pontos interativos, estado do núcleo e relação com o abrigo/Lyra antes do código; adiar a posse não pode bloquear exploração. Não introduzir materiais, população ou renda sem origem. A próxima versão funcional será MINOR ao fechar o escopo; correções da 0.11.0 recebem PATCH e inciso próprio. O primeiro arco completo ainda não está entregue.
+P09-02 entregue como 0.12.0: castelo conectado à clareira, inspeção, trono, reivindicação adiável, nome e prioridade de reparo. Seguir com P09-03: rastros/primeiro contato com confronto não letal, diálogo posterior, confiança e convite/recusa; derrota deve permitir continuidade. Antes do código, fechar condições de encontro, recuperação, fontes/custos e limites de confiança. Elenco e falas continuam provisórios conforme a bíblia. Não gerar população ou executar reparos antes de P09-04. O primeiro arco completo ainda não está entregue. Mudanças funcionais recebem MINOR; correções da 0.12.0 recebem PATCH com inciso próprio.
 
 ## 14. Política de versões e manutenção do plano
 
@@ -415,6 +415,19 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 - **Publicação:** production READY `dpl_Es7Hb2BnLpwC2YkE4Xn7K4yTnYCn`, código `28c8564`, https://novo-mundo-basilis.vercel.app. Bundle público `index-v0g4BxER.js`; checkpoint anterior retomou posição 6,3, XP0 e broche/defesa8. Inspeção abriu sem efeitos automáticos; posição restaurada após QA.
 - **Limites:** observação apenas no diário, sem progressão de competência; nenhuma espécie/mistério canonizado. Sem turno/HP persistente, novo mapa definitivo, castelo/população ou sete aliados. Derrota e regressões da base/treino cobertas em testes; partida completa das ruínas não repetida manualmente. Histórico da 0.10.0 preservado; cópia anexa do plano sincronizada nesta revisão.
 
+### 15.13 — 0.12.0 — O castelo — 21/10/2026
+
+- **Estado:** entregue; P09-02, SCN_004–005 e administração inicial de SCN_006. Não anuncia campanha/arco completo.
+- **Escopo:** trilha no nordeste da clareira (casa 8,2), castelo conectado, retorno físico pelo portão, sete pontos de inspeção e diário. Trono voluntário, núcleo inativo, reivindicar/adiar, nome seguro de 3–32 caracteres. Prioridade de portão/depósito/dormitório só após inspeção e posse; escolher não executa obra.
+- **Direção preservada:** abrigo inicial distinto do castelo; nenhum material/população gerado e nenhuma conversão de Lyra em moradora. Autoridade sistêmica não equivale a reconhecimento externo. História/donos/origem do castelo permanecem desconhecidos. Sem nome padrão imposto ao castelo.
+- **Arquitetura:** catálogo de áreas, piso/saída e viagens; estado/decisões do castelo em módulo puro. Área atual separada do fluxo da consulta ao Sistema; continuar e consulta retomam área/posição. Banco IndexedDB versão 1, schema 8 migra 1–7 sem mover ou premiar personagens existentes.
+- **Código:** `223fe5fe2b54e0b1e8d4ac129ff00d8eb0cb036d`, branch `release/0.12.0`; árvore idêntica ao build local `359323a4b1b3d90a700ac09d5a8250d8ec09be8d`. Tag Git pendente. Relatório `docs/RELEASE_0.12.md`.
+- **Validação:** 185 testes/12 arquivos e TypeScript/Vite passaram localmente e na prévia remota. 37 casos novos: rota, mapa alcançável, inspeção por proximidade, nomes, posse única, prioridade sem custo, preservação de base/formação, migrações 1–7, IndexedDB e consulta dentro do castelo.
+- **Navegador:** nova jornada Explorador/Guerreiro sem kit, mana, combate ou Lyra → castelo → sete inspeções → trono → adiar → recarga/continuação na mesma posição e sem posse automática. Nome com markup rejeitado, rascunho preservado durante salvar, Enter confirma “São João” normalizado. Prioridade portão, troca para dormitório após inspeção; Sistema retorna à posição interna; recarga preserva nome/7 descobertas/prioridade. Retorno à clareira conserva XP0/suprimentos0 e posição da saída. Console sem erros observados.
+- **Mobile:** castelo/formulário em 320×568, administração em 390×844 e 844×390 sem overflow horizontal. Painel com rolagem; botões de ação >=48px em 320, confirmação do formulário 47px. Sem aparelho físico/Safari/benchmark; legendas em canvas continuam pequenas no mobile.
+- **Publicação:** production READY `dpl_CTBGwDRarFnusndLTYXRpjkMK7Jp`, código `223fe5f`, https://novo-mundo-basilis.vercel.app. Bundle público `index-B35Qhoe5.js`; checkpoint anterior preservou posição6,3, XP0 e broche/defesa8. Entrada/retorno conferidos sem reivindicação automática; posição original restaurada.
+- **Limites:** arte/mapa provisórios, torre inspecionada pela base, sem andares. Sem renomeação após posse, obra executada, economia, trabalhadores ou moradores. Base/treino e vitórias antigas preservados por testes; ruínas não jogadas manualmente até o fim nesta versão. Plano v2.3 sincronizado com a cópia anexa.
+
 ### Modelo de inciso para próximas versões
 
 - **Versão, título, data e estado.**
@@ -443,6 +456,7 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 | v2.0 | 20/10/2026 | Introdução/Sistema/diário 0.9.0 e migração schema 5; revisão documental independente da versão do jogo. |
 | v2.1 | 20/10/2026 | Kit/consumíveis/mana 0.10.0, schema 6, evidências remotas e divisão P09-01B1/B2. |
 | v2.2 | 21/10/2026 | Primeiro encontro 0.11.0, schema 7, resultados por missão, evidências e próximo pacote do castelo. |
+| v2.3 | 21/10/2026 | Castelo 0.12.0, schema 8, posse voluntária, prioridade e retomada por área; próximo primeiro contato. |
 
 
 ## 17. Escopo executável — 0.4.0

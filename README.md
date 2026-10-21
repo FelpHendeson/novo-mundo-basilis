@@ -2,7 +2,7 @@
 
 RPG tático original com exploração, recrutamento, classes e construção de comunidade planejados.
 
-**Versão 0.11.0:** primeiro encontro opcional de criatura: observar, contornar ou enfrentar. Resultados persistentes, retirada segura, técnicas e objetivos por missão. Saves schema 1–6 migram para 7. [Relatório e limitações](docs/RELEASE_0.11.md).
+**Versão 0.12.0:** caminho ao castelo, sete inspeções, reivindicação opcional com nome e prioridade de reparo. Continuar jornada/Sistema preservam área e posição. Save schema 8 compatível com schemas 1–7. [Relatório e limitações](docs/RELEASE_0.12.md).
 
 ## Desenvolvimento
 
@@ -84,3 +84,5 @@ Nova jornada: Última manhã → criação → chegada. Pergunte Onde estou?/Que
 Schema 5 migra schemas 1–4 para exploração, conservando posição, conquistas, equipe e acessórios; não força a introdução nem inventa respostas já consultadas. O diário não concede XP/recursos e o ledger narrativo não duplica eventos. Arte original provisória por código, sem áudio/spritesheets finais. Kit de adaptação, consumíveis, tutorial de mana e castelo são pacotes seguintes.
 
 Na clareira, aproxime-se dos rastros junto à casa 4,2 e use **Investigar os rastros**. Este encontro não exige kit, tutorial ou conversa com Lyra e não bloqueia a trilha.
+
+O castelo é acessível pela trilha na casa 8,2 da clareira, sem exigir combate. Explore, aproxime-se do trono e escolha reivindicar ou adiar. Priorizar reparo não constrói nem consome materiais; o abrigo continua separado.
