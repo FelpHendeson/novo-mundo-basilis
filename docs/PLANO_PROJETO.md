@@ -5,8 +5,8 @@
 **Stack:** Phaser 3, TypeScript, Vite, Vitest  
 **Repositório:** https://github.com/FelpHendeson/novo-mundo-basilis  
 **Publicação:** https://novo-mundo-basilis.vercel.app  
-**Documento:** v2.4 — 21/10/2026
-**Estado de referência:** 0.13.0 publicada — primeiro contato não letal, confiança e convite, código `fcc9818`, produção READY.
+**Documento:** v2.5 — 21/10/2026
+**Estado de referência:** 0.14.0 publicada — primeiro assentamento, adesão individual, fontes finitas, trabalho e reparos; código `0388698`, produção READY.
 **Fonte de referência:** este plano versionado no GitHub; a cópia nos arquivos do Projeto deve acompanhar cada revisão documental.
 
 > Este documento é um plano vivo. Conteúdo narrativo e sistemas ainda não aprovados devem ser tratados como propostas, não como cânone.
@@ -233,7 +233,7 @@ Uma funcionalidade só é considerada entregue quando:
 
 ## 13. Próximo passo operacional
 
-P09-03 entregue como 0.13.0: contato com sobreviventes, conversa sem luta, confronto não letal, confiança, ajuda e convite/recusa. Próximo P09-04: identidade individual dos candidatos, condições reais de adesão (água/abrigo/segurança), decisão autônoma de cada pessoa, retorno físico, fontes/custos de comida/materiais e primeiro reparo executável. O convite atual apenas registra avaliação: não declarar população instalada. Preservar caminho sem convite com alternativas de obtenção de ajuda/recursos; promessas não substituem condições. Não reutilizar suprimentos genéricos como madeira/comida sem regra explícita. Arco I ainda incompleto. Funcionalidade nova recebe MINOR; correções da 0.13.0 recebem PATCH e inciso próprio.
+P09-04 entregue como 0.14.0 na primeira fatia operacional: doze candidatos com papéis provisórios, critérios individuais, fontes finitas, calendário de trabalho, custos e três reparos, partida com provisões e chegada física. Identidade narrativa final, produção renovável, filas simultâneas e calendário global continuam pendentes. Próximo P09-05: guarda de espada, treino assistido/delegado, avaliação prática e elegibilidade de campeão; mana existente será preservada. Arco I ainda incompleto: faltam formação, comércio/contrato e fecho do domínio. Correções da0.14 recebem PATCH e inciso próprio; funcionalidades novas, MINOR. Não transformar moradores em combatentes automaticamente.
 
 ## 14. Política de versões e manutenção do plano
 
@@ -444,6 +444,20 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 - **Publicação:** production READY `dpl_5ch6Yg4khZiNRbJsAUgADCE4j55v`, código `fcc9818`, https://novo-mundo-basilis.vercel.app. Bundle público `index-DVIHQgWK.js` confirmado; checkpoint anterior continuou e abriu o contato sem decisões automáticas. Posição6,3 restaurada; console sem erros observados. Detalhes em `docs/RELEASE_0.13.md`.
 - **Limites:** convite apenas em avaliação; sem identidade completa dos12, assentamento, economia, calendário ou reparo executado. Confiança deste contato não substitui moral/lealdade. Plano v2.4 sincronizado com a cópia anexa. Primeiro arco ainda não concluído.
 
+### 15.15 — 0.14.0 — Primeiro assentamento — 21/10/2026
+
+- **Motivo:** transformar avaliação do convite em condições materiais verificáveis e chegada voluntária, mantendo saída para quem encerrou/recusou o convite inicial.
+- **Entrega:** cadastro individual dos12 com papéis provisórios, decisões variáveis (até12), sem canonizar nomes sugeridos. Fontes finitas: madeira caída24, pedra solta12, provisões seladas48; estoques separados de rações/suprimentos legados. Ferramentas no pátio, água tratada com lenha/comida. Cada tarefa registra responsável/custo/tempo,4períodos por dia, sem espera real nem fome diária automática. Portão/dormitório/depósito reparáveis, capacidade0→12 e obras marcadas em verde. Madeira de obras pendentes protegida contra consumo repetido no tratamento de água.
+- **Adesão/viagem:** trilha/portão/dormitório prontos,24refeições e12água para propor. Guardião exige confiança2, porta-voz1, batedora3; ferido exige ajuda inicial e18água. Partida consome1refeição+1água por pessoa e1período. Aceitar não instala moradores: grupo acompanha o jogador, só muda de estado ao entrar no castelo. Recarga preserva viagem/custos. Crianças e ferido não trabalham; adultos assentados podem receber uma tarefa local, resolvendo seu período sem produção paralela.
+- **Arquitetura:** módulo puro com registro limitado e reconstrução determinística; UI compartilhada entre castelo/clareira/contato. Schema10 migra1–9 sem estoques, moradores ou custos retroativos; IndexedDB continua v1. Lyra/abrigo/XP e contato anterior preservados.
+- **Commits:** `974d0f62d100f76533e8abea91b8e7903696c85c` (funcionalidades), `03886986051e9fee5a12b596ae4c828167ac8889` (textos conforme obras/chegada); árvore final `71262c5fa3eefbaf1af65b5fb34fc842c705720e` idêntica à local. Tag Git pendente.
+- **Testes:**248testes/14arquivos e TypeScript/Vite passaram localmente e nas duas prévias.29casos novos de estoque/custos/reservas, fontes esgotadas, adesão variável/todos12, recusa anterior, ajuda tardia, migrações1–9, sequência inválida e IndexedDB com escolta/chegada.
+- **Navegador:** jornada Construtor/Humano/Guerreiro, castelo Horizonte. Coletou todas fontes, vistoriou trilha, reparou portão/dormitório, tratou18água; estoque7madeira/6pedra/37refeições/18água,0moradores/12lugares. Após encerrar convite inicial, proposta concreta teve9adesões; ração posterior não alterou lista; reapresentação teve11, batedora recusou. Partida debitou11refeições/11água; recarga preservou escolta, entrada registrou11moradores. Carpinteiro reparou depósito:3madeira/4pedra/24refeições/7água, dia8/período2, três obras. Nova recarga conservou moradores/obras. Sem XP/suprimentos novos. Rota com12 e casos negativos cobertos por testes, não repetidos manualmente. QA completo na prévia inicial; prévia final altera apenas descrições e passou smoke de menu/bundle/console.
+- **Correções de QA:** descrições do portão e do castelo acompanhavam apenas o estado inicial; agora refletem reparos/chegada e distinguem a declaração histórica das condições atuais.
+- **Mobile:**320×568 e390×844 no contato,844×390 no castelo sem overflow horizontal; botões do quadro com48px ou mais no menor viewport. Sem aparelho físico/Safari/benchmark. Arte/mapa provisórios.
+- **Publicação:** production READY `dpl_2jJEyJW4Pmj4NFyeutg48g8oR4Yd`, código `0388698`, https://novo-mundo-basilis.vercel.app. Bundle público `index-Boz-OAqQ.js` confirmado. Checkpoint anterior Viajante/Humano/Guerreiro preservou posição6,3, XP0, suprimentos0 e broche/defesa8; quadro iniciou com estoque/população0 e dia1/período1, sem reivindicação/custos automáticos. Console sem erros observados. Produção também passou248testes e build. Relatório em `docs/RELEASE_0.14.md`.
+- **Limites:** não é economia completa: sem produção renovável/comércio, XP profissional, filas paralelas, chuva, fome diária automática ou calendário global dos outros sistemas. Reparos simplificados, sem minigame manual. Identidades finais dos12 permanecem propostas. Morador não equivale a súdito/combatente/campeão. PróximoP09-05; arco não concluído. Plano v2.5 acompanha a cópia anexa.
+
 ### Modelo de inciso para próximas versões
 
 - **Versão, título, data e estado.**
@@ -474,6 +488,7 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 | v2.2 | 21/10/2026 | Primeiro encontro 0.11.0, schema 7, resultados por missão, evidências e próximo pacote do castelo. |
 | v2.3 | 21/10/2026 | Castelo 0.12.0, schema 8, posse voluntária, prioridade e retomada por área; próximo primeiro contato. |
 | v2.4 | 21/10/2026 | Contato 0.13.0, schema9, confiança/convite, confronto não letal e correção de confirmação de save; próximo assentamento. |
+| v2.5 | 21/10/2026 | Assentamento0.14.0, schema10, adesão individual, fontes/custos, tempo de trabalho e reparos; próximo formação. |
 
 
 ## 17. Escopo executável — 0.4.0

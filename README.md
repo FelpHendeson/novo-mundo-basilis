@@ -2,7 +2,7 @@
 
 RPG tático original com exploração, recrutamento, classes e construção de comunidade planejados.
 
-**Versão 0.13.0:** primeiro contato com sobreviventes, alternativa sem luta, confronto não letal, confiança, ajuda e convite/recusa. O grupo avalia condições; não se instala automaticamente. Save schema9 compatível com1–8. [Relatório e limitações](docs/RELEASE_0.13.md).
+**Versão 0.14.0:** primeiro assentamento: 12 candidatos individuais, fontes finitas de recursos, tarefas com tempo/custos, reparos e chegada física ao castelo. Adesão variável, sem recrutamento militar automático. Save schema10 compatível com1–9. [Relatório e limitações](docs/RELEASE_0.14.md).
 
 ## Desenvolvimento
 
@@ -88,3 +88,6 @@ Na clareira, aproxime-se dos rastros junto à casa 4,2 e use **Investigar os ras
 O castelo é acessível pela trilha na casa 8,2 da clareira, sem exigir combate. Explore, aproxime-se do trono e escolha reivindicar ou adiar. Priorizar reparo não constrói nem consome materiais; o abrigo continua separado.
 
 Após visitar o castelo, investigue as vozes na trilha leste (casa8,5). Você pode baixar armas e conversar, resistir3 rodadas, neutralizar o guardião ou recuar. Todos os caminhos permitem continuar; não há morte obrigatória, XP ou saque neste encontro.
+
+### Primeiro assentamento (0.14.0)
+Reivindique o castelo no trono, inspecione pátio/portão/dormitório e abra **Assentamento e trabalho**. Recupere ferramentas no pátio; colete madeira, pedra e provisões na casa8,4 da clareira. Vistorie a trilha, repare portão e dormitório e trate água na cisterna inspecionada. Com24refeições e12água, apresente a proposta concreta no contato. Confira decisões individuais, separe provisões e acompanhe o grupo pela trilha norte até entrar no castelo. Adultos assentados podem executar tarefas locais, como o depósito; crianças e ferido não trabalham. Fontes finitas, sem fome diária automática ou produção renovável.

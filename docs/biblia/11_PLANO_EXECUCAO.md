@@ -2,7 +2,7 @@
 
 20/10/2026. Fonte avaliada: `d18f741` e os 11 arquivos de `docs/biblia`. Referência implementada: jogo 0.8.0, código `2ec2139`. Este documento planeja entregas; não anuncia novas funcionalidades ou publicação do jogo.
 
-**Registro de execução:** P09-01A entregue como 0.9.0 (`8ef54fa`); ver `../RELEASE_0.9.md` e inciso 15.10 do plano. P09-01B1 entregue como 0.10.0 (`feed9f6c`), kit/consumíveis e exercício guiado de mana. P09-01B2 entregue como 0.11.0 (`28c8564`), criatura observar/contornar/enfrentar; P09-02 entregue como 0.12.0 (`223fe5f`), castelo/posse opcional; P09-03 entregue como 0.13.0 (`fcc9818`), contato não letal/confiança/convite; próximo P09-04. Ver `../RELEASE_0.10.md` e inciso 15.11. A avaliação abaixo preserva a referência histórica em 0.8.0.
+**Registro de execução:** P09-01A entregue como 0.9.0 (`8ef54fa`); ver `../RELEASE_0.9.md` e inciso 15.10 do plano. P09-01B1 entregue como 0.10.0 (`feed9f6c`), kit/consumíveis e exercício guiado de mana. P09-01B2 entregue como 0.11.0 (`28c8564`), criatura observar/contornar/enfrentar; P09-02 entregue como 0.12.0 (`223fe5f`), castelo/posse opcional; P09-03 entregue como 0.13.0 (`fcc9818`), contato não letal/confiança/convite; P09-04 entregue como0.14.0 (`0388698`), assentamento/recursos/reparos; próximoP09-05. Ver `../RELEASE_0.10.md` e inciso 15.11. A avaliação abaixo preserva a referência histórica em 0.8.0.
 
 ## Avaliação
 
@@ -105,3 +105,6 @@ P09-02 entregue: áreas conectadas, sete inspeções, trono, posse/nome opcionai
 ## Execução 0.13.0
 
 P09-03 entregue: contato com guardião/porta-voz, alternativa sem luta, confronto não letal, confiança finita e proposta avaliada pelo grupo. Sem transferência automática de habitantes. Regras/QA em `../RELEASE_0.13.md` e inciso15.14. Próximo P09-04: identidades e condições individuais, retorno físico, fontes/custos e um reparo real. Não tratar “considerar convite” como adesão efetiva.
+
+## Execução 0.14.0
+P09-04 entregue na primeira fatia operacional: doze candidatos individuais, critérios variáveis, recursos finitos rastreáveis, períodos/custos de trabalho, três reparos, provisões e retorno físico ao castelo. Sem nomes definitivos, filas paralelas, economia renovável ou calendário global. Evidências/limites em `../RELEASE_0.14.md` e inciso15.15. PróximoP09-05: guarda de espada, treino assistido/delegado, avaliação prática e elegibilidade de campeão. Preservar exercício de mana existente e distinção morador/trabalhador/combatente/campeão. Arco I incompleto.
