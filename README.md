@@ -2,7 +2,7 @@
 
 RPG tático original com exploração, recrutamento, classes e construção de comunidade planejados.
 
-**Versão 0.14.0:** primeiro assentamento: 12 candidatos individuais, fontes finitas de recursos, tarefas com tempo/custos, reparos e chegada física ao castelo. Adesão variável, sem recrutamento militar automático. Save schema10 compatível com1–9. [Relatório e limitações](docs/RELEASE_0.14.md).
+**Versão 0.15.0:** formação no pátio com mana/guarda por turnos, assistência/delegação individual, fadiga/descanso e avaliação/eligibilidade do guardião voluntário. Save schema11 compatível com1–10. Não realiza nomeação nem adiciona combatentes automaticamente. [Relatório e limitações](docs/RELEASE_0.15.md).
 
 ## Desenvolvimento
 
@@ -92,5 +92,5 @@ Após visitar o castelo, investigue as vozes na trilha leste (casa8,5). Você po
 ### Primeiro assentamento (0.14.0)
 Reivindique o castelo no trono, inspecione pátio/portão/dormitório e abra **Assentamento e trabalho**. Recupere ferramentas no pátio; colete madeira, pedra e provisões na casa8,4 da clareira. Vistorie a trilha, repare portão e dormitório e trate água na cisterna inspecionada. Com24refeições e12água, apresente a proposta concreta no contato. Confira decisões individuais, separe provisões e acompanhe o grupo pela trilha norte até entrar no castelo. Adultos assentados podem executar tarefas locais, como o depósito; crianças e ferido não trabalham. Fontes finitas, sem fome diária automática ou produção renovável.
 
-### Prévia0.15.0 — em validação
-P09-05A implementada na branch `release/0.15.0`: formação no pátio, mana/guarda por turnos, assistência/delegação individual, fadiga/descanso e elegibilidade do guardião voluntário. **Não publicada em produção**: QA de navegador interrompido por falha de conexão. [Relatório e pendências](docs/RELEASE_0.15.md). Nomeação, turmas e integração tática ficam para P09-05B.
+### Formação no pátio (0.15.0)
+Com castelo reivindicado, ferramentas, portão e dormitório restaurados, aproxime-se do pátio inspecionado e escolha **Ir à formação no pátio**. Treine mana/guarda por turnos, com orientação ou delegação. Cada atividade consome refeições e tempo do calendário; fadiga2 exige descanso. O guardião precisa chegar e consentir antes de participar. Guarda2/3, avaliação prática e descanso podem torná-lo elegível; nomeação, turmas e integração tática ficam para P09-05B.

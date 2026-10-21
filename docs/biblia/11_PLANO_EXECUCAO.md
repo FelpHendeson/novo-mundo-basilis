@@ -2,7 +2,7 @@
 
 20/10/2026. Fonte avaliada: `d18f741` e os 11 arquivos de `docs/biblia`. Referência implementada: jogo 0.8.0, código `2ec2139`. Este documento planeja entregas; não anuncia novas funcionalidades ou publicação do jogo.
 
-**Registro de execução:** P09-01A entregue como 0.9.0 (`8ef54fa`); ver `../RELEASE_0.9.md` e inciso 15.10 do plano. P09-01B1 entregue como 0.10.0 (`feed9f6c`), kit/consumíveis e exercício guiado de mana. P09-01B2 entregue como 0.11.0 (`28c8564`), criatura observar/contornar/enfrentar; P09-02 entregue como 0.12.0 (`223fe5f`), castelo/posse opcional; P09-03 entregue como 0.13.0 (`fcc9818`), contato não letal/confiança/convite; P09-04 entregue como0.14.0 (`0388698`), assentamento/recursos/reparos; próximoP09-05. Ver `../RELEASE_0.10.md` e inciso 15.11. A avaliação abaixo preserva a referência histórica em 0.8.0.
+**Registro de execução:** P09-01A entregue como 0.9.0 (`8ef54fa`); ver `../RELEASE_0.9.md` e inciso 15.10 do plano. P09-01B1 entregue como 0.10.0 (`feed9f6c`), kit/consumíveis e exercício guiado de mana. P09-01B2 entregue como 0.11.0 (`28c8564`), criatura observar/contornar/enfrentar; P09-02 entregue como 0.12.0 (`223fe5f`), castelo/posse opcional; P09-03 entregue como 0.13.0 (`fcc9818`), contato não letal/confiança/convite; P09-04 entregue como0.14.0 (`0388698`), assentamento/recursos/reparos; P09-05A entregue como0.15.0 (`dadb6a8`), formação/avaliação; próximoP09-05B. Ver `../RELEASE_0.10.md` e inciso 15.11. A avaliação abaixo preserva a referência histórica em 0.8.0.
 
 ## Avaliação
 
@@ -109,5 +109,8 @@ P09-03 entregue: contato com guardião/porta-voz, alternativa sem luta, confront
 ## Execução 0.14.0
 P09-04 entregue na primeira fatia operacional: doze candidatos individuais, critérios variáveis, recursos finitos rastreáveis, períodos/custos de trabalho, três reparos, provisões e retorno físico ao castelo. Sem nomes definitivos, filas paralelas, economia renovável ou calendário global. Evidências/limites em `../RELEASE_0.14.md` e inciso15.15. PróximoP09-05: guarda de espada, treino assistido/delegado, avaliação prática e elegibilidade de campeão. Preservar exercício de mana existente e distinção morador/trabalhador/combatente/campeão. Arco I incompleto.
 
-## Execução0.15.0 — P09-05A em validação
+## Registro intermediário0.15.0 — P09-05A inicialmente em validação
 Código implementado em prévia,275testes/build aprovados. Mana/guarda por turnos, assistência/delegação individual, fadiga/calendário, consentimento e avaliação/eligibilidade. Navegador: mana/recarga/delegação/descanso passaram; guarda iniciou, mas conexão falhou antes de concluir avaliação/mobile. Produção continua0.14.0. Ver `../RELEASE_0.15.md` e inciso15.16. Terminar QA e publicar antes de declarar entrega. P09-05B (turmas, nomeação e integração tática) posterior; não avançar como se todo pacote estivesse concluído.
+
+## Execução0.15.0 — validação concluída
+P09-05A publicada:275testes/build e QA de guarda, avaliação, recarga, descanso e elegibilidade passaram. Mobile simulado em320×568/390×844/844×390 sem overflow; fixture temporária removida. Migração de save real0.14 confirmada no domínio público. Correções preservam participante ao retomar e distinguem avaliação de ganho de proficiência. Ver `../RELEASE_0.15.md` e inciso15.16 atualizado. PróximoP09-05B: turmas consentidas, nomeação explícita e integração tática; sem promoção automática por moradia/XP. Primeiro arco continua incompleto.

@@ -5,9 +5,9 @@
 **Stack:** Phaser 3, TypeScript, Vite, Vitest  
 **Repositório:** https://github.com/FelpHendeson/novo-mundo-basilis  
 **Publicação:** https://novo-mundo-basilis.vercel.app  
-**Documento:** v2.6 — 21/10/2026
-**Estado de referência:** 0.14.0 publicada — primeiro assentamento, adesão individual, fontes finitas, trabalho e reparos; código `0388698`, produção READY.
-**Fonte de referência:** este plano versionado no GitHub; revisão2.6 na branch `release/0.15.0`, ainda em validação. A cópia nos arquivos do Projeto acompanha a revisão documental.
+**Documento:** v2.7 — 21/10/2026
+**Estado de referência:** 0.15.0 publicada — formação no pátio, assistência/delegação, fadiga e avaliação/eligibilidade; código `dadb6a8`, produção READY.
+**Fonte de referência:** este plano versionado no GitHub; a cópia nos arquivos do Projeto acompanha cada revisão documental.
 
 > Este documento é um plano vivo. Conteúdo narrativo e sistemas ainda não aprovados devem ser tratados como propostas, não como cânone.
 
@@ -233,7 +233,7 @@ Uma funcionalidade só é considerada entregue quando:
 
 ## 13. Próximo passo operacional
 
-Produção permanece0.14.0. P09-05A implementada na prévia0.15.0: mana/guarda por turnos, assistência/delegação individual, custos/calendário/fadiga, consentimento do guardião e elegibilidade após avaliação/descanso. Ainda não declarada concluída: falha da conexão do navegador interrompeu QA de guarda/avaliação. Próximo passo imediato é terminar esse fluxo, simular mobile e publicar/validar0.15.0. Só depois P09-05B: turmas consentidas, nomeação explícita e integração militar compatível. A0.15 não conclui todo pacoteP09-05 e não promove moradores automaticamente. Comércio/contratos vêm após formação. Arco I continua incompleto.
+P09-05A entregue como0.15.0: mana/guarda introdutórias por turnos, assistência/delegação individual, custos/calendário/fadiga, consentimento do guardião e elegibilidade após avaliação/descanso. O bloqueio do navegador foi resolvido em sessão separada, com QA de guarda, avaliação, recarga, mobile e migração pública. PróximoP09-05B: turmas consentidas, nomeação explícita e integração militar compatível; preservar distinção morador/trabalhador/combatente/campeão. A0.15 não conclui todo pacoteP09-05. Comércio/contratos vêm depois da formação; primeiro arco ainda incompleto.
 
 ## 14. Política de versões e manutenção do plano
 
@@ -458,16 +458,18 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 - **Publicação:** production READY `dpl_2jJEyJW4Pmj4NFyeutg48g8oR4Yd`, código `0388698`, https://novo-mundo-basilis.vercel.app. Bundle público `index-Boz-OAqQ.js` confirmado. Checkpoint anterior Viajante/Humano/Guerreiro preservou posição6,3, XP0, suprimentos0 e broche/defesa8; quadro iniciou com estoque/população0 e dia1/período1, sem reivindicação/custos automáticos. Console sem erros observados. Produção também passou248testes e build. Relatório em `docs/RELEASE_0.14.md`.
 - **Limites:** não é economia completa: sem produção renovável/comércio, XP profissional, filas paralelas, chuva, fome diária automática ou calendário global dos outros sistemas. Reparos simplificados, sem minigame manual. Identidades finais dos12 permanecem propostas. Morador não equivale a súdito/combatente/campeão. PróximoP09-05; arco não concluído. Plano v2.5 acompanha a cópia anexa.
 
-### 15.16 — 0.15.0 — Formação no pátio — 21/10/2026 — Em validação
+### 15.16 — 0.15.0 — Formação no pátio — 21/10/2026 — Publicada
 
-- **Estado:** código implementado na branch `release/0.15.0`; prévia READY, sem publicação em produção. Domínio principal continua0.14.0. Não considerar concluída apenas por compilar.
-- **Escopo P09-05A:** dois exercícios introdutórios por turnos (mana e guarda), seis sinais, assistência e delegação individual. Manual com4acertos dá2proficiência, demais modos/falhas1, cap3 por habilidade/participante. Sem XP, atributos, técnicas ou itens novos. Máximo2sessões/dia, fadiga2, descanso com custo; mesmo calendário/estoque do assentamento. Proteção da reserva antes da chegada. Exercício de mana da introdução preservado.
-- **Agência:** apenas protagonista e guardião assentado/voluntário podem participar nesta fatia. Avaliação de3decisões, aprovação com2acertos, custo2refeições/1período; assistência disponível, sem delegação da avaliação. Elegibilidade exige consentimento, confiança2, guarda2, avaliação/armamento próprio e descanso. Não exige mana/nível arbitrário nem realiza nomeação/entrada na equipe tática.
-- **Persistência:** schema11 migra1–10 sem custos, treinamento ou promoção retroativos. Registro do assentamento limitado256eventos, com espaço reservado para concluir/cancelar sessão; respostas e custos persistidos. Recarga retoma sessão em andamento. Atividade ativa bloqueia trabalho/retorno ao mapa; cancelamento não reembolsa.
-- **Código:** `65b6c70cb96986bacab3a0756c4c425a9726293d`, árvore `3c960371bd18684834e2c7cb5250b482832d27e4` idêntica à local. Prévia `dpl_AtZeUC5i55jf5MSmL4pSTLff8dYY`, https://novo-mundo-basilis-git-release-0150-felipe-hendeson-s-projects.vercel.app. Tag pendente.
-- **Testes:**275testes/15arquivos,27novos; TypeScript/Vite local e remoto passaram. Testes incluem treino/cap/avaliação, consentimento/civis, fadiga/limite diário, reserva, cancelamento, migrações1–10 e IndexedDB interrompido sem duplicação.
-- **QA parcial:** jornada Aprendiz/Humano/Guerreiro, Horizonte. Mana assistida6/6, recarga retomou etapa2/6 sem cobrar novamente; mana delegada2/3, fadiga2 bloqueou início, descanso debitou1refeição/2períodos. Onze pessoas chegaram; guardião consentiu, guarda manual iniciou com22refeições, dia9/período2, e primeira defesa correta registrada. Conexão perdeu a aba e falhou repetidamente ao recuperar; guarda/avaliação/elegibilidade/mobile ainda não concluídos no navegador. Não substituir estes resultados por afirmação de QA integral. Detalhes em `docs/RELEASE_0.15.md`.
-- **Limites/próximo:** sem timing real, turmas2–8, nomeação ou novos combatentes; sem benchmark/aparelho físico/Safari. Retomar QA, publicar e validar domínio antes de concluirP09-05A. P09-05B permanece futura. Plano v2.6 acompanha cópia anexa; produção0.14.0 preservada.
+- **Entrega P09-05A:** mana e guarda introdutórias por turnos, seis sinais, assistência/delegação individual. Manual com4acertos dá2proficiência, demais modos/falhas1, cap3; sem XP, atributos, técnicas ou itens novos. Duas sessões por participante/dia, fadiga máxima2, descanso com custos; mesmo estoque/calendário do assentamento, com reserva protegida antes da chegada. Mana da introdução preservada.
+- **Agência:** protagonista e guardião assentado/voluntário. Avaliação de3decisões, aprovação com2acertos, custo2refeições/1período, assistência disponível. Elegibilidade exige consentimento, confiança2, guarda2, avaliação/armamento próprio e descanso, sem mana/nível arbitrário. Não nomeia campeão nem inclui unidade na batalha.
+- **Save/arquitetura:** redutor puro, registro limitado256eventos com espaço para terminar/cancelar sessão. Respostas/custos persistem; recarga retoma sessão. Atividade ativa bloqueia trabalho/retorno ao mapa, cancelamento sem reembolso. Schema11 migra1–10 sem treinos, custos ou promoções retroativos. IndexedDB continua v1.
+- **Commits:** `65b6c70` (funcionalidades), `80f957e` (registro intermediário de QA), `fd20fa0` (conserva seleção ao retomar e corrige rótulos de avaliação), `ce7e064` (fixture temporária), `dadb6a8` (remoção da fixture antes da produção). Árvore final `3864e049fb82affabdadd9af94073ed376752fe9`, idêntica à local/correção testada, sem fixture. Tag pendente.
+- **Validação:**275testes/15arquivos,27novos; TypeScript/Vite local e remoto passaram. Testes de custos/cap/fadiga, consentimento/civis, avaliação/retentativa, reserva, cancelamento, migrações1–10 e IndexedDB interrompido sem duplicação.
+- **QA inicial (v2.6):** conexão interrompeu jornada Aprendiz após mana assistida/delegada/descanso e início de guarda. Não foi publicada naquele estado. Retomada autorizada em navegador separado concluiu a validação abaixo.
+- **Navegador final:** jornada Validação/Humano/Guerreiro, Horizonte e11moradores. Guardião consentiu; guarda manual6/6→2/3, estoque25/dia8período1. Avaliação assistida: primeira resposta, recarga retoma2/3 e1acerto, estoque23/dia8período2 sem cobrança nova; aprovação3/3. Descanso -1refeição/+2períodos libera elegibilidade com estoque22/dia8período4. Sessão pessoal em mobile retomada, resposta por Enter e cancelamento sem reembolso/proficiência; estoque21/dia9período1, elegibilidade preservada. Seleção/rótulos corrigidos confirmados após recarga. Mana completa e delegação também verificadas na jornada inicial. Sem promoção ou novo XP.
+- **Mobile:** jogo da mesma origem em um iframe por vez, viewports320×568,390×844,844×390. DOM confirmou dimensões e scrollWidth sem exceder largura; em320 botões48px e cancelar70px. Fixture removida antes da produção. Simulação CSS, sem aparelho físico/Safari/toque/DPR ou benchmark.
+- **Publicação:** production READY `dpl_5MutrcKNngJUhxqurYczJfC8BebZ`, código `dadb6a8`, https://novo-mundo-basilis.vercel.app/.275testes e build17s aprovados, bundle público `index-Cz9HV1A6.js`. Save real0.14 criado no navegador de teste retomou Legado/Humano/Guerreiro, posição2,4, conversa com Lyra, XP0/suprimentos0 e broche/defesa8. Quadro dia1período1, estoque/população0, sem formação retroativa. Nenhum erro de aplicação observado nas entradas de console examinadas, excluindo erros da extensão. Relatório `docs/RELEASE_0.15.md`.
+- **Limites/próximo:** sem timing real, turmas2–8, nomeação ou novos combatentes. P09-05B permanece futura; arco não concluído. Plano v2.7 acompanha cópia anexa. Revisão2.6 preservada no histórico como registro intermediário.
 
 ### Modelo de inciso para próximas versões
 
@@ -501,6 +503,7 @@ Datas abaixo usam America/Sao_Paulo. Registros futuros entram cronologicamente e
 | v2.4 | 21/10/2026 | Contato 0.13.0, schema9, confiança/convite, confronto não letal e correção de confirmação de save; próximo assentamento. |
 | v2.5 | 21/10/2026 | Assentamento0.14.0, schema10, adesão individual, fontes/custos, tempo de trabalho e reparos; próximo formação. |
 | v2.6 | 21/10/2026 | Formação0.15.0 implementada em prévia;275testes, QA parcial e bloqueio de conexão documentados; produção0.14 preservada, divisãoP09-05A/B. |
+| v2.7 | 21/10/2026 | Validação0.15 retomada, correções de apresentação, guarda/avaliação/mobile e migração aprovados; publicação e próximoP09-05B. |
 
 
 ## 17. Escopo executável — 0.4.0
