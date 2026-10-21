@@ -10,6 +10,11 @@ export function journalEntries(c: Campaign): string[] {
   if (events.includes("system.deferred")) entries.push("Você adiou as instruções. Consultar o Sistema continua disponível na exploração.");
   if (c.adaptation.claimed) entries.push(`Kit recebido uma única vez. Bolsa: ${c.adaptation.potions} poções e ${c.adaptation.rations} rações restantes. Arma de adaptação equipada.`);
   entries.push(c.adaptation.manaStep === 3 ? "Primeiro exercício de mana concluído. Não concede XP nem bônus permanente." : `Exercício de mana opcional: ${c.adaptation.manaStep}/3 etapas. Continue pela consulta ao Sistema.`);
+  if (c.creature.observed) entries.push("Toca observada: a criatura protege a entrada e não persegue quem mantém distância.");
+  if (c.creature.outcome === "avoided") entries.push("Você contornou a toca sem confronto. A trilha continua acessível.");
+  if (c.creature.outcome === "repelled") entries.push("A criatura foi afugentada. Não houve saque ou recompensa de XP.");
+  if (c.creature.outcome === "retreated") entries.push("Você recuou do confronto na toca e continuou a jornada.");
+  if (c.creature.engaged && c.creature.outcome === "pending") entries.push("Confronto da toca interrompido: volte aos rastros para reiniciar ou encerrar recuando.");
   if (c.metLyra) entries.push("Lyra ofereceu ajuda para proteger a passagem nas ruínas.");
   if (c.passageCleared) entries.push("Passagem liberada. A recompensa da primeira vitória já foi registrada.");
   if (c.base.prepared) entries.push("Abrigo preparado com três suprimentos, pagos uma única vez.");

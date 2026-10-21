@@ -1,3 +1,4 @@
+import { MISSIONS, CREATURE_TECHNIQUES, creatureUnit, type Mission } from "./missions";
 import { CONSUMABLES, type Adaptation, type Consumable } from "./adaptation";
 import type { EquipmentId } from "./equipment";
 import { resolveCombat, type CombatEvent } from "./combat";
@@ -41,8 +42,17 @@ export class Battle {
     character: Character,
     private cinematic = false,
     readonly adaptation?: Adaptation,
+    readonly mission: Mission = "ruins",
   ) {
     this.units = makeUnits(character.name, character.cls, character.experience, character.equipment, character.includeLyra, adaptation?.claimed);
+    if (mission === "creature") {
+      const hero = this.units[0];
+      hero.x = 3; hero.y = 4;
+      this.units = [hero, creatureUnit()];
+    }
+  }
+  techniques(unit: Unit): readonly Technique[] {
+    return unit.id === "creature" ? CREATURE_TECHNIQUES : TECHNIQUES[unit.cls];
   }
   say(message: string) {
     this.note = message;
@@ -62,8 +72,8 @@ export class Battle {
       this.skill = null;
       this.say(
         !this.enemies.length
-          ? "VITÓRIA! A passagem está segura."
-          : "DERROTA. A expedição terminou.",
+          ? MISSIONS[this.mission].won
+          : MISSIONS[this.mission].lost,
       );
       return true;
     }
@@ -103,7 +113,7 @@ export class Battle {
   }
   chooseSkill(index: number) {
     if (this.phase !== "skills" || !this.selected) return;
-    const skill = TECHNIQUES[this.selected.cls][index];
+    const skill = this.techniques(this.selected)[index];
     if (!skill || this.selected.ep < skill.cost)
       return this.say("Energia insuficiente.");
     this.skill = skill;
@@ -200,7 +210,7 @@ export class Battle {
         (a, b) => dist(a, enemy) - dist(b, enemy),
       )[0];
       if (!target) break;
-      const skills = TECHNIQUES[enemy.cls].filter((t) => enemy.ep >= t.cost);
+      const skills = this.techniques(enemy).filter((t) => enemy.ep >= t.cost);
       const positions = [...reachable(enemy, this.units)].map((key) => {
         const [x, y] = key.split(",").map(Number);
         return { x, y };

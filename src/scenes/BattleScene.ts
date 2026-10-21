@@ -1,6 +1,8 @@
+import { MISSIONS, type Mission } from "../game/missions";
+import { finishCreature } from "../game/creature";
 import { equipmentLabel } from "../game/equipment";
 import { progressLabel } from "../game/progression";
-import { finishEncounter, type Campaign } from "../game/campaign";
+import { finishCampaignBattle, type Campaign } from "../game/campaign";
 import { saveCampaign } from "../game/persistence/save";
 import Phaser from "phaser";
 import { WIDTH, HEIGHT, TERRAIN, reachable } from "../game/model";
@@ -11,7 +13,7 @@ import { Battle, type Character } from "../game/battle";
 import { renderBattleUI } from "../ui/battleUI";
 export class BattleScene extends Phaser.Scene {
   private battle!: Battle;
-  private character!: Character & { campaign?: Campaign; practice?: boolean };
+  private character!: Character & { campaign?: Campaign; practice?: boolean; mission?: Mission };
   private savedResult = false;
   private campaignSaveNote = "";
   private timer: Phaser.Time.TimerEvent | null = null;
@@ -22,18 +24,21 @@ export class BattleScene extends Phaser.Scene {
   constructor() {
     super("Battle");
   }
-  init(data: Character & { campaign?: Campaign; practice?: boolean }) {
+  init(data: Character & { campaign?: Campaign; practice?: boolean; mission?: Mission }) {
     this.character = { ...data, ...(data.campaign?.character ?? {}) };
     this.savedResult = false;
     this.campaignSaveNote = "";
-    this.battle = new Battle(this.character, true, this.character.campaign ? (this.character.practice ? structuredClone(this.character.campaign.adaptation) : this.character.campaign.adaptation) : undefined);
-    this.cursor = { x: 1, y: 4 };
+    this.battle = new Battle(this.character, true, this.character.campaign ? (this.character.practice ? structuredClone(this.character.campaign.adaptation) : this.character.campaign.adaptation) : undefined, data.mission === "creature" ? "creature" : "ruins");
+    this.cursor = { x: this.battle.units[0].x, y: this.battle.units[0].y };
     this.timer = null;
     this.presenting = null;
   }
   create() {
+    if (this.battle.mission === "creature" && (!this.character.campaign || this.character.campaign.creature.outcome !== "pending" || !this.character.campaign.creature.engaged)) {
+      this.scene.start(this.character.campaign ? "Exploration" : "Boot", { campaign: this.character.campaign }); return;
+    }
     this.cameras.main.setBackgroundColor("#152229");
-    this.add.text(48, 20, "BASILIS  /  RUÍNAS DA FRONTEIRA", {
+    this.add.text(48, 20, MISSIONS[this.battle.mission].banner, {
       fontFamily: "monospace",
       fontSize: "21px",
       color: "#e5d4a8",
@@ -91,7 +96,9 @@ export class BattleScene extends Phaser.Scene {
     ) {
       this.savedResult = true;
       const c = this.character.campaign;
-      if (finishEncounter(c, this.battle.enemies.length === 0)) {
+      if (this.battle.mission === "creature") {
+        if (finishCampaignBattle(c, "creature", this.battle.enemies.length === 0)) this.saveCreature();
+      } else if (finishCampaignBattle(c, "ruins", this.battle.enemies.length === 0)) {
         this.campaignSaveNote = "Vitória: +3 suprimentos · +100 XP · Nível 2. Salvando checkpoint…";
         void saveCampaign(c).then((ok) => {
           if (!this.scene.isActive()) return;
@@ -199,7 +206,7 @@ export class BattleScene extends Phaser.Scene {
         .fillStyle(u.team === "ally" ? 0x8ad77d : 0xeab27b)
         .fillRect(cx - 18, cy + 20, (36 * u.hp) / u.maxHp, 4);
       const label = this.add
-        .text(cx, cy, u.cls === "Mago" ? "M" : u.cls === "Ladino" ? "L" : "G", {
+        .text(cx, cy, u.id === "creature" ? "◆" : u.cls === "Mago" ? "M" : u.cls === "Ladino" ? "L" : "G", {
           fontFamily: "monospace",
           fontSize: "17px",
           color: "#ffffff",
@@ -246,6 +253,12 @@ export class BattleScene extends Phaser.Scene {
           if (this.scene.isActive()) this.redraw();
         });
       },
+      this.battle.mission === "creature" ? () => {
+        if (this.character.campaign && finishCreature(this.character.campaign.creature, false)) {
+          void saveCampaign(this.character.campaign);
+          this.scene.start("Exploration", { campaign: this.character.campaign });
+        }
+      } : undefined,
     );
     const progress = document.createElement("p");
     progress.textContent = `${this.character.practice ? "TREINO · sem XP ou recompensa · " : ""}${progressLabel(this.character.experience)} · Atributos desta batalha · ${equipmentLabel(this.character.equipment)}`;
@@ -262,6 +275,14 @@ export class BattleScene extends Phaser.Scene {
         this.redraw();
       });
     }
+  }
+  private saveCreature() {
+    this.campaignSaveNote = "Encontro encerrado sem XP ou saque. Salvando checkpoint…";
+    void saveCampaign(this.character.campaign!).then(ok => {
+      if (!this.scene.isActive()) return;
+      this.campaignSaveNote = ok ? "Decisão do encontro salva. Sem XP ou saque." : "Decisão mantida nesta sessão; não foi possível salvar.";
+      this.redraw();
+    });
   }
   private handleKey(e: KeyboardEvent) {
     if ((e.target as HTMLElement)?.closest("button,input,select")) return;

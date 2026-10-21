@@ -1,3 +1,5 @@
+import type { Mission } from "./missions";
+import { newCreature, parseCreature, finishCreature, type CreatureState } from "./creature";
 import { newAdaptation, parseAdaptation, type Adaptation } from "./adaptation";
 import { newNarrative, legacyNarrative, parseNarrative, type NarrativeState } from "./narrative";
 import { EQUIPMENT_IDS, isEquipmentId, type EquipmentId } from "./equipment";
@@ -6,10 +8,11 @@ import type { Character } from "./battle";
 import { RACES, CLASSES } from "./archetypes";
 export { RACES } from "./archetypes";
 export type Campaign = {
-  schemaVersion: 6;
+  schemaVersion: 7;
   character: Character & { experience: number; equipment: EquipmentId | null };
   narrative: NarrativeState;
   adaptation: Adaptation;
+  creature: CreatureState;
   inventory: EquipmentId[];
   base: { prepared: boolean; lyraRecruited: boolean; lyraDeployed: boolean };
   position: { x: number; y: number };
@@ -19,10 +22,11 @@ export type Campaign = {
   expeditionComplete: boolean;
 };
 export const newCampaign = (character: Character): Campaign => ({
-  schemaVersion: 6,
+  schemaVersion: 7,
   character: { name: character.name, cls: character.cls, race: character.race, experience: 0, equipment: null },
   narrative: newNarrative(),
   adaptation: newAdaptation(),
+  creature: newCreature(),
   inventory: [...EQUIPMENT_IDS],
   base: { prepared: false, lyraRecruited: false, lyraDeployed: false },
   position: { x: 1, y: 4 },
@@ -63,7 +67,7 @@ export function parseCampaign(value: unknown): Campaign | null {
   if (!value || typeof value !== "object") return null;
   const c = value as Omit<Campaign, "schemaVersion"> & { schemaVersion: number };
   if (
-    ![1, 2, 3, 4, 5, 6].includes(c.schemaVersion) ||
+    ![1, 2, 3, 4, 5, 6, 7].includes(c.schemaVersion) ||
     !c.character ||
     typeof c.character.name !== "string" ||
     !c.character.name.trim() ||
@@ -101,10 +105,13 @@ export function parseCampaign(value: unknown): Campaign | null {
   if (!narrative) return null;
   const adaptation = c.schemaVersion < 6 ? newAdaptation() : parseAdaptation(c.adaptation);
   if (!adaptation) return null;
+  const creature = c.schemaVersion < 7 ? newCreature() : parseCreature(c.creature);
+  if (!creature) return null;
   return {
-    schemaVersion: 6,
+    schemaVersion: 7,
     narrative,
     adaptation,
+    creature,
     character: { name: c.character.name, cls: c.character.cls, race: c.character.race, experience, equipment },
     inventory: [...inventory],
     base: { prepared: base.prepared, lyraRecruited: base.lyraRecruited, lyraDeployed: base.lyraDeployed },
@@ -157,4 +164,9 @@ export function campaignObjective(c: Campaign): string {
   if (!c.base.prepared) return "Objetivo: prepare a base junto ao abrigo (3 suprimentos).";
   if (!c.base.lyraRecruited) return "Objetivo: volte à trilha e convide Lyra para a equipe.";
   return "Base pronta. Monte a equipe junto ao abrigo e teste a formação em treino.";
+}
+
+/** Mission-specific completion prevents the tutorial from granting ruin rewards. */
+export function finishCampaignBattle(c: Campaign, mission: Mission, won: boolean): boolean {
+  return mission === "creature" ? finishCreature(c.creature, won) : finishEncounter(c, won);
 }

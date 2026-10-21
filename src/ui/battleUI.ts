@@ -1,5 +1,6 @@
+import { MISSIONS } from "../game/missions";
 import { Battle } from "../game/battle";
-import { damage, TECHNIQUES, WIDTH, HEIGHT, TERRAIN } from "../game/model";
+import { damage, WIDTH, HEIGHT, TERRAIN } from "../game/model";
 
 export function renderBattleUI(
   battle: Battle,
@@ -10,6 +11,7 @@ export function renderBattleUI(
   returnToMap?: () => void,
   practice = false,
   itemUsed?: () => void,
+  retreat?: () => void,
 ) {
   let root = document.querySelector<HTMLElement>("#battle-ui");
   if (!root) {
@@ -23,11 +25,11 @@ export function renderBattleUI(
   const focused = document.activeElement?.getAttribute("data-action");
   root.replaceChildren();
   const title = document.createElement("h2");
-  title.textContent = `Ruínas da Fronteira · Turno ${battle.turn}`;
+  title.textContent = `${MISSIONS[battle.mission].title} · Turno ${battle.turn}`;
   root.append(title);
   const goal = document.createElement("p");
   goal.textContent =
-    "Objetivo: derrote os dois saqueadores. Floresta: movimento 2 e proteção +2. Rochas: bloqueadas.";
+    `${MISSIONS[battle.mission].goal} Floresta: movimento 2 e proteção +2. Rochas: bloqueadas.`;
   const guide = document.createElement("details");
   guide.open = guideOpen;
   const summary = document.createElement("summary");
@@ -43,7 +45,7 @@ export function renderBattleUI(
     battle.units.find((u) => u.hp > 0 && u.x === cursor.x && u.y === cursor.y);
   if (unit) {
     const info = document.createElement("p");
-    info.textContent = `${unit.name} · ${unit.cls} · HP ${unit.hp}/${unit.maxHp} · EN ${unit.ep}/${unit.maxEp} · Ataque ${unit.attack} · Magia ${unit.magic} · Defesa ${unit.defense} · Movimento ${unit.move}${unit.acted ? " · Já agiu" : ""}`;
+    info.textContent = `${unit.name} · ${unit.id === "creature" ? "Animal" : unit.cls} · HP ${unit.hp}/${unit.maxHp} · EN ${unit.ep}/${unit.maxEp} · Ataque ${unit.attack} · Magia ${unit.magic} · Defesa ${unit.defense} · Movimento ${unit.move}${unit.acted ? " · Já agiu" : ""}`;
     root.append(info);
   }
   const actions = document.createElement("div");
@@ -110,7 +112,7 @@ export function renderBattleUI(
     }
   }
   if (battle.phase === "skills" && battle.selected) {
-    TECHNIQUES[battle.selected.cls].forEach((skill, i) =>
+    battle.techniques(battle.selected).forEach((skill, i) =>
       button(
         `skill-${i}`,
         `${skill.name} · ${skill.cost} EN · alcance ${skill.range}`,
@@ -135,12 +137,14 @@ export function renderBattleUI(
   if (battle.phase === "idle")
     button("end", "Encerrar turno [E]", () => battle.endTurn());
   if (battle.phase === "ended") {
-    button("restart", "Repetir batalha", restart);
+    if (battle.mission !== "creature") button("restart", "Repetir batalha", restart);
     if (returnToMap) button("map", "Voltar à exploração", returnToMap);
     else button("character", "Criar personagem", creation);
   }
   if (practice && returnToMap && battle.phase !== "ended")
     button("leave-training", "Sair do treino", returnToMap, battle.phase === "enemy" || battle.phase === "presentation");
+  if (retreat && battle.phase !== "ended")
+    button("retreat", "Recuar da criatura", retreat, battle.phase === "enemy" || battle.phase === "presentation");
   const roster = document.createElement("div");
   roster.className = "roster";
   for (const ally of battle.allies) {

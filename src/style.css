@@ -139,24 +139,25 @@ summary {
   margin: 4px;
 }
 @media (max-width: 900px) {
-  body:has(#battle-ui, #exploration-ui, #combat-ui, #system-ui) {
+  body:has(#battle-ui, #exploration-ui, #combat-ui, #system-ui, #encounter-ui) {
     overflow: hidden;
   }
-  #app:has(#battle-ui, #exploration-ui, #combat-ui, #system-ui) {
+  #app:has(#battle-ui, #exploration-ui, #combat-ui, #system-ui, #encounter-ui) {
     height: 100dvh;
     min-height: 0;
     grid-template-rows: auto minmax(0, 1fr);
     padding: 8px;
     gap: 8px;
   }
-  #app:has(#battle-ui, #exploration-ui, #combat-ui, #system-ui) #game {
+  #app:has(#battle-ui, #exploration-ui, #combat-ui, #system-ui, #encounter-ui) #game {
     width: min(100%, 53.333dvh);
     margin: auto;
   }
   #battle-ui,
   #exploration-ui,
   #combat-ui,
-  #system-ui {
+  #system-ui,
+  #encounter-ui {
     height: 100%;
     min-height: 0;
     overflow: auto;
@@ -167,14 +168,16 @@ summary {
   #battle-ui h2,
   #exploration-ui h2,
   #combat-ui h2,
-  #system-ui h2 {
+  #system-ui h2,
+  #encounter-ui h2 {
     font-size: 20px;
     margin-bottom: 8px;
   }
   #battle-ui p,
   #exploration-ui p,
   #combat-ui p,
-  #system-ui p {
+  #system-ui p,
+  #encounter-ui p {
     margin: 8px 0;
     font-size: 14px;
     line-height: 1.4;
@@ -215,11 +218,11 @@ summary {
   }
 }
 @media (max-width: 900px) and (orientation: landscape) {
-  #app:has(#battle-ui, #exploration-ui, #combat-ui, #system-ui) {
+  #app:has(#battle-ui, #exploration-ui, #combat-ui, #system-ui, #encounter-ui) {
     grid-template-columns: minmax(0, 1fr) minmax(260px, 0.8fr);
     grid-template-rows: minmax(0, 1fr);
   }
-  #app:has(#battle-ui, #exploration-ui, #combat-ui, #system-ui) #game {
+  #app:has(#battle-ui, #exploration-ui, #combat-ui, #system-ui, #encounter-ui) #game {
     width: min(100%, calc((100dvh - 16px) * 1.333333));
     align-self: start;
   }
@@ -247,3 +250,5 @@ summary {
 
 #system-ui .actions button { min-width: 0; overflow-wrap: anywhere; }
 .mana-tutorial { margin-block: 12px; }
+
+#encounter-ui .actions { grid-template-columns: 1fr; }

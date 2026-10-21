@@ -59,14 +59,14 @@ export class CombatScene extends Phaser.Scene {
     this.actor = this.fighter(
       190,
       375,
-      e.attacker.cls,
+      e.attacker.id === "creature" ? "creature" : e.attacker.cls,
       e.attacker.team === "ally" ? 0x629de0 : 0xc66a69,
       1,
     );
     this.target = this.fighter(
       570,
       375,
-      e.defender.cls,
+      e.defender.id === "creature" ? "creature" : e.defender.cls,
       e.defender.team === "ally" ? 0x629de0 : 0xc66a69,
       -1,
     );
@@ -130,6 +130,13 @@ export class CombatScene extends Phaser.Scene {
   ) {
     const body = this.add.graphics();
     body.fillStyle(0x0a151a, 0.5).fillEllipse(0, 65, 100, 24);
+    if (cls === "creature") {
+      body.fillStyle(0x8d8265).fillRect(-48, -10, 96, 42).fillRect(32, -24, 40, 34);
+      body.fillStyle(0x68634f).fillRect(-38, 28, 14, 36).fillRect(24, 28, 14, 36);
+      body.fillStyle(0x343c31).fillTriangle(38, -20, 48, -44, 58, -20);
+      body.fillStyle(0xd3b46f).fillRect(56, -15, 5, 5);
+      return this.add.container(x, y, [body]).setScale(facing, 1);
+    }
     body.fillStyle(color).fillRect(-25, -20, 50, 70);
     body.fillStyle(0xd9b991).fillCircle(0, -45, 22);
     body.fillStyle(0x182932).fillRect(-22, 45, 17, 24).fillRect(5, 45, 17, 24);
