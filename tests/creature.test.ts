@@ -51,7 +51,7 @@ describe("primeiro encontro opcional",()=>{
     c.character.equipment="simple-focus"; claimKit(c.adaptation); advanceMana(c.adaptation,true);
     const old={...structuredClone(c),schemaVersion};
     const migrated=parseCampaign(old)!;
-    expect(migrated.schemaVersion).toBe(10); expect(migrated.creature).toEqual(newCreature());
+    expect(migrated.schemaVersion).toBe(11); expect(migrated.creature).toEqual(newCreature());
     expect(migrated.position).toEqual(c.position); expect(migrated.character.experience).toBe(100);
     expect(migrated.supplies).toBe(0); expect(migrated.metLyra).toBe(true);
     if(schemaVersion>=3) expect(migrated.character.equipment).toBe("simple-focus");

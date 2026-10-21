@@ -139,17 +139,17 @@ summary {
   margin: 4px;
 }
 @media (max-width: 900px) {
-  body:has(#battle-ui, #exploration-ui, #combat-ui, #system-ui, #encounter-ui, #castle-ui, #contact-ui) {
+  body:has(#battle-ui, #exploration-ui, #combat-ui, #system-ui, #encounter-ui, #castle-ui, #contact-ui, #training-ui) {
     overflow: hidden;
   }
-  #app:has(#battle-ui, #exploration-ui, #combat-ui, #system-ui, #encounter-ui, #castle-ui, #contact-ui) {
+  #app:has(#battle-ui, #exploration-ui, #combat-ui, #system-ui, #encounter-ui, #castle-ui, #contact-ui, #training-ui) {
     height: 100dvh;
     min-height: 0;
     grid-template-rows: auto minmax(0, 1fr);
     padding: 8px;
     gap: 8px;
   }
-  #app:has(#battle-ui, #exploration-ui, #combat-ui, #system-ui, #encounter-ui, #castle-ui, #contact-ui) #game {
+  #app:has(#battle-ui, #exploration-ui, #combat-ui, #system-ui, #encounter-ui, #castle-ui, #contact-ui, #training-ui) #game {
     width: min(100%, 53.333dvh);
     margin: auto;
   }
@@ -159,7 +159,8 @@ summary {
   #system-ui,
   #encounter-ui,
   #castle-ui,
-  #contact-ui {
+  #contact-ui,
+  #training-ui {
     height: 100%;
     min-height: 0;
     overflow: auto;
@@ -173,7 +174,8 @@ summary {
   #system-ui h2,
   #encounter-ui h2,
   #castle-ui h2,
-  #contact-ui h2 {
+  #contact-ui h2,
+  #training-ui h2 {
     font-size: 20px;
     margin-bottom: 8px;
   }
@@ -183,7 +185,8 @@ summary {
   #system-ui p,
   #encounter-ui p,
   #castle-ui p,
-  #contact-ui p {
+  #contact-ui p,
+  #training-ui p {
     margin: 8px 0;
     font-size: 14px;
     line-height: 1.4;
@@ -224,11 +227,11 @@ summary {
   }
 }
 @media (max-width: 900px) and (orientation: landscape) {
-  #app:has(#battle-ui, #exploration-ui, #combat-ui, #system-ui, #encounter-ui, #castle-ui, #contact-ui) {
+  #app:has(#battle-ui, #exploration-ui, #combat-ui, #system-ui, #encounter-ui, #castle-ui, #contact-ui, #training-ui) {
     grid-template-columns: minmax(0, 1fr) minmax(260px, 0.8fr);
     grid-template-rows: minmax(0, 1fr);
   }
-  #app:has(#battle-ui, #exploration-ui, #combat-ui, #system-ui, #encounter-ui, #castle-ui, #contact-ui) #game {
+  #app:has(#battle-ui, #exploration-ui, #combat-ui, #system-ui, #encounter-ui, #castle-ui, #contact-ui, #training-ui) #game {
     width: min(100%, calc((100dvh - 16px) * 1.333333));
     align-self: start;
   }
@@ -271,3 +274,6 @@ summary {
 .settlement-panel > button { display: block; width: 100%; min-height: 48px; margin: 8px 0; text-align: left; white-space: normal; }
 .settlement-panel select { min-height: 48px; }
 .settlement-panel ul { padding-left: 20px; }
+
+#training-ui > button { display:block; width:100%; min-height:48px; margin:8px 0; text-align:left; white-space:normal; }
+#training-ui { overflow-wrap:anywhere; }

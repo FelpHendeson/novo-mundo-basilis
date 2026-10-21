@@ -28,6 +28,7 @@ export class CastleScene extends Phaser.Scene {
     this.draftName = "";
   }
   create() {
+    if(settlementView(this.campaign.settlement).training.active){this.scene.start("Training",{campaign:this.campaign});return;}
     if (this.campaign.area !== "castle") { this.scene.start("Exploration", { campaign: this.campaign }); return; }
     this.cameras.main.setBackgroundColor("#192d30");
     this.graphics = this.add.graphics();
@@ -159,6 +160,7 @@ export class CastleScene extends Phaser.Scene {
       this.panel.append(repairs);
     } else p(c.claimDeferred ? "Reivindicação adiada. O castelo permanece acessível; volte ao trono para decidir." : "A administração só será registrada se você decidir reivindicar o castelo no trono.");
     const work=settlementPanel(this.campaign,message=>{this.message=message;this.draw();this.persist();},"castle");work.open=settlementOpen;this.panel.append(work);
+    button("training","Ir à formação no pátio",()=>this.scene.start("Training",{campaign:this.campaign}),!castleNear(c,CASTLE_POINTS.courtyard)||!c.inspected.includes("courtyard")||!["tools","gate","dormitory"].every(id=>settlement.done.includes(id as "tools"|"gate"|"dormitory")));
     button("exit","Voltar pela trilha à clareira",()=>{
       if(!leaveCastle(this.campaign)) return;
       this.persist();this.scene.start("Exploration",{campaign:this.campaign});

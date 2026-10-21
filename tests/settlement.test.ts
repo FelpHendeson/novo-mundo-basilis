@@ -83,14 +83,14 @@ describe("assentamento com estoque rastreável e chegada física",()=>{
  });
  it("rejeita razão inválida, ação desconhecida e ledger fora de ordem",()=>{
   const c=create();for(const events of [[{type:"arrive"}],[{type:"depart"}],[{type:"task",task:"water",worker:"player"}],[{type:"task",task:"__proto__",worker:"player"}],[{type:"task",task:"tools",worker:"survivor-child-a"}],[null]])expect(parseSettlement({events},c)).toBeNull();
-  expect(parseSettlement({events:new Array(129).fill({type:"arrive"})},c)).toBeNull();expect(parseSettlement(null,c)).toBeNull();
+  expect(parseSettlement({events:new Array(257).fill({type:"arrive"})},c)).toBeNull();expect(parseSettlement(null,c)).toBeNull();
  });
  it("rejeita acordo fraudulento, inspeção removida e escolta em castelo sem chegada",()=>{
   const c=create();prepare(c);agreeSettlement(c);const bad=structuredClone(c);const event=bad.settlement.events.find(e=>e.type==="agreement")!;if(event.type==="agreement")event.trust=4;expect(parseCampaign(bad)).toBeNull();
   const removed=structuredClone(c);removed.castle.inspected=[];expect(parseCampaign(removed)).toBeNull();departSettlement(c);c.area="castle";expect(parseCampaign(c)).toBeNull();
  });
  it.each([1,2,3,4,5,6,7,8,9])("schema %i migra sem estoque, moradores ou custos retroativos",schemaVersion=>{
-  const c=newCampaign({name:"Legado",race:"Elfo",cls:"Mago"});const m=parseCampaign({...c,schemaVersion})!;expect(m.schemaVersion).toBe(10);expect(m.settlement).toEqual(newSettlement());expect(m.character).toEqual(c.character);expect(m.supplies).toBe(0);
+  const c=newCampaign({name:"Legado",race:"Elfo",cls:"Mago"});const m=parseCampaign({...c,schemaVersion})!;expect(m.schemaVersion).toBe(11);expect(m.settlement).toEqual(newSettlement());expect(m.character).toEqual(c.character);expect(m.supplies).toBe(0);
  });
  it("ledger não compartilha referências com dados lidos",()=>{
   const c=create();task(c,"tools");const m=parseCampaign(c)!;(c.settlement.events[0] as {task:string}).task="water";expect(m.settlement.events[0]).toEqual({type:"task",task:"tools",worker:"player"});

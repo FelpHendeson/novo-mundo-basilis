@@ -1,4 +1,4 @@
-import { newSettlement, parseSettlement, type SettlementState } from "./settlement";
+import { settlementView, newSettlement, parseSettlement, type SettlementState } from "./settlement";
 import { newContact, parseContact, finishContact, type ContactState } from "./contact";
 import { newCastle, parseCastle, type CastleState } from "./castle";
 import type { AreaId } from "./areas";
@@ -12,7 +12,7 @@ import type { Character } from "./battle";
 import { RACES, CLASSES } from "./archetypes";
 export { RACES } from "./archetypes";
 export type Campaign = {
-  schemaVersion: 10;
+  schemaVersion: 11;
   character: Character & { experience: number; equipment: EquipmentId | null };
   narrative: NarrativeState;
   adaptation: Adaptation;
@@ -30,7 +30,7 @@ export type Campaign = {
   expeditionComplete: boolean;
 };
 export const newCampaign = (character: Character): Campaign => ({
-  schemaVersion: 10,
+  schemaVersion: 11,
   character: { name: character.name, cls: character.cls, race: character.race, experience: 0, equipment: null },
   narrative: newNarrative(),
   adaptation: newAdaptation(),
@@ -79,7 +79,7 @@ export function parseCampaign(value: unknown): Campaign | null {
   if (!value || typeof value !== "object") return null;
   const c = value as Omit<Campaign, "schemaVersion"> & { schemaVersion: number };
   if (
-    ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10].includes(c.schemaVersion) ||
+    ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].includes(c.schemaVersion) ||
     !c.character ||
     typeof c.character.name !== "string" ||
     !c.character.name.trim() ||
@@ -124,10 +124,10 @@ export function parseCampaign(value: unknown): Campaign | null {
   if (!castle || !["clearing", "castle"].includes(area) || (area === "castle" && (!castle.visited || !narrative.appliedEvents.includes("arrival.completed")))) return null;
   const contact = c.schemaVersion < 9 ? newContact() : parseContact(c.contact);
   if (!contact || (contact.seen && !castle.visited) || (contact.offer === "invited" && !castle.name) || ((contact.aidGiven || contact.recovery === "ration") && !adaptation.claimed)) return null;
-  const settlement = c.schemaVersion < 10 ? newSettlement() : parseSettlement(c.settlement, {castle, contact, area});
+  const settlement = c.schemaVersion < 10 ? newSettlement() : parseSettlement(c.settlement, {castle, contact, area}, c.schemaVersion>=11);
   if (!settlement) return null;
   return {
-    schemaVersion: 10,
+    schemaVersion: 11,
     narrative,
     adaptation,
     creature,
@@ -196,6 +196,6 @@ export function finishCampaignBattle(c: Campaign, mission: Mission, won: boolean
 }
 
 /** Narrative consultations return to the current area; legacy saves default to the clearing. */
-export function campaignStartScene(c: Campaign): "Arrival" | "Exploration" | "Castle" {
-  return c.narrative.sceneId === "SCN_002_AWAKEN" ? "Arrival" : c.area === "castle" ? "Castle" : "Exploration";
+export function campaignStartScene(c: Campaign): "Arrival" | "Exploration" | "Castle" | "Training" {
+  return settlementView(c.settlement).training.active ? "Training" : c.narrative.sceneId === "SCN_002_AWAKEN" ? "Arrival" : c.area === "castle" ? "Castle" : "Exploration";
 }

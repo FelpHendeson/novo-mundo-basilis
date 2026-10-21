@@ -1,3 +1,4 @@
+import { newTraining, applyTraining, type TrainingState, type TrainingCommand, type TrainingContext, roundCount } from "./training";
 import type { Campaign } from "./campaign";
 import { adjacent } from "./areas";
 import { contactResolved, contactTrust } from "./contact";
@@ -37,14 +38,15 @@ export const TASKS = {
   storehouse:{name:"Recuperar o depósito",place:"storehouse",hours:2,cost:{wood:4,stone:2,food:2},gain:{},once:true},
 } as const;
 export type TaskId = keyof typeof TASKS;
-export type SettlementEvent = {type:"task";task:TaskId;worker:Worker} | {type:"agreement";trust:number;aided:boolean} | {type:"depart"} | {type:"arrive"};
+export type SettlementEvent = {type:"task";task:TaskId;worker:Worker} | {type:"agreement";trust:number;aided:boolean} | {type:"depart"} | {type:"arrive"} | {type:"training";command:TrainingCommand};
 export type SettlementState = {events:SettlementEvent[]};
 export const newSettlement = ():SettlementState => ({events:[]});
-export type SettlementView = {stock:Stock;gathered:Stock;hours:number;done:TaskId[];party:SurvivorId[];phase:"camp"|"agreed"|"escorting"|"arrived";history:string[]};
-const emptyView = ():SettlementView => ({stock:{wood:0,stone:0,food:0,water:0},gathered:{wood:0,stone:0,food:0,water:0},hours:0,done:[],party:[],phase:"camp",history:[]});
+export type SettlementView = {stock:Stock;gathered:Stock;hours:number;done:TaskId[];party:SurvivorId[];phase:"camp"|"agreed"|"escorting"|"arrived";history:string[];training:TrainingState};
+const emptyView = ():SettlementView => ({stock:{wood:0,stone:0,food:0,water:0},gathered:{wood:0,stone:0,food:0,water:0},hours:0,done:[],party:[],phase:"camp",history:[],training:newTraining()});
 export const settlementClock = (v:SettlementView) => `Dia ${1+Math.floor(v.hours/4)} · período ${1+v.hours%4}/4`;
 const keys = ["wood","stone","food","water"] as const;
 export function taskProblem(v:SettlementView,id:TaskId,worker:Worker):string|null {
+  if(v.training.active)return "Há um exercício em andamento. Conclua ou encerre a sessão de treino.";
   const t=TASKS[id]; if(!Object.hasOwn(TASKS,id))return "Tarefa desconhecida.";
   if(v.phase==="escorting")return "Conclua o retorno do grupo antes de trabalhar.";
   if(worker!=="player" && (v.phase!=="arrived" || !v.party.includes(worker) || !SURVIVORS.find(p=>p.id===worker)?.works))return "Esta pessoa não está disponível para trabalho.";
@@ -81,7 +83,16 @@ export function candidateReason(v:SettlementView,id:SurvivorId,trust:number,aide
   if(id==="survivor-injured" && (!aided || v.stock.water<18))return "Precisa da ajuda inicial e de 18 porções de água antes de partir.";
   return null;
 }
+export function trainingContext(v:SettlementView):TrainingContext {
+  return {hours:v.hours,food:v.stock.food,residentGuard:v.phase==="arrived"&&v.party.includes("survivor-guard"),ready:["tools","gate","dormitory"].every(id=>v.done.includes(id as TaskId)),reserve:v.phase==="arrived"?0:24+(v.done.includes("storehouse")?0:2)+(v.done.includes("route")?0:1)+(v.done.includes("cistern")?0:1)+Math.max(0,Math.ceil((12-v.stock.water)/6))};
+}
 function apply(v:SettlementView,e:SettlementEvent):boolean {
+  if(e.type==="training") {
+    const effects=applyTraining(v.training,e.command,trainingContext(v));if(!effects)return false;
+    v.stock.food-=effects.food;v.hours+=effects.periods;
+    if(effects.periods)v.history.push(`${settlementClock(v)}: formação · ${effects.food} refeição(ões), ${effects.periods} período(s).`);
+    return true;
+  }
   if(e.type==="task") {
     if(taskProblem(v,e.task,e.worker))return false;
     const t=TASKS[e.task];for(const key of keys){const gain=(t.gain as Partial<Stock>)[key]??0;v.stock[key]+=gain-((t.cost as Partial<Stock>)[key]??0);v.gathered[key]+=gain;}
@@ -109,7 +120,7 @@ export function settlementView(s:SettlementState):SettlementView {
   const v=emptyView();for(const e of s.events)if(!apply(v,e))throw new Error("Invalid settlement ledger");return v;
 }
 const append = (c:Campaign,e:SettlementEvent):boolean => {
-  if(!c.castle.name || c.settlement.events.length>=128)return false;
+  if(!c.castle.name || c.settlement.events.length>=256)return false;
   const v=settlementView(c.settlement);if(!apply(v,e))return false;c.settlement.events.push(e);return true;
 };
 export function taskLocation(c:Campaign,id:TaskId):boolean {
@@ -133,9 +144,13 @@ export function departSettlement(c:Campaign):boolean {
 export function arriveSettlement(c:Campaign):boolean {
   return c.area==="castle" && append(c,{type:"arrive"});
 }
-export function parseSettlement(value:unknown,c:Pick<Campaign,"castle"|"contact"|"area">):SettlementState|null {
+export function runTraining(c:Campaign,command:TrainingCommand):boolean {
+  if(command.type==="start" && c.settlement.events.length+1+roundCount(command.exercise)>256)return false;
+  return c.area==="castle" && castleNear(c.castle,CASTLE_POINTS.courtyard) && c.castle.inspected.includes("courtyard") && append(c,{type:"training",command});
+}
+export function parseSettlement(value:unknown,c:Pick<Campaign,"castle"|"contact"|"area">,allowTraining=true):SettlementState|null {
   if(!value || typeof value!=="object" || !Array.isArray((value as SettlementState).events))return null;
-  const events=(value as SettlementState).events;if(events.length>128 || (events.length && !c.castle.name))return null;
+  const events=(value as SettlementState).events;if(events.length>256 || (events.length && !c.castle.name))return null;
   const v=emptyView(),copy:SettlementEvent[]=[];
   for(const raw of events){
     if(!raw || typeof raw!=="object")return null;
@@ -148,9 +163,17 @@ export function parseSettlement(value:unknown,c:Pick<Campaign,"castle"|"contact"
       // Contact help can happen later; preserve the earlier decision instead of silently recruiting more.
       if(!contactResolved(c.contact) || c.contact.terms===null || (raw.aided && !c.contact.aidGiven) || raw.trust!==contactTrust(c.contact)-(c.contact.aidGiven&&!raw.aided?1:0))return null;
       e={type:"agreement",trust:raw.trust,aided:raw.aided};
+    }else if(raw.type==="training") {
+      if(!allowTraining || !c.castle.inspected.includes("courtyard") || !raw.command || typeof raw.command!=="object")return null;
+      const cmd=raw.command;
+      if(cmd.type==="consent" || cmd.type==="cancel")e={type:"training",command:{type:cmd.type}};
+      else if(cmd.type==="answer")e={type:"training",command:{type:"answer",choice:cmd.choice}};
+      else if(cmd.type==="rest")e={type:"training",command:{type:"rest",trainee:cmd.trainee}};
+      else if(cmd.type==="start")e={type:"training",command:{type:"start",trainee:cmd.trainee,exercise:cmd.exercise,mode:cmd.mode}};
+      else return null;
     }else if(raw.type==="depart" || raw.type==="arrive")e={type:raw.type};else return null;
     if(!apply(v,e))return null;copy.push(e);
   }
-  if(v.phase==="escorting" && c.area!=="clearing")return null;
+  if((v.phase==="escorting" && c.area!=="clearing") || (v.training.active && (c.area!=="castle" || !castleNear(c.castle,CASTLE_POINTS.courtyard))))return null;
   return {events:copy};
 }

@@ -42,5 +42,9 @@ export function journalEntries(c: Campaign): string[] {
   if (c.base.lyraRecruited) entries.push(`Lyra aceitou integrar o grupo e está ${c.base.lyraDeployed ? "na equipe" : "na reserva"}.`);
   const settlement=settlementView(c.settlement);
   if(c.settlement.events.length) entries.push(`${settlementClock(settlement)} · obras: ${settlement.done.filter(id=>["gate","dormitory","storehouse"].includes(id)).join(", ")||"nenhuma"} · moradores: ${settlement.phase==="arrived"?settlement.party.length:0}.`);
+  const formation=settlement.training;
+  if(formation.active)entries.push(`Formação interrompida: ${formation.active.exercise}, etapa ${formation.active.answers.length+1}. Retomar preserva respostas, tempo e custos.`);
+  if(formation.consent)entries.push("O guardião aceitou formação voluntária; isso não o nomeou campeão nem o adicionou à equipe tática.");
+  for(const report of formation.reports.slice(-3))entries.push(report);
   return entries;
 }

@@ -93,7 +93,7 @@ describe("checkpoint schema 8",()=>{
   const c=create();finishEncounter(c,true);c.metLyra=true;c.base={prepared:true,lyraRecruited:true,lyraDeployed:false};c.supplies=0;
   c.character.equipment="simple-focus";claimKit(c.adaptation);advanceMana(c.adaptation,true);c.adaptation.potions=1;c.creature={observed:true,engaged:false,outcome:"avoided"};
   const old={...structuredClone(c),schemaVersion};const m=parseCampaign(old)!;
-  expect(m.schemaVersion).toBe(10);expect(m.area).toBe("clearing");expect(m.castle).toEqual(newCastle());expect(m.position).toEqual(c.position);
+  expect(m.schemaVersion).toBe(11);expect(m.area).toBe("clearing");expect(m.castle).toEqual(newCastle());expect(m.position).toEqual(c.position);
   expect(m.character.experience).toBe(100);expect(m.supplies).toBe(0);
   if(schemaVersion>=3)expect(m.character.equipment).toBe("simple-focus");if(schemaVersion>=4)expect(m.base).toEqual(c.base);
   if(schemaVersion>=6)expect(m.adaptation).toEqual(c.adaptation);if(schemaVersion>=7)expect(m.creature).toEqual(c.creature);

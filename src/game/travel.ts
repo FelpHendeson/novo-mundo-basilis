@@ -10,7 +10,7 @@ export function enterCastle(c: Campaign): boolean {
   c.castle.visited=true; c.castle.position={...CASTLE_ENTRANCE}; c.area="castle"; arriveSettlement(c); return true;
 }
 export function canLeaveCastle(c: Campaign): boolean {
-  return c.area === "castle" && adjacent(c.castle.position,CASTLE_ENTRANCE);
+  return !settlementView(c.settlement).training.active && c.area === "castle" && adjacent(c.castle.position,CASTLE_ENTRANCE);
 }
 export function leaveCastle(c: Campaign): boolean {
   if(!canLeaveCastle(c)) return false;
